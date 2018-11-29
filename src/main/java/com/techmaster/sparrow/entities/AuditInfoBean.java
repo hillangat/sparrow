@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Embeddable
 @MappedSuperclass

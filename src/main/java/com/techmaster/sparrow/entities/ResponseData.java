@@ -1,5 +1,6 @@
 package com.techmaster.sparrow.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -11,15 +12,10 @@ import java.util.List;
 @Data
 @ToString
 @EqualsAndHashCode
+@AllArgsConstructor
 public class ResponseData implements Serializable {
 
     private Object data;
     private String message;
     private String status;
-
-    public ResponseData(Object data, String status, String message) {
-        this.data = data;
-        this.message = message;
-        this.status = status;
-    }
 }

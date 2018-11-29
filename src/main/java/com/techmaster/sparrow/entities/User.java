@@ -4,13 +4,15 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Blob;
 
-@Entity
-@Data
-@NoArgsConstructor
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = false)
-@Table(name = "USR")
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Embeddable
+@MappedSuperclass
 public class User  extends AuditInfoBean implements Serializable {
 
     @Id()
@@ -29,5 +31,11 @@ public class User  extends AuditInfoBean implements Serializable {
 
     @Column(name = "lst_nam", nullable = false)
     private String lastName;
+
+    @Column(name = "PRFL_PIC", nullable = false)
+    private Blob profilePic;
+
+    @Column(name = "NCK_NAM")
+    private String nickName;
 
 }
