@@ -1,12 +1,14 @@
 package com.techmaster.sparrow.controllers;
 
+import com.techmaster.sparrow.entities.ErrorResponse;
+import com.techmaster.sparrow.exception.SparrowRestfulApiException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +18,19 @@ public abstract class BaseController {
 
     public static final String SUCCESS_RETRIEVAL_MSG = "Successfully retrieved the data";
 
-    protected Authentication getUserDetails() {
+    @ExceptionHandler(SparrowRestfulApiException.class)
+    public final ResponseEntity<ErrorResponse> handleException(SparrowRestfulApiException ex, WebRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    protected Authentication getAuthentication() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication;
     }
 
     protected String getUserName() {
-        Authentication authentication = getUserDetails();
+        Authentication authentication = getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentUserName = authentication.getName();
             return currentUserName;
@@ -31,7 +39,7 @@ public abstract class BaseController {
     }
 
     protected List<String> getUserRoles() {
-        Authentication userDetails = getUserDetails();
+        Authentication userDetails = getAuthentication();
         if (userDetails.getAuthorities() != null &&
                 !userDetails.getAuthorities().isEmpty()) {
 

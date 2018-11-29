@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<messages>
+    
+    <!-- Validation messages for Hunter Task -->
+    
+    <message id="MSG_TASK_001" >
+        <desc>Test cache</desc>
+        <text>UI messages are loaded!!</text>
+    </message>
+    
+     
+</messages>

@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class Club extends AuditInfoBean {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", nullable = false)
     private long id;
 

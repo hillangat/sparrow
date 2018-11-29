@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class RespApiErrorResponse {
+public class ErrorResponse {
 
     private HttpStatus status;
 
@@ -14,25 +14,25 @@ public class RespApiErrorResponse {
     private LocalDateTime timestamp;
     private String message;
     private String debugMessage;
-    private List<RespApiErrorResponse> subErrors;
+    private List<ErrorResponse> subErrors;
 
-    private RespApiErrorResponse() {
+    private ErrorResponse() {
         timestamp = LocalDateTime.now();
     }
 
-    RespApiErrorResponse(HttpStatus status) {
+    public ErrorResponse(HttpStatus status) {
         this();
         this.status = status;
     }
 
-    RespApiErrorResponse(HttpStatus status, Throwable ex) {
+    public ErrorResponse(HttpStatus status, Throwable ex) {
         this();
         this.status = status;
         this.message = "Unexpected error";
         this.debugMessage = ex.getLocalizedMessage();
     }
 
-    RespApiErrorResponse(HttpStatus status, String message, Throwable ex) {
+    public ErrorResponse(HttpStatus status, String message, Throwable ex) {
         this();
         this.status = status;
         this.message = message;

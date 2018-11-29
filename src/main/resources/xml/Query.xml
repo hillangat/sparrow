@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<queries>
+    <query id="getUserNameFullNameSelVals">
+        <description>
+            Get select values for user name and full names.
+        </description>
+        <statement>
+            SELECT
+                CONCAT(u.frst_nam, " ", u.lst_nam) as TEXT,
+                u.usr_nam as VALUE
+            FROM sparrow_db.usr u
+        </statement>
+    </query>
+</queries>
