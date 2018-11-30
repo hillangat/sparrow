@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class SparrowSelectValue {
+public class SelectOption {
     private String value;
     private String text;
 }

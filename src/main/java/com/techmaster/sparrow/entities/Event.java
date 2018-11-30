@@ -31,10 +31,12 @@ public class Event extends AuditInfoBean{
     @Column(name = "END_TIME", nullable = false)
     private LocalDateTime endTime;
 
-    @Column(name = "PLY_LST", nullable = false)
+    @OneToMany( cascade = CascadeType.ALL, orphanRemoval = true )
+    @JoinColumn(name = "SNG_ID")
     private List<Song> playList;
 
-    @OneToMany
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usr_id")
     private Dj dj;
 
 

@@ -5,10 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -18,6 +15,10 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "CMMNT")
 public class Comment extends AuditInfoBean {
+
+    @Id
+    @Column(name = "CMMNT_ID", nullable = false)
+    private String commentId;
 
     @Column(name = "TXT", nullable = false)
     private String text;
@@ -31,7 +32,11 @@ public class Comment extends AuditInfoBean {
     @Column(name = "RPRTD")
     private String reported;
 
-    @ManyToOne
+    @Column(name = "PRNT_ID")
+    private String parentId;
+
+    @OneToMany( cascade = CascadeType.ALL, orphanRemoval = true )
+    @JoinColumn(name = "PRNT_ID")
     private List<Comment> replies;
 
 }

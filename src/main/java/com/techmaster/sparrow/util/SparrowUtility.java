@@ -3,7 +3,7 @@ package com.techmaster.sparrow.util;
 import com.techmaster.sparrow.cache.SparrowCacheUtil;
 import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.constants.UIMessageConstants;
-import com.techmaster.sparrow.entities.SparrowSelectValue;
+import com.techmaster.sparrow.entities.SelectOption;
 import com.techmaster.sparrow.exception.SparrowRemoteException;
 import com.techmaster.sparrow.exception.SparrowRunTimeException;
 import com.techmaster.sparrow.repositories.SparrowDaoFactory;
@@ -1365,14 +1365,14 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtility.class);
 		return node != null && node.getNodeName().equals("#text");
 	}
 	
-	public static List<SparrowSelectValue> getSelectValsForQueryId(String queryId ) {
-		List<SparrowSelectValue> selVals = new ArrayList<>();
+	public static List<SelectOption> getSelectValsForQueryId(String queryId ) {
+		List<SelectOption> selVals = new ArrayList<>();
 		SparrowJDBCExecutor executor = SparrowDaoFactory.getObject(SparrowJDBCExecutor.class);
 		String query = executor.getQueryForSqlId( queryId );
 		List<Map<String, Object>> rowMapList =  executor.executeQueryRowMap(query, null);
 		if ( SparrowUtility.isCollNotEmpty(rowMapList) ) {
 			for( Map<String, Object> rowMap : rowMapList ) {
-				SparrowSelectValue selValue = new SparrowSelectValue();
+				SelectOption selValue = new SelectOption();
 				selValue.setText(SparrowUtility.getStringOrNullOfObj(rowMap.get("TEXT")));
 				selValue.setValue( SparrowUtility.getStringOrNullOfObj(rowMap.get(rowMap.get("VALUE"))));
 			}

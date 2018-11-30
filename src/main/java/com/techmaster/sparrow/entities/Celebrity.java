@@ -5,10 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -19,7 +16,8 @@ import java.util.List;
 @Table(name = "CLBRTY")
 public class Celebrity extends User {
 
-    @OneToMany(mappedBy = "CLBRTY_ID")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "CLBRTY_ID")
     private List<Song> songs;
 
     @Column(name = "CLBRTY_TYP")

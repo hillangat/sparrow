@@ -17,9 +17,9 @@ import java.sql.Blob;
 public class Song extends AuditInfoBean {
 
     @Id
-    @Column(name = "ID", nullable = false)
+    @Column(name = "SNG_ID", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private long songId;
 
     @Column(name = "CLBRTY_ID", nullable = false)
     private String celebrityId;
@@ -30,7 +30,7 @@ public class Song extends AuditInfoBean {
     @Column(name = "GNR")
     private String genre;
 
-    @Column(name = "NAM", nullable = false)
+    @Column(name = "RTNG", nullable = false)
     private int rating;
 
     @Column(name = "RTNG_CNT", nullable = false)

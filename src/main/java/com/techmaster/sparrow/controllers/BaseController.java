@@ -1,5 +1,6 @@
 package com.techmaster.sparrow.controllers;
 
+import com.techmaster.sparrow.entities.AuditInfoBean;
 import com.techmaster.sparrow.entities.ErrorResponse;
 import com.techmaster.sparrow.exception.SparrowRestfulApiException;
 import org.springframework.http.HttpStatus;
@@ -50,6 +51,20 @@ public abstract class BaseController {
                     .collect(Collectors.toList());
         }
         return new ArrayList<>();
+    }
+
+    protected <T extends AuditInfoBean> T addAuditInfo(T auditInfoBean) {
+        auditInfoBean.setCreatedBy(getUserName());
+        auditInfoBean.setUpdatedBy(getUserName());
+        return auditInfoBean;
+    }
+
+    protected <T> List<T> getListOf(Iterable<T> iterable) {
+        List<T> list = new ArrayList<>();
+        if (iterable != null) {
+            iterable.forEach(list::add);
+        }
+        return list;
     }
 
     protected boolean isAdmin() {

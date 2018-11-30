@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import javax.print.attribute.standard.MediaSize;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -34,6 +34,10 @@ public class Location extends AuditInfoBean {
     @Column(name = "LTTDE")
     private double latitude;
 
-    @Column(name = "SUB_LCTNS")
-    private Set<Location> subLocations;
+    @Column(name = "PRNT_ID")
+    private long parentId;
+
+    @OneToMany( cascade = CascadeType.ALL, orphanRemoval = true )
+    @JoinColumn(name = "PRNT_ID")
+    private List<Location> subLocations = new ArrayList<>();
 }
