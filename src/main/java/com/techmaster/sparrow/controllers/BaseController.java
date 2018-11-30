@@ -1,10 +1,15 @@
 package com.techmaster.sparrow.controllers;
 
+import com.techmaster.sparrow.entities.AuditInfoBean;
+import com.techmaster.sparrow.entities.ErrorResponse;
+import com.techmaster.sparrow.exception.SparrowRestfulApiException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,22 +19,28 @@ public abstract class BaseController {
 
     public static final String SUCCESS_RETRIEVAL_MSG = "Successfully retrieved the data";
 
-    protected UserDetails getUserDetails() {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder
-                .getContext().getAuthentication().getPrincipal();
-        if (userDetails == null) {
-            throw new UsernameNotFoundException("User could not be found in the context");
-        }
-        return userDetails;
+    @ExceptionHandler(SparrowRestfulApiException.class)
+    public final ResponseEntity<ErrorResponse> handleException(SparrowRestfulApiException ex, WebRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    protected Authentication getAuthentication() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication;
     }
 
     protected String getUserName() {
-        UserDetails userDetails = getUserDetails();
-        return userDetails.getUsername();
+        Authentication authentication = getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentUserName = authentication.getName();
+            return currentUserName;
+        }
+        return null;
     }
 
     protected List<String> getUserRoles() {
-        UserDetails userDetails = getUserDetails();
+        Authentication userDetails = getAuthentication();
         if (userDetails.getAuthorities() != null &&
                 !userDetails.getAuthorities().isEmpty()) {
 
@@ -40,6 +51,20 @@ public abstract class BaseController {
                     .collect(Collectors.toList());
         }
         return new ArrayList<>();
+    }
+
+    protected <T extends AuditInfoBean> T addAuditInfo(T auditInfoBean) {
+        auditInfoBean.setCreatedBy(getUserName());
+        auditInfoBean.setUpdatedBy(getUserName());
+        return auditInfoBean;
+    }
+
+    protected <T> List<T> getListOf(Iterable<T> iterable) {
+        List<T> list = new ArrayList<>();
+        if (iterable != null) {
+            iterable.forEach(list::add);
+        }
+        return list;
     }
 
     protected boolean isAdmin() {

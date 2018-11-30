@@ -1,7 +1,9 @@
 package com.techmaster.sparrow;
 
+import com.techmaster.sparrow.repositories.SparrowDaoFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
@@ -9,7 +11,8 @@ import org.springframework.context.annotation.PropertySource;
 public class SparrowApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SparrowApplication.class, args);
+        ApplicationContext applicationContext = SpringApplication.run(SparrowApplication.class, args);
+        SparrowDaoFactory.applicationContext = applicationContext;
     }
 
 }
