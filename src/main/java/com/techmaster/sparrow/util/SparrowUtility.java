@@ -3,6 +3,7 @@ package com.techmaster.sparrow.util;
 import com.techmaster.sparrow.cache.SparrowCacheUtil;
 import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.constants.UIMessageConstants;
+import com.techmaster.sparrow.entities.AuditInfoBean;
 import com.techmaster.sparrow.entities.SelectOption;
 import com.techmaster.sparrow.exception.SparrowRemoteException;
 import com.techmaster.sparrow.exception.SparrowRunTimeException;
@@ -1428,8 +1429,12 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtility.class);
 		}
 		return t;
 	}
-	
-	
+
+	public static <T extends AuditInfoBean> T addAuditInfo(T auditInfoBean, String userName) {
+		auditInfoBean.setCreatedBy(userName);
+		auditInfoBean.setUpdatedBy(userName);
+		return auditInfoBean;
+	}
 	
 	
 	

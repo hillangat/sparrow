@@ -3,6 +3,7 @@ package com.techmaster.sparrow.controllers;
 import com.techmaster.sparrow.entities.AuditInfoBean;
 import com.techmaster.sparrow.entities.ErrorResponse;
 import com.techmaster.sparrow.exception.SparrowRestfulApiException;
+import com.techmaster.sparrow.util.SparrowUtility;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -54,8 +55,7 @@ public abstract class BaseController {
     }
 
     protected <T extends AuditInfoBean> T addAuditInfo(T auditInfoBean) {
-        auditInfoBean.setCreatedBy(getUserName());
-        auditInfoBean.setUpdatedBy(getUserName());
+        SparrowUtility.addAuditInfo(auditInfoBean, getUserName());
         return auditInfoBean;
     }
 

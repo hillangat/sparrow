@@ -1,0 +1,15 @@
+package user.validate
+
+import com.techmaster.sparrow.entities.User;
+import java.time.LocalDateTime;
+
+dialect "java"
+
+rule "Validate First Name"
+
+   when
+      user : User(firstName == null)
+
+   then
+      user.setFirstName("Default first name");
+end
