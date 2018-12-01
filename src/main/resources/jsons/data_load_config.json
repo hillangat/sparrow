@@ -1,0 +1,13 @@
+[
+  {
+    "loadId": "1",
+    "name": "LOCATIONS_KENYA",
+    "fileLocation": "/locations/kenya",
+    "fileType": "EXCEL",
+    "isLoaded": "false",
+    "loadDate": null,
+    "table": "LCTN",
+    "idColumn": "LCTN_ID",
+    "file": null
+  }
+]

@@ -1,0 +1,49 @@
+package com.techmaster.sparrow.controllers;
+
+import com.techmaster.sparrow.entities.ResponseData;
+import com.techmaster.sparrow.enums.StatusEnum;
+import com.techmaster.sparrow.imports.extraction.ExcelExtractor;
+import com.techmaster.sparrow.imports.extraction.ExcelExtractorFactory;
+import com.techmaster.sparrow.util.SparrowUtility;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
+
+@Controller
+@RequestMapping("/api/import")
+public class ImportController extends BaseController{
+
+    public static Logger logger = LoggerFactory.getLogger(ImportController.class);
+
+    @RequestMapping(value="/location", method= RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ResponseData> importReceiverRegions(MultipartHttpServletRequest request ){
+
+        logger.debug("Beginning receiver group receivers import process...");
+        Object[] wbkExtracts = SparrowUtility.getWorkbookFromMultiPartRequest(request);
+        Workbook workbook = (Workbook)wbkExtracts[0];
+        String fileName = (String)wbkExtracts[1];
+        String userName = getUserName();
+
+        ExcelExtractor locationExtractor = ExcelExtractorFactory.getExtractor(ExcelExtractor.LOCATION_EXTRACTOR, workbook, userName, fileName);
+        locationExtractor.execute();
+
+        StatusEnum status = locationExtractor.success() ? StatusEnum.SUCCESS : StatusEnum.FAILED;
+        String message = status.equals(StatusEnum.SUCCESS) ? "Successfully completed import, please check email for details" :
+                "Import operation failed. Please check email for details.";
+
+        return ResponseEntity.ok(new ResponseData(null, status.getStatus(), message));
+
+    }
+
+}

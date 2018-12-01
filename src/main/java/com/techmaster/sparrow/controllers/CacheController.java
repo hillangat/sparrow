@@ -1,7 +1,7 @@
 package com.techmaster.sparrow.controllers;
 
 import com.techmaster.sparrow.cache.SparrowCacheUtil;
-import com.techmaster.sparrow.constants.HunterURLConstants;
+import com.techmaster.sparrow.constants.SparrowURLConstants;
 import com.techmaster.sparrow.util.SparrowUtility;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,7 +27,7 @@ public class CacheController extends BaseController {
     @ResponseBody
     public String refreshCache() {
         try {
-            return new JSONArray( SparrowUtility.convertFileToString(HunterURLConstants.CACHE_REFRESH_JSONS) ).toString();
+            return new JSONArray( SparrowUtility.convertFileToString(SparrowURLConstants.CACHE_REFRESH_JSON) ).toString();
         } catch (Exception e) {
             e.printStackTrace();
             return SparrowUtility.setJSONObjectForFailure(null, "Application error occurred while loading caches").toString();

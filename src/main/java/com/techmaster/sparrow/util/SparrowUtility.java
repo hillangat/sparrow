@@ -12,6 +12,9 @@ import com.techmaster.sparrow.repositories.SparrowJDBCExecutor;
 import com.techmaster.sparrow.xml.XMLService;
 import com.techmaster.sparrow.xml.XMLServiceImpl;
 import com.techmaster.sparrow.xml.XMLTree;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -26,6 +29,8 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyAccessor;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -1435,7 +1440,36 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtility.class);
 		auditInfoBean.setUpdatedBy(userName);
 		return auditInfoBean;
 	}
-	
+
+	public static <T> List<T> getListOf(Iterable<T> iterable) {
+		List<T> list = new ArrayList<>();
+		if (iterable != null) {
+			iterable.forEach(list::add);
+		}
+		return list;
+	}
+
+
+	public static Object[] getWorkbookFromMultiPartRequest(MultipartHttpServletRequest request){
+
+		Workbook workbook = null;
+		Iterator<String> itr =  request.getFileNames();
+		MultipartFile mpf = request.getFile(itr.next());
+		String fileName = mpf.getOriginalFilename();
+
+		try {
+			InputStream is = mpf.getInputStream();
+			workbook = WorkbookFactory.create(is);
+			return new Object[]{workbook, fileName};
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InvalidFormatException e) {
+			e.printStackTrace();
+		}
+
+		return new Object[]{};
+
+	}
 	
 	
 }

@@ -1,5 +1,6 @@
 package com.techmaster.sparrow.entities;
 
+import com.techmaster.sparrow.enums.LocationTypeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -36,6 +37,10 @@ public class Location extends AuditInfoBean {
 
     @Column(name = "PRNT_ID")
     private long parentId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "LCTN_TYP")
+    private LocationTypeEnum locationType;
 
     @OneToMany( cascade = CascadeType.ALL, orphanRemoval = true )
     @JoinColumn(name = "PRNT_ID")

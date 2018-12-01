@@ -59,14 +59,6 @@ public abstract class BaseController {
         return auditInfoBean;
     }
 
-    protected <T> List<T> getListOf(Iterable<T> iterable) {
-        List<T> list = new ArrayList<>();
-        if (iterable != null) {
-            iterable.forEach(list::add);
-        }
-        return list;
-    }
-
     protected boolean isAdmin() {
         return getUserRoles().stream().anyMatch(a -> a.equalsIgnoreCase("ADMIN"));
     }

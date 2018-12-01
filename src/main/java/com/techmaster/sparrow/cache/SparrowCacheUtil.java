@@ -1,14 +1,16 @@
 package com.techmaster.sparrow.cache;
 
-import com.techmaster.sparrow.constants.HunterURLConstants;
+import com.techmaster.sparrow.constants.SparrowURLConstants;
 import com.techmaster.sparrow.constants.SparrowConstants;
+import com.techmaster.sparrow.entities.Location;
+import com.techmaster.sparrow.location.LocationService;
+import com.techmaster.sparrow.repositories.SparrowDaoFactory;
 import com.techmaster.sparrow.util.SparrowUtility;
 import com.techmaster.sparrow.xml.XMLService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -34,8 +36,27 @@ public class SparrowCacheUtil {
 		return instance;
 	}
 
+	public void loadHunterCache() {
+		logger.debug("Refreshing hunter cache...");
+		refreshAllXMLServices();
+		populateUIMessages();
+		refreshAllLocations();
+		logger.debug("Finished refreshing hunter cache...");
+	}
+
+	public void refreshAllLocations() {
+		LocationService locationService = SparrowDaoFactory.getDaoObject(LocationService.class);
+		if (locationService != null) {
+			List<Location> locations = locationService.getLocationHierarchies();
+			SparrowCache.getInstance().put(SparrowConstants.QUERY_XML_CACHED_SERVICE, locations);
+			logger.debug("Locations loaded to cache successfully. Size: " + locations.size());
+		} else {
+			logger.error("No location service bean found. locations not loaded to cache!!");
+		}
+	}
+
 	public void refreshAllXMLServices(){
-		String path = HunterURLConstants.CACHE_REFRESH_JSONS;
+		String path = SparrowURLConstants.CACHE_REFRESH_JSON;
 		File cacheRefresh = new File( path );
 		String cacheContents = SparrowUtility.getStringOfFile(cacheRefresh);
 		if ( SparrowUtility.notNullNotEmpty(cacheContents) ) {
@@ -59,13 +80,13 @@ public class SparrowCacheUtil {
 		switch (xmlName) {
 		case "queryXML":
 			logger.debug("Caching xmlQuery..."); 
-			XMLService queryService = SparrowUtility.getXMLServiceForFileLocation(HunterURLConstants.QRY_XML_FL_LOC_PATH);
+			XMLService queryService = SparrowUtility.getXMLServiceForFileLocation(SparrowURLConstants.QRY_XML_FL_LOC_PATH);
 			SparrowCache.getInstance().put(SparrowConstants.QUERY_XML_CACHED_SERVICE, queryService);
 			logger.debug("Done caching xmlQuery!!");
 			break;
 		case "uiMsgXML":
 			logger.debug("Caching ui message xml...");
-			XMLService uiMsgService = SparrowUtility.getXMLServiceForFileLocation(HunterURLConstants.UI_MSG_XML_FL_LOC_PATH);
+			XMLService uiMsgService = SparrowUtility.getXMLServiceForFileLocation(SparrowURLConstants.UI_MSG_XML_FL_LOC_PATH);
 			SparrowCache.getInstance().put(SparrowConstants.UI_MSG_CACHED_SERVICE, uiMsgService);
 			logger.debug("Done caching ui message xml!!");
 			break;

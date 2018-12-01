@@ -1,6 +1,7 @@
 package com.techmaster.sparrow.config;
 
 import com.techmaster.sparrow.cache.SparrowCache;
+import com.techmaster.sparrow.cache.SparrowCacheUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -22,7 +23,7 @@ public class AppStartupRunner implements CommandLineRunner {
 
     public void loadSparrowCache() {
         logger.debug("Loading sparrow cache...");
-        SparrowCache.getInstance();
+        SparrowCacheUtil.getInstance().loadHunterCache();
         logger.debug("Completed loading sparrow cache...");
     }
 

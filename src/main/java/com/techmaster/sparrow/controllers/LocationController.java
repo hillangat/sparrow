@@ -4,6 +4,7 @@ import com.techmaster.sparrow.entities.Location;
 import com.techmaster.sparrow.entities.ResponseData;
 import com.techmaster.sparrow.enums.StatusEnum;
 import com.techmaster.sparrow.repositories.LocationRepository;
+import com.techmaster.sparrow.util.SparrowUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -59,7 +60,7 @@ public class LocationController extends BaseController {
     @GetMapping(value = "/locations")
     @ResponseBody
     public ResponseEntity<ResponseData> getAllLocations() {
-        List<Location> locations = getListOf(locationRepository.findAll());
+        List<Location> locations = SparrowUtility.getListOf(locationRepository.findAll());
         return ResponseEntity.ok(new ResponseData(locations, StatusEnum.SUCCESS.getStatus(), SUCCESS_RETRIEVAL_MSG));
     }
 }

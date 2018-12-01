@@ -22,21 +22,12 @@ public class SparrowCache implements Serializable{
 				instance = new SparrowCache();
 			}
 		}
-		loadHunterCache();
 	}
 	
 	public static SparrowCache getInstance(){
 		return instance;
 	}
 	
-	private static void loadHunterCache() {
-		logger.debug("Refreshing hunter cache...");
-		SparrowCacheUtil util = SparrowCacheUtil.getInstance();
-		util.refreshAllXMLServices();
-		util.populateUIMessages();
-		logger.debug("Finished refreshing hunter cache...");
-	}
-
 	public boolean containsKey(String key){
 		return hunterCache.containsKey(key);
 	}
