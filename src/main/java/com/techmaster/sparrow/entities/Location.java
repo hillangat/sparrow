@@ -45,5 +45,11 @@ public class Location extends AuditInfoBean {
     private LocationTypeEnum locationType;
 
     @Transient
+    private long uiParentId;
+
+    @Transient
+    private long uiLocationId;
+
+    @Transient
     private List<Location> subLocations = new ArrayList<>();
 }

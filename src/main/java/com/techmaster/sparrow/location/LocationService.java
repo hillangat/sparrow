@@ -7,5 +7,6 @@ import java.util.List;
 public interface LocationService {
 
     List<Location> getLocationHierarchies();
+    List<Location> recursivelySave( List<Location> locations );
 
 }

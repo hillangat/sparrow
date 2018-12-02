@@ -4,20 +4,16 @@ import com.techmaster.sparrow.entities.ResponseData;
 import com.techmaster.sparrow.enums.StatusEnum;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractor;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractorFactory;
-import com.techmaster.sparrow.util.SparrowUtility;
+import com.techmaster.sparrow.util.SparrowUtil;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-
-import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/api/import")
@@ -30,7 +26,7 @@ public class ImportController extends BaseController{
     public ResponseEntity<ResponseData> importReceiverRegions(MultipartHttpServletRequest request ){
 
         logger.debug("Beginning receiver group receivers import process...");
-        Object[] wbkExtracts = SparrowUtility.getWorkbookFromMultiPartRequest(request);
+        Object[] wbkExtracts = SparrowUtil.getWorkbookFromMultiPartRequest(request);
         Workbook workbook = (Workbook)wbkExtracts[0];
         String fileName = (String)wbkExtracts[1];
         String userName = getUserName();

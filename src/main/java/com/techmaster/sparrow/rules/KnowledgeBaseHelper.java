@@ -1,7 +1,7 @@
 package com.techmaster.sparrow.rules;
 
 import com.techmaster.sparrow.entities.User;
-import com.techmaster.sparrow.util.SparrowUtility;
+import com.techmaster.sparrow.util.SparrowUtil;
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
@@ -12,8 +12,6 @@ import org.drools.builder.ResourceType;
 
 import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
-
-import java.util.List;
 
 public class KnowledgeBaseHelper {
 
@@ -28,7 +26,7 @@ public class KnowledgeBaseHelper {
             KnowledgeBase kbase = readKnowledgeBase();
             StatefulKnowledgeSession ksession = kbase.newStatefulKnowledgeSession();
 
-            User user = SparrowUtility.addAuditInfo(new User(), "admin");
+            User user = SparrowUtil.addAuditInfo(new User(), "admin");
             user.setUserName(null);
             user.setLastName("Langat");
             user.setNickName("Kip");

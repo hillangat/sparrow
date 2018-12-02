@@ -1,7 +1,7 @@
 package com.techmaster.sparrow.xml;
 
 import com.techmaster.sparrow.exception.SparrowRunTimeException;
-import com.techmaster.sparrow.util.SparrowUtility;
+import com.techmaster.sparrow.util.SparrowUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -38,7 +38,7 @@ public class XMLTree {
 		if(pathOrXmlString != null){
 			try {
 				if(isString && pathOrXmlString.startsWith("<?xml version")){
-					this.doc = SparrowUtility.createDocFromStr(pathOrXmlString);
+					this.doc = SparrowUtil.createDocFromStr(pathOrXmlString);
 				}else if(isString && !pathOrXmlString.startsWith("<?xml version")){
 					// obtain the root element
 					pathOrXmlString = pathOrXmlString.trim();
@@ -51,7 +51,7 @@ public class XMLTree {
 					
 					if(pathOrXmlString.startsWith("<" + root + ">") && pathOrXmlString.endsWith("</" + root + ">")){
 						
-						this.doc = SparrowUtility.createDocFromStr(pathOrXmlString);
+						this.doc = SparrowUtil.createDocFromStr(pathOrXmlString);
 						logger.info("Successfully created a xml document from the string >> " + this.doc); 
 						
 					}else{
@@ -94,7 +94,7 @@ public class XMLTree {
 		try {
 			return factory.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
-			throw new SparrowRunTimeException(SparrowUtility.getStackTrace(e));
+			throw new SparrowRunTimeException(SparrowUtil.getStackTrace(e));
 		}
 	}
 	

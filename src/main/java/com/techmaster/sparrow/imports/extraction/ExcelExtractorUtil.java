@@ -1,6 +1,6 @@
 package com.techmaster.sparrow.imports.extraction;
 
-import com.techmaster.sparrow.util.SparrowUtility;
+import com.techmaster.sparrow.util.SparrowUtil;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -98,7 +98,7 @@ public class ExcelExtractorUtil {
 			}
 			String name = header.getStringCellValue();
 			name = name == null ? null : name.trim();
-			headers = SparrowUtility.initArrayAndInsert(headers, name);
+			headers = SparrowUtil.initArrayAndInsert(headers, name);
 		}
 		return headers;
 	}
@@ -119,7 +119,7 @@ public class ExcelExtractorUtil {
 					}
 				}
 				if(!isFound){
-					errors = SparrowUtility.initArrayAndInsert(errors, validHeader);
+					errors = SparrowUtil.initArrayAndInsert(errors, validHeader);
 				}
 			}
 			

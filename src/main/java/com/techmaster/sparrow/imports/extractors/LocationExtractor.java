@@ -9,10 +9,11 @@ import com.techmaster.sparrow.imports.beans.ImportHelper;
 import com.techmaster.sparrow.imports.extraction.AbstractExcelExtractor;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractor;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractorUtil;
+import com.techmaster.sparrow.location.LocationService;
 import com.techmaster.sparrow.repositories.ImportBeanRepository;
 import com.techmaster.sparrow.repositories.LocationRepository;
 import com.techmaster.sparrow.repositories.SparrowDaoFactory;
-import com.techmaster.sparrow.util.SparrowUtility;
+import com.techmaster.sparrow.util.SparrowUtil;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.hibernate.Session;
 import org.slf4j.Logger;
@@ -65,7 +66,7 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 						rowErrors.add("Location ID cannot be blank");
 					}
 
-					if (!SparrowUtility.isNumeric(objStr)) {
+					if (!SparrowUtil.isNumeric(objStr)) {
 						rowErrors.add("Location must be a number");
 					}
 					
@@ -74,7 +75,7 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 
 					if(objStr == null || objStr.equals("")){
 						rowErrors.add("Name cannot be blank");
-					} else if (SparrowUtility.isNumeric(objStr)){
+					} else if (SparrowUtil.isNumeric(objStr)){
 						rowErrors.add("Name cannot be a number");
 					} else if (objStr.length() < 2) {
 						rowErrors.add("Name cannot be less than two characters");
@@ -88,16 +89,16 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 				// longitude && latitude
 				}else if( i == 3 || i == 4 ){
 
-					Long val = objStr != null ? SparrowUtility.getLongFromObject(objStr) : -1;
+					Long val = objStr != null ? SparrowUtil.getLongFromObject(objStr) : -1;
 					String type = i == 3 ? "Longitude" : "Latitude";
-					if (!SparrowUtility.isNumeric(objStr) || SparrowUtility.isNumeric(objStr) && !( val >= 0 && val <= 180)) {
+					if (!SparrowUtil.isNumeric(objStr) || SparrowUtil.isNumeric(objStr) && !( val >= 0 && val <= 180)) {
 						rowErrors.add(type + " must be a number between 0 and 180");
 					}
 					
 				// parentId
 				}else if( i == 5 ){
 
-					if (objStr == null || !SparrowUtility.isNumeric(objStr)) {
+					if (objStr == null || !SparrowUtil.isNumeric(objStr)) {
 						rowErrors.add("Parent ID must be a number and not blank");
 					} else {
 						if (objStr.equalsIgnoreCase(Integer.toString(0)) && !locationIds.contains(objStr)) {
@@ -152,7 +153,7 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 		for(Map.Entry<Integer, List<Object>> dataRows : data.entrySet()){
 			
 			List<Object> dataRow = dataRows.getValue();
-			Location location = SparrowUtility.addAuditInfo(new Location(), userName);
+			Location location = SparrowUtil.addAuditInfo(new Location(), userName);
 			
 			for(int i=0; i<dataRow.size(); i++){
 
@@ -166,7 +167,7 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 
 				// locationId
 				if(i==0){
-					location.setLocationId(SparrowUtility.getLongFromObject(objStr));
+					location.setUiLocationId(SparrowUtil.getLongFromObject(objStr));
 				
 				// name
 				}else if(i==1){
@@ -186,7 +187,7 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 					
 				//parentId
 				}else if(i==5){
-					location.setParentId(objStr != null ? SparrowUtility.getLongFromObject(objStr) : 0L);
+					location.setUiParentId(objStr != null ? SparrowUtil.getLongFromObject(objStr) : 0L);
 					
 				// locationType
 				}else if(i==6){
@@ -194,7 +195,7 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 				}
 				
 			}
-			
+
 			locations.add(location);
 			
 		}
@@ -213,7 +214,7 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 		if(sheetsMsgs != null && sheetsMsgs.size() > 0){
 			this.surfaceValid = false;
 			for(String sheetMsg : sheetsMsgs){
-				surfaceErrors = SparrowUtility.initArrayAndInsert(surfaceErrors, sheetMsg);
+				surfaceErrors = SparrowUtil.initArrayAndInsert(surfaceErrors, sheetMsg);
 			}
 			bundle.put(ExcelExtractor.SURFACE_VALIDATION, false);
 			bundle.put(ExcelExtractor.ERRORS_STR, surfaceErrors);
@@ -233,7 +234,7 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 		if(invalidHeaders != null && invalidHeaders.length > 0){
 			this.surfaceValid = true;
 			for(String header : invalidHeaders){
-				surfaceErrors = SparrowUtility.initArrayAndInsert(surfaceErrors, header + " : is not found");
+				surfaceErrors = SparrowUtil.initArrayAndInsert(surfaceErrors, header + " : is not found");
 			}
 			bundle.put(ExcelExtractor.SURFACE_VALIDATION, false);
 			bundle.put(ExcelExtractor.ERRORS_STR, surfaceErrors);
@@ -256,7 +257,7 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 				/* create the error cells only if the errors are found for that row. */
 
 				if(rowErrorsArray.length > 0){
-					String [] stringArray = SparrowUtility.convertToStringArray(rowErrorsArray);
+					String [] stringArray = SparrowUtil.convertToStringArray(rowErrorsArray);
 	 				createErrorCell(LOCATION_EXTRACTOR_SHEET, workbook, rowNum, stringArray);
 				}
 			}
@@ -303,11 +304,11 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 			logger.error("Import Bean Repository bean not found!! Import bean not save to db");
 		}
 
-        LocationRepository locationRepository = SparrowDaoFactory.getObject(LocationRepository.class);
-		if ( success && locationRepository != null) {
-		    saveBeanList(locationRepository);
-        } else if (locationRepository == null) {
-		    logger.error("LocationRepository bean not found, bean list not saved to db");
+        LocationService locationService = SparrowDaoFactory.getObject(LocationService.class);
+		if ( success && locationService != null) {
+		    locationService.recursivelySave(locations);
+        } else if (locationService == null) {
+		    logger.error("LocationService bean not found, bean list not saved to db");
         }
 		
 		return bundle;

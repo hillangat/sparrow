@@ -5,7 +5,7 @@ import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.entities.Location;
 import com.techmaster.sparrow.location.LocationService;
 import com.techmaster.sparrow.repositories.SparrowDaoFactory;
-import com.techmaster.sparrow.util.SparrowUtility;
+import com.techmaster.sparrow.util.SparrowUtil;
 import com.techmaster.sparrow.xml.XMLService;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -66,15 +66,15 @@ public class SparrowCacheUtil {
 	public void refreshAllXMLServices(){
 		String path = SparrowURLConstants.CACHE_REFRESH_JSON;
 		File cacheRefresh = new File( path );
-		String cacheContents = SparrowUtility.getStringOfFile(cacheRefresh);
-		if ( SparrowUtility.notNullNotEmpty(cacheContents) ) {
+		String cacheContents = SparrowUtil.getStringOfFile(cacheRefresh);
+		if ( SparrowUtil.notNullNotEmpty(cacheContents) ) {
 			try {
 				JSONArray cacheRefreshes = new JSONArray( cacheContents );
 				for( int i = 0; i < cacheRefreshes.length(); i++ ) {
 					JSONObject cache = cacheRefreshes.getJSONObject(i);
-					String key = SparrowUtility.getStringOrNulFromJSONObj(cache, "key");
-					boolean active = Boolean.valueOf(SparrowUtility.getStringOrNulFromJSONObj(cache, "active"));
-					if ( active && SparrowUtility.notNullNotEmpty(key) && !key.equals("allXMLService") ) {
+					String key = SparrowUtil.getStringOrNulFromJSONObj(cache, "key");
+					boolean active = Boolean.valueOf(SparrowUtil.getStringOrNulFromJSONObj(cache, "active"));
+					if ( active && SparrowUtil.notNullNotEmpty(key) && !key.equals("allXMLService") ) {
 						this.refreshCacheService( key );
 					}
 				}
@@ -88,13 +88,13 @@ public class SparrowCacheUtil {
 		switch (xmlName) {
 		case "queryXML":
 			logger.debug("Caching xmlQuery..."); 
-			XMLService queryService = SparrowUtility.getXMLServiceForFileLocation(SparrowURLConstants.QRY_XML_FL_LOC_PATH);
+			XMLService queryService = SparrowUtil.getXMLServiceForFileLocation(SparrowURLConstants.QRY_XML_FL_LOC_PATH);
 			SparrowCache.getInstance().put(SparrowConstants.QUERY_XML_CACHED_SERVICE, queryService);
 			logger.debug("Done caching xmlQuery!!");
 			break;
 		case "uiMsgXML":
 			logger.debug("Caching ui message xml...");
-			XMLService uiMsgService = SparrowUtility.getXMLServiceForFileLocation(SparrowURLConstants.UI_MSG_XML_FL_LOC_PATH);
+			XMLService uiMsgService = SparrowUtil.getXMLServiceForFileLocation(SparrowURLConstants.UI_MSG_XML_FL_LOC_PATH);
 			SparrowCache.getInstance().put(SparrowConstants.UI_MSG_CACHED_SERVICE, uiMsgService);
 			logger.debug("Done caching ui message xml!!");
 			break;
@@ -117,7 +117,7 @@ public class SparrowCacheUtil {
 		for(int i=0; i<messages.getLength(); i++){
 			Node message = messages.item(i);
 			if(message.getNodeName().equals("message")){
-				String id = SparrowUtility.getNodeAttr(message, "id", String.class);
+				String id = SparrowUtil.getNodeAttr(message, "id", String.class);
 				NodeList metadata = message.getChildNodes();
 				String desc = null;
 				String text = null;
@@ -147,7 +147,7 @@ public class SparrowCacheUtil {
 	
 	public String getUIMsgTxtAndReplace( String msgId, Map<String, String> params ){
 		String msg = getUIMsgMap().get(msgId+"_TEXT");
-		if ( msg != null && SparrowUtility.isMapNotEmpty( params ) ) {
+		if ( msg != null && SparrowUtil.isMapNotEmpty( params ) ) {
 			for ( Map.Entry<String, String> entry : params.entrySet() ) {
 				msg = msg.replaceAll(entry.getKey(), entry.getValue());
 			}

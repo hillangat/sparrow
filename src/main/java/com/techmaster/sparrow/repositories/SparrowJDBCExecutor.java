@@ -1,10 +1,12 @@
 package com.techmaster.sparrow.repositories;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
 
+@Component
 public interface SparrowJDBCExecutor {
 
     public String getQueryForSqlId(String id);

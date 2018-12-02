@@ -1,10 +1,9 @@
 package com.techmaster.sparrow.imports.beans;
 
 import com.techmaster.sparrow.constants.SparrowURLConstants;
-import com.techmaster.sparrow.entities.AuditInfoBean;
 import com.techmaster.sparrow.entities.ImportBean;
 import com.techmaster.sparrow.repositories.SparrowDaoFactory;
-import com.techmaster.sparrow.util.SparrowUtility;
+import com.techmaster.sparrow.util.SparrowUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -42,7 +41,7 @@ public class ImportHelper {
 		
 		byte[] bytes = bos.toByteArray();
 
-		ImportBean importBean = SparrowUtility.addAuditInfo(new ImportBean(), userName);
+		ImportBean importBean = SparrowUtil.addAuditInfo(new ImportBean(), userName);
 		importBean.setWorkbook(workbook);
 		importBean.setOriginalFileName(fileName);
 		importBean.setBeanName(beanName);

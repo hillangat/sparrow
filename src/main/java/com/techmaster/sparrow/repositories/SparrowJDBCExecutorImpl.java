@@ -1,11 +1,12 @@
 package com.techmaster.sparrow.repositories;
 
 import com.techmaster.sparrow.exception.SparrowRunTimeException;
-import com.techmaster.sparrow.util.SparrowUtility;
+import com.techmaster.sparrow.util.SparrowUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class SparrowJDBCExecutorImpl implements SparrowJDBCExecutor{
 
     @Autowired  private JdbcTemplate jdbcTemplate;
@@ -42,8 +44,8 @@ public class SparrowJDBCExecutorImpl implements SparrowJDBCExecutor{
         }
 
         String
-        query = SparrowUtility.getQueryForSqlId(id),
-        desc = SparrowUtility.getQueryDescForSqlId(id);
+        query = SparrowUtil.getQueryForSqlId(id),
+        desc = SparrowUtil.getQueryDescForSqlId(id);
 
         logger.debug("\n Description :  " + desc + "\n");
         logger.debug("Retrieved query for id = " + id + " \n" + query);
@@ -97,7 +99,7 @@ public class SparrowJDBCExecutorImpl implements SparrowJDBCExecutor{
         try {
             conn.close();
         } catch (SQLException e) {
-            logger.error("Exception occurred while trying to close connection : " + SparrowUtility.getStackTrace(e));
+            logger.error("Exception occurred while trying to close connection : " + SparrowUtil.getStackTrace(e));
             e.printStackTrace();
         }
     }
@@ -263,20 +265,20 @@ public class SparrowJDBCExecutorImpl implements SparrowJDBCExecutor{
 
     @Override
     public String replaceAllColonedParams(String query, Map<String, Object> params) {
-        logger.debug("Replacing parameters : " + SparrowUtility.stringifyMap(params));
-        if( query == null || !SparrowUtility.isMapNotEmpty(params) ){
+        logger.debug("Replacing parameters : " + SparrowUtil.stringifyMap(params));
+        if( query == null || !SparrowUtil.isMapNotEmpty(params) ){
             String message = "Either the query is null or no parameters to replace. Returning the as is query...";
             logger.debug( message );
             throw new IllegalArgumentException( message   );
         }
         for(Map.Entry<String, Object> entry : params.entrySet()){
             String key = entry.getKey();
-            String value = SparrowUtility.getStringOrNullOfObj( entry.getValue() );
+            String value = SparrowUtil.getStringOrNullOfObj( entry.getValue() );
             if( query.contains(key) ){
                 value = value == null ? " IS NULL " : value;
                 query = query.replaceAll(key, value);
             }else{
-                logger.debug("Exception while processing query for params : " + SparrowUtility.stringifyMap(params));
+                logger.debug("Exception while processing query for params : " + SparrowUtil.stringifyMap(params));
                 throw new IllegalArgumentException( "Key : "+ key +" cannot be found in Query : \n "+ query + "\n"   );
             }
         }

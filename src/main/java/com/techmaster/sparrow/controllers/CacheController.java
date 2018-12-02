@@ -2,7 +2,7 @@ package com.techmaster.sparrow.controllers;
 
 import com.techmaster.sparrow.cache.SparrowCacheUtil;
 import com.techmaster.sparrow.constants.SparrowURLConstants;
-import com.techmaster.sparrow.util.SparrowUtility;
+import com.techmaster.sparrow.util.SparrowUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -27,10 +27,10 @@ public class CacheController extends BaseController {
     @ResponseBody
     public String refreshCache() {
         try {
-            return new JSONArray( SparrowUtility.convertFileToString(SparrowURLConstants.CACHE_REFRESH_JSON) ).toString();
+            return new JSONArray( SparrowUtil.convertFileToString(SparrowURLConstants.CACHE_REFRESH_JSON) ).toString();
         } catch (Exception e) {
             e.printStackTrace();
-            return SparrowUtility.setJSONObjectForFailure(null, "Application error occurred while loading caches").toString();
+            return SparrowUtil.setJSONObjectForFailure(null, "Application error occurred while loading caches").toString();
         }
     }
 
@@ -39,15 +39,15 @@ public class CacheController extends BaseController {
     @RequestMapping(value="/refresh", method=RequestMethod.POST)
     @ResponseBody
     public String refreshCache( HttpServletRequest request ){
-        SparrowUtility.threadSleepFor(500);
+        SparrowUtil.threadSleepFor(500);
         try{
-            JSONArray jsonArray = new JSONArray( SparrowUtility.getRequestBodyAsStringSafely(request) );
+            JSONArray jsonArray = new JSONArray( SparrowUtil.getRequestBodyAsStringSafely(request) );
             if( jsonArray != null && jsonArray.length() > 0 ){
                 List<String> keys = new ArrayList<>();
                 for( int i = 0; i < jsonArray.length(); i++ ) {
                     JSONObject cache = jsonArray.getJSONObject(i);
-                    String key = SparrowUtility.getStringOrNulFromJSONObj(cache, "key");
-                    if ( SparrowUtility.notNullNotEmpty(key) ) {
+                    String key = SparrowUtil.getStringOrNulFromJSONObj(cache, "key");
+                    if ( SparrowUtil.notNullNotEmpty(key) ) {
                         if ( key.equals("allXMLService") ) {
                             keys.clear();
                             keys.add(key);
@@ -57,12 +57,12 @@ public class CacheController extends BaseController {
                     }
                 }
                 keys.forEach( k -> SparrowCacheUtil.getInstance().refreshCacheService(k) );
-                return SparrowUtility.setJSONObjectForSuccess(null, "Successfully refreshed cache!").toString();
+                return SparrowUtil.setJSONObjectForSuccess(null, "Successfully refreshed cache!").toString();
             }else{
-                return SparrowUtility.setJSONObjectForFailure(null, "No cache service specified in request.").toString();
+                return SparrowUtil.setJSONObjectForFailure(null, "No cache service specified in request.").toString();
             }
         }catch(Exception e){
-            return SparrowUtility.setJSONObjectForFailure(null, "Applicaiton error : " + e.getMessage()).toString();
+            return SparrowUtil.setJSONObjectForFailure(null, "Applicaiton error : " + e.getMessage()).toString();
         }
     }
 

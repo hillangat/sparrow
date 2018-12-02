@@ -1,8 +1,7 @@
 package com.techmaster.sparrow.imports.extraction;
 
 import com.techmaster.sparrow.repositories.SparrowDaoFactory;
-import com.techmaster.sparrow.util.SparrowUtility;
-import org.apache.poi.hssf.usermodel.HSSFCell;
+import com.techmaster.sparrow.util.SparrowUtil;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -136,7 +135,7 @@ public abstract class AbstractExcelExtractor<E> implements ExcelExtractor<E> {
 		
 		Row dataRow = sheet.getRow(rowNum);
 		Cell errorCell = dataRow.createCell(errorCellNum);
-		String errorsStr = SparrowUtility.getCommaDelimitedStrings(errors);
+		String errorsStr = SparrowUtil.getCommaDelimitedStrings(errors);
 		errorCell.setCellValue(errorsStr); 
 		
 	}

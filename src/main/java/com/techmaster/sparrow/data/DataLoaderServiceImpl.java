@@ -6,14 +6,11 @@ import com.techmaster.sparrow.entities.DataLoaderConfig;
 import com.techmaster.sparrow.enums.FileTypeEnum;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractor;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractorFactory;
-import com.techmaster.sparrow.location.LocationService;
 import com.techmaster.sparrow.repositories.DataLoaderConfigRepository;
-import com.techmaster.sparrow.repositories.LocationRepository;
-import com.techmaster.sparrow.util.SparrowUtility;
+import com.techmaster.sparrow.util.SparrowUtil;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.hibernate.jdbc.Work;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -25,7 +22,6 @@ import org.springframework.util.Assert;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -54,7 +50,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         dataLoaderConfigs.forEach(c -> {
             Workbook workbook = getWorkBook(c);
             if (workbook != null) {
-                String originalFileName = SparrowUtility.getOrifinalFileNameForPath(c.getFileLocation());
+                String originalFileName = SparrowUtil.getOrifinalFileNameForPath(c.getFileLocation());
                 ExcelExtractor excelExtractor = ExcelExtractorFactory.getExtractor(c.getExtractor(),workbook, adminUserName, originalFileName);
                 excelExtractor.execute();
             }
@@ -69,14 +65,14 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         List<DataLoaderConfig> configs = new ArrayList<>();
         File file = new File(SparrowURLConstants.DATA_LOAD_CONFIG_JSON);
         if (file != null && file.exists()) {
-            String fileStr = SparrowUtility.getStringOfFile(file);
+            String fileStr = SparrowUtil.getStringOfFile(file);
             JSONArray jsonArray = new JSONArray(fileStr);
             if (jsonArray.length() > 0) {
                 for( int i = 0; i < jsonArray.length(); i++ ) {
                     ObjectMapper mapper = new ObjectMapper();
                     try {
                         DataLoaderConfig config = mapper.readValue(jsonArray.getJSONObject(i).toString(), DataLoaderConfig.class);
-                        SparrowUtility.addAuditInfo(config, adminUserName);
+                        SparrowUtil.addAuditInfo(config, adminUserName);
                         configs.add(config);
                     } catch (IOException e) {
                         e.printStackTrace();

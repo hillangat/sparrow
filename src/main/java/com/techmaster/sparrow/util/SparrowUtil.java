@@ -59,9 +59,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Map.Entry;
 
-public class SparrowUtility {
+public class SparrowUtil {
 
-public static Logger logger = LoggerFactory.getLogger(SparrowUtility.class);
+public static Logger logger = LoggerFactory.getLogger(SparrowUtil.class);
 
   public static String getRequestBaseURL(HttpServletRequest request){
 	  try {
@@ -179,7 +179,7 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtility.class);
 	   List<String> idList = new ArrayList<>();
 	   for( Object obj : objList ) {
 		   PropertyAccessor propertyAccessor = PropertyAccessorFactory.forBeanPropertyAccess(obj);
-		   String id = SparrowUtility.getStringOrNullOfObj(propertyAccessor.getPropertyValue(idField));
+		   String id = SparrowUtil.getStringOrNullOfObj(propertyAccessor.getPropertyValue(idField));
 		   idList.add( id );
 	   }
 	   return idList;	   
@@ -188,7 +188,7 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtility.class);
    public static Map<String, String> getBlobStrFromDBForList( List<?> objList, String blobField, String idField, Class<?> clzz ) {
 	   List<String> idList = getIdStrListForList(objList, idField);
 	   Map<String, String> blobStrMap = new HashMap<>();
-	   if ( SparrowUtility.isCollNotEmpty(idList) ) {
+	   if ( SparrowUtil.isCollNotEmpty(idList) ) {
 		   blobStrMap = getBlobStrFromDBForList(blobField, idField, idList, clzz);
 		   return blobStrMap;
 	   }
@@ -204,7 +204,7 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtility.class);
 	   try {
 		   
 		   session = sessionFactory.openSession();
-		   String queryString = "SELECT o."+ blobField +", o." + idField + " FROM " + clzz.getSimpleName() + " o WHERE o." + idField + " IN ( " + SparrowUtility.getCommaDelimitedStrings(idValues) + " )";
+		   String queryString = "SELECT o."+ blobField +", o." + idField + " FROM " + clzz.getSimpleName() + " o WHERE o." + idField + " IN ( " + SparrowUtil.getCommaDelimitedStrings(idValues) + " )";
 		   logger.debug("Created query string > " + queryString);
 		   Query query = session.createQuery(queryString);
 		   
@@ -819,7 +819,7 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtility.class);
 		if(objects == null || objects.length == 0) return null;
 		StringBuilder builder = new StringBuilder();
 		if(objects.length == 1) {
-			return SparrowUtility.getStringOrNullOfObj(objects[0].toString());
+			return SparrowUtil.getStringOrNullOfObj(objects[0].toString());
 		}else{
 			for(Object obj : objects){
 				String str = String.valueOf(obj);
@@ -928,7 +928,7 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtility.class);
 		StringBuilder builder = new StringBuilder();
 		
 		for(int i=0; i<objects.size();i++){
-			builder.append(SparrowUtility.singleQuote(objects.get(i)));
+			builder.append(SparrowUtil.singleQuote(objects.get(i)));
 			if(i <= objects.size() - 2)
 				builder.append(",");
 		}
@@ -1114,7 +1114,7 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtility.class);
 		SparrowCacheUtil.getInstance();
 		XMLService xmlService =(XMLServiceImpl) SparrowCacheUtil.getInstance().getXMLService(SparrowConstants.EMAIL_TEMPLATES_CACHED_SERVICE);
 		NodeList nodeList = xmlService.getNodeListForPathUsingJavax("//template[@name='taskpProcessRequestNotification']/context/miscelaneous/*");
-		if(SparrowUtility.isNodeListNotEmptpy(nodeList)){
+		if(SparrowUtil.isNodeListNotEmptpy(nodeList)){
 			for(int i=0; i<nodeList.getLength(); i++){
 				Node node = nodeList.item(i);
 				if(node.getNodeName().equals("config")){
@@ -1135,7 +1135,7 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtility.class);
 	
 	public static JSONObject setJSONObjForFailureWithMsg( String msgId ) {
 		String message = SparrowCacheUtil.getInstance().getUIMsgDescForMsgId( msgId );
-		return SparrowUtility.setJSONObjectForFailure(null, message );
+		return SparrowUtil.setJSONObjectForFailure(null, message );
 	}
 	
 	public static JSONObject setJSONObjectForFailure(JSONObject json, String message){
@@ -1159,7 +1159,7 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtility.class);
 	}
 	
 	public static String getWhrClsFrRcvrRgnTyp(String type, Map<String,String> regionNames){
-		   logger.debug("Fetching where clause for : " + SparrowUtility.stringifyMap(regionNames));
+		   logger.debug("Fetching where clause for : " + SparrowUtil.stringifyMap(regionNames));
 		   String where = 
 		   	" WHERE CNTRY IS NULL "	+
 		      "AND CNTY IS NULL "	+
@@ -1175,32 +1175,32 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtility.class);
 		   String village = regionNames.get(SparrowConstants.RECEIVER_LEVEL_VILLAGE);
 		   
 		   if(SparrowConstants.RECEIVER_LEVEL_COUNTRY.equals(type)){
-			   where = where.replace("CNTRY IS NULL", "CNTRY = " + SparrowUtility.singleQuote(country));
+			   where = where.replace("CNTRY IS NULL", "CNTRY = " + SparrowUtil.singleQuote(country));
 		   }else if(SparrowConstants.RECEIVER_LEVEL_COUNTY.equals(type)){
-			   where = where.replace("CNTRY IS NULL", "CNTRY = " + SparrowUtility.singleQuote(country));
-			   where = where.replace("CNTY IS NULL", "CNTY = " + SparrowUtility.singleQuote(county));
+			   where = where.replace("CNTRY IS NULL", "CNTRY = " + SparrowUtil.singleQuote(country));
+			   where = where.replace("CNTY IS NULL", "CNTY = " + SparrowUtil.singleQuote(county));
 		   }else if(SparrowConstants.RECEIVER_LEVEL_CONSITUENCY.equals(type)){
-			   where = where.replace("CNTRY IS NULL", "CNTRY = " + SparrowUtility.singleQuote(country));
-			   where = where.replace("CNTY IS NULL", "CNTY = " + SparrowUtility.singleQuote(county));
-			   where = where.replace("CNSTTNCY IS NULL", "CNSTTNCY = " + SparrowUtility.singleQuote(conscy));
+			   where = where.replace("CNTRY IS NULL", "CNTRY = " + SparrowUtil.singleQuote(country));
+			   where = where.replace("CNTY IS NULL", "CNTY = " + SparrowUtil.singleQuote(county));
+			   where = where.replace("CNSTTNCY IS NULL", "CNSTTNCY = " + SparrowUtil.singleQuote(conscy));
 		   }else if(SparrowConstants.RECEIVER_LEVEL_WARD.equals(type)){
-			   where = where.replace("CNTRY IS NULL", "CNTRY = " + SparrowUtility.singleQuote(country));
-			   where = where.replace("CNTY IS NULL", "CNTY = " + SparrowUtility.singleQuote(county));
-			   where = where.replace("CNSTTNCY IS NULL", "CNSTTNCY = " + SparrowUtility.singleQuote(conscy));
-			   where = where.replace("WRD IS NULL", "WRD = " + SparrowUtility.singleQuote(consWard));
+			   where = where.replace("CNTRY IS NULL", "CNTRY = " + SparrowUtil.singleQuote(country));
+			   where = where.replace("CNTY IS NULL", "CNTY = " + SparrowUtil.singleQuote(county));
+			   where = where.replace("CNSTTNCY IS NULL", "CNSTTNCY = " + SparrowUtil.singleQuote(conscy));
+			   where = where.replace("WRD IS NULL", "WRD = " + SparrowUtil.singleQuote(consWard));
 		   }else if(SparrowConstants.RECEIVER_LEVEL_VILLAGE.equals(type)){
-			   where = where.replace("CNTRY IS NULL", "CNTRY = " + SparrowUtility.singleQuote(country));
-			   where = where.replace("CNTY IS NULL", "CNTY = " + SparrowUtility.singleQuote(county));
-			   where = where.replace("CNSTTNCY IS NULL", "CNSTTNCY = " + SparrowUtility.singleQuote(conscy));
-			   where = where.replace("WRD IS NULL", "WRD = " + SparrowUtility.singleQuote(consWard));
-			   where = where.replace("VLLG IS NULL", "VLLG = " + SparrowUtility.singleQuote(village));
+			   where = where.replace("CNTRY IS NULL", "CNTRY = " + SparrowUtil.singleQuote(country));
+			   where = where.replace("CNTY IS NULL", "CNTY = " + SparrowUtil.singleQuote(county));
+			   where = where.replace("CNSTTNCY IS NULL", "CNSTTNCY = " + SparrowUtil.singleQuote(conscy));
+			   where = where.replace("WRD IS NULL", "WRD = " + SparrowUtil.singleQuote(consWard));
+			   where = where.replace("VLLG IS NULL", "VLLG = " + SparrowUtil.singleQuote(village));
 		   }
 		   logger.debug("Returning : \n" + where); 
 		   return where;	   
 	   }
 	
 	public static String getFlatNumFromExponetNumber(String exponent){
-		if(!SparrowUtility.notNullNotEmpty(exponent))
+		if(!SparrowUtil.notNullNotEmpty(exponent))
 			return exponent;
 		BigDecimal bd = new BigDecimal(exponent);
 	    exponent = bd.longValue() + "";
@@ -1209,7 +1209,7 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtility.class);
 	
 	public static void main(String[] args) {
 		Map<String,Double> dimens = getRationedImgDimens(60d, 40d, 45d, 55d);
-		logger.debug(SparrowUtility.stringifyMap(dimens));
+		logger.debug(SparrowUtil.stringifyMap(dimens));
 	}
 	
 	public static String getLevelNameOrType(String levelNameType, final String countryName, final String countyName, String consName, String wardName){
@@ -1299,8 +1299,8 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtility.class);
 	}
 	
 	public static JSONArray getClassPathFileJsonArray( String fileName ) {
-		File file = SparrowUtility.getFileFromResources(fileName);
-		String fileContent = SparrowUtility.getStringOfFile(file);
+		File file = SparrowUtil.getFileFromResources(fileName);
+		String fileContent = SparrowUtil.getStringOfFile(file);
 		JSONArray array = fileContent != null ? new JSONArray( fileContent ) : null;
 		return array;
 	}
@@ -1312,7 +1312,7 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtility.class);
 	 * @return
 	 */
 	public static File getFileFromResources( String fileName ) {
-		ClassLoader classLoader = SparrowUtility.class.getClassLoader();
+		ClassLoader classLoader = SparrowUtil.class.getClassLoader();
 		File file = new File(classLoader.getResource(fileName).getFile());
 		return file;
 	}
@@ -1376,11 +1376,11 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtility.class);
 		SparrowJDBCExecutor executor = SparrowDaoFactory.getObject(SparrowJDBCExecutor.class);
 		String query = executor.getQueryForSqlId( queryId );
 		List<Map<String, Object>> rowMapList =  executor.executeQueryRowMap(query, null);
-		if ( SparrowUtility.isCollNotEmpty(rowMapList) ) {
+		if ( SparrowUtil.isCollNotEmpty(rowMapList) ) {
 			for( Map<String, Object> rowMap : rowMapList ) {
 				SelectOption selValue = new SelectOption();
-				selValue.setText(SparrowUtility.getStringOrNullOfObj(rowMap.get("TEXT")));
-				selValue.setValue( SparrowUtility.getStringOrNullOfObj(rowMap.get(rowMap.get("VALUE"))));
+				selValue.setText(SparrowUtil.getStringOrNullOfObj(rowMap.get("TEXT")));
+				selValue.setValue( SparrowUtil.getStringOrNullOfObj(rowMap.get(rowMap.get("VALUE"))));
 			}
 		}
 		return selVals;
@@ -1406,10 +1406,10 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtility.class);
 						Integer integer = Integer.parseInt(val); 
 						return (T)(integer);
 					} else if ( clzz.equals(Long.class) ) {
-						Long longVal = SparrowUtility.getLongFromObject(val);
+						Long longVal = SparrowUtil.getLongFromObject(val);
 						return (T)(longVal);
 					} else if ( clzz.equals(Float.class) ) {
-						Float floatVal = SparrowUtility.getFloatFromObject(val);
+						Float floatVal = SparrowUtil.getFloatFromObject(val);
 						return (T)(floatVal);
 					} else if ( clzz.equals(Double.class) ) {
 						Double floatVal = Double.valueOf(val); 

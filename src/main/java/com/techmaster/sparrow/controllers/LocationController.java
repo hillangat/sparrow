@@ -6,7 +6,6 @@ import com.techmaster.sparrow.entities.ResponseData;
 import com.techmaster.sparrow.enums.StatusEnum;
 import com.techmaster.sparrow.location.LocationService;
 import com.techmaster.sparrow.repositories.LocationRepository;
-import com.techmaster.sparrow.util.SparrowUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
