@@ -7,7 +7,7 @@ import com.techmaster.sparrow.entities.AuditInfoBean;
 import com.techmaster.sparrow.entities.SelectOption;
 import com.techmaster.sparrow.exception.SparrowRemoteException;
 import com.techmaster.sparrow.exception.SparrowRunTimeException;
-import com.techmaster.sparrow.repositories.SparrowDaoFactory;
+import com.techmaster.sparrow.repositories.SparrowBeanContext;
 import com.techmaster.sparrow.repositories.SparrowJDBCExecutor;
 import com.techmaster.sparrow.xml.XMLService;
 import com.techmaster.sparrow.xml.XMLServiceImpl;
@@ -146,7 +146,7 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtil.class);
    
    public static String getBlobStrFromDB( String blobField, String idField, String idValue, Class<?> clzz ){
 	   
-	   SessionFactory sessionFactory = SparrowDaoFactory.getObject(SessionFactory.class);
+	   SessionFactory sessionFactory = SparrowBeanContext.getBean(SessionFactory.class);
 	   Session session = null;
 	   String blobStr = null;
 	   
@@ -197,7 +197,7 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtil.class);
    
    public static Map<String, String> getBlobStrFromDBForList( String blobField, String idField, List<String> idValues, Class<?> clzz) {
 	   
-	   SessionFactory sessionFactory = SparrowDaoFactory.getObject(SessionFactory.class);
+	   SessionFactory sessionFactory = SparrowBeanContext.getBean(SessionFactory.class);
 	   Session session = null;
 	   Map<String, String> blobStrMap = new HashMap<>();
 	   
@@ -1373,7 +1373,7 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtil.class);
 	
 	public static List<SelectOption> getSelectValsForQueryId(String queryId ) {
 		List<SelectOption> selVals = new ArrayList<>();
-		SparrowJDBCExecutor executor = SparrowDaoFactory.getObject(SparrowJDBCExecutor.class);
+		SparrowJDBCExecutor executor = SparrowBeanContext.getBean(SparrowJDBCExecutor.class);
 		String query = executor.getQueryForSqlId( queryId );
 		List<Map<String, Object>> rowMapList =  executor.executeQueryRowMap(query, null);
 		if ( SparrowUtil.isCollNotEmpty(rowMapList) ) {

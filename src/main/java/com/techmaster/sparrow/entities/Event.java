@@ -1,5 +1,7 @@
 package com.techmaster.sparrow.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.techmaster.sparrow.constants.SparrowConstants;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -25,9 +27,11 @@ public class Event extends AuditInfoBean{
     @Column(name = "TYPE", nullable = false)
     private String type;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = SparrowConstants.DATE_FORMAT_STRING)
     @Column(name = "STRT_TIME", nullable = false)
     private LocalDateTime startTime;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = SparrowConstants.DATE_FORMAT_STRING)
     @Column(name = "END_TIME", nullable = false)
     private LocalDateTime endTime;
 

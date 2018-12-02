@@ -1,12 +1,9 @@
 package com.techmaster.sparrow.imports.extraction;
 
-import com.techmaster.sparrow.repositories.SparrowDaoFactory;
 import com.techmaster.sparrow.util.SparrowUtil;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.*;
@@ -195,13 +192,6 @@ public abstract class AbstractExcelExtractor<E> implements ExcelExtractor<E> {
 	public Object getCellValue(Cell cell) {
 		Cell hcell = (Cell)cell;
 		return ExcelExtractorUtil.getInstance().getCellValue(cell);
-	}
-
-	public Session getSession() {
-		SessionFactory sessionFactory = SparrowDaoFactory.getDaoObject(SessionFactory.class);
-		if (sessionFactory != null)
-			return sessionFactory.openSession();
-		return null;
 	}
 
 	@Override

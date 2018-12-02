@@ -1,5 +1,7 @@
 package com.techmaster.sparrow.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.enums.FileTypeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -35,6 +37,7 @@ public class DataLoaderConfig extends AuditInfoBean {
     @Column(name = "LDED")
     private String loaded;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = SparrowConstants.DATE_FORMAT_STRING)
     @Column(name = "LD_DTE")
     private LocalDateTime loadDate;
 

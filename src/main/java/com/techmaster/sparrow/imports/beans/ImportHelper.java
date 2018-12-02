@@ -2,7 +2,7 @@ package com.techmaster.sparrow.imports.beans;
 
 import com.techmaster.sparrow.constants.SparrowURLConstants;
 import com.techmaster.sparrow.entities.ImportBean;
-import com.techmaster.sparrow.repositories.SparrowDaoFactory;
+import com.techmaster.sparrow.repositories.SparrowBeanContext;
 import com.techmaster.sparrow.util.SparrowUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -50,7 +50,7 @@ public class ImportHelper {
 		importBean.setStatus(status);
 
 		ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(importBean.getExcelBytes());
-		EntityManagerFactory entityManagerFactory = (EntityManagerFactory)SparrowDaoFactory.applicationContext.getBean("entityManagerFactory");
+		EntityManagerFactory entityManagerFactory = (EntityManagerFactory) SparrowBeanContext.applicationContext.getBean("entityManagerFactory");
 		if (entityManagerFactory != null) {
 			SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
 			Session session = sessionFactory.openSession();

@@ -92,12 +92,17 @@ public class DataLoaderServiceImpl implements DataLoaderService {
             FileTypeEnum fileType = config.getFileType();
             if (FileTypeEnum.EXCEL.equals(fileType)) {
                 String fileLoc = SparrowURLConstants.RESOURCE_BASE_PATH + config.getFileLocation();
-                try {
-                    return WorkbookFactory.create(new File(fileLoc));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InvalidFormatException e) {
-                    e.printStackTrace();
+                File file = new File(fileLoc);
+                if (file.exists()) {
+                    try {
+                        return WorkbookFactory.create(file);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (InvalidFormatException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    logger.warn("Data note loaded!!! Workbook file for data loader service not found for location :" + fileLoc);
                 }
             }
         }

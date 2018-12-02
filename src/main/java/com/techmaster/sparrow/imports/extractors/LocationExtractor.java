@@ -12,7 +12,7 @@ import com.techmaster.sparrow.imports.extraction.ExcelExtractorUtil;
 import com.techmaster.sparrow.location.LocationService;
 import com.techmaster.sparrow.repositories.ImportBeanRepository;
 import com.techmaster.sparrow.repositories.LocationRepository;
-import com.techmaster.sparrow.repositories.SparrowDaoFactory;
+import com.techmaster.sparrow.repositories.SparrowBeanContext;
 import com.techmaster.sparrow.util.SparrowUtil;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.hibernate.Session;
@@ -271,7 +271,7 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 			status = ExcelExtractor.STATUS_SUCCESS_STR;
 			locations = getDataBeans(data);
 			logger.debug("Saving extracted hunter message receiver beans...");
-			LocationRepository locationRepository = SparrowDaoFactory.getDaoObject(LocationRepository.class);
+			LocationRepository locationRepository = SparrowBeanContext.getBean(LocationRepository.class);
 			if (locationRepository != null) {
 				new LoadCacheWorker().start();
 				bundle.put(DATA_BEANS, locations);
@@ -292,19 +292,19 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 		logger.debug("Saving excel file to db.."); 
 		String stsStr = this.isSuccess() ? SparrowConstants.STATUS_SUCCESS : SparrowConstants.STATUS_FAILED;
 		ImportBean importBean = ImportHelper.createImportBeanFromWorkbook(workbook, userName, originalFileName, Location.class.getSimpleName(), stsStr);
-		Session session = getSession();
+		Session session = SparrowBeanContext.getSession();
 		if (session != null) {
 			ImportHelper.createImportBeanBlobAndSave(importBean, session);
 		}
 
-		ImportBeanRepository repository = SparrowDaoFactory.getDaoObject(ImportBeanRepository.class);
+		ImportBeanRepository repository = SparrowBeanContext.getBean(ImportBeanRepository.class);
 		if (repository != null) {
 			repository.save(importBean);
 		} else {
 			logger.error("Import Bean Repository bean not found!! Import bean not save to db");
 		}
 
-        LocationService locationService = SparrowDaoFactory.getObject(LocationService.class);
+        LocationService locationService = SparrowBeanContext.getBean(LocationService.class);
 		if ( success && locationService != null) {
 		    locationService.recursivelySave(locations);
         } else if (locationService == null) {

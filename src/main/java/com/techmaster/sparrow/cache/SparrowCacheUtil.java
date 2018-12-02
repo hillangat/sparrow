@@ -4,7 +4,7 @@ import com.techmaster.sparrow.constants.SparrowURLConstants;
 import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.entities.Location;
 import com.techmaster.sparrow.location.LocationService;
-import com.techmaster.sparrow.repositories.SparrowDaoFactory;
+import com.techmaster.sparrow.repositories.SparrowBeanContext;
 import com.techmaster.sparrow.util.SparrowUtil;
 import com.techmaster.sparrow.xml.XMLService;
 import org.json.JSONArray;
@@ -45,7 +45,7 @@ public class SparrowCacheUtil {
 	}
 
 	public List<Location> refreshAllLocations() {
-		LocationService locationService = SparrowDaoFactory.getDaoObject(LocationService.class);
+		LocationService locationService = SparrowBeanContext.getBean(LocationService.class);
 		List<Location> locations = null;
 		if (locationService != null) {
 			locations = locationService.getLocationHierarchies();

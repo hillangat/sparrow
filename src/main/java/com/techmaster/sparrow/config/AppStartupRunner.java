@@ -2,7 +2,7 @@ package com.techmaster.sparrow.config;
 
 import com.techmaster.sparrow.cache.SparrowCacheUtil;
 import com.techmaster.sparrow.data.DataLoaderService;
-import com.techmaster.sparrow.repositories.SparrowDaoFactory;
+import com.techmaster.sparrow.repositories.SparrowBeanContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.Arrays;
 
 @Component
 public class AppStartupRunner implements ApplicationRunner {
@@ -24,8 +23,8 @@ public class AppStartupRunner implements ApplicationRunner {
 
     @PostConstruct
     private void setSparrowDaoFactoryContext () {
-        if (SparrowDaoFactory.applicationContext == null) {
-            SparrowDaoFactory.applicationContext = this.context;
+        if (SparrowBeanContext.applicationContext == null) {
+            SparrowBeanContext.applicationContext = this.context;
         }
     }
 
@@ -33,8 +32,8 @@ public class AppStartupRunner implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         logger.info("Application started with command-line arguments: {} . \n To kill this application, press Ctrl + C.", args.getOptionNames());
         logger.debug("Performing pre-start up processes");
-        loadSparrowCache();
         executeDataLoaderService();
+        loadSparrowCache();
         logger.debug("Completed pre-start up processes!");
     }
 
@@ -46,7 +45,7 @@ public class AppStartupRunner implements ApplicationRunner {
 
     public void executeDataLoaderService () {
         logger.debug("Executing data loader service...");
-        DataLoaderService dataLoaderService = SparrowDaoFactory.getDaoObject(DataLoaderService.class);
+        DataLoaderService dataLoaderService = SparrowBeanContext.getBean(DataLoaderService.class);
         dataLoaderService.execute();
         logger.debug("Successfully executed data loader service...");
     }

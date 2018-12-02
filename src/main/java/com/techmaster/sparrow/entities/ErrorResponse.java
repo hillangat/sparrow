@@ -1,6 +1,7 @@
 package com.techmaster.sparrow.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.techmaster.sparrow.constants.SparrowConstants;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
@@ -10,7 +11,7 @@ public class ErrorResponse {
 
     private HttpStatus status;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = SparrowConstants.DATE_FORMAT_STRING)
     private LocalDateTime timestamp;
     private String message;
     private String debugMessage;
