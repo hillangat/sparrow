@@ -38,7 +38,7 @@ public class ImportController extends BaseController{
         String message = status.equals(StatusEnum.SUCCESS) ? "Successfully completed import, please check email for details" :
                 "Import operation failed. Please check email for details.";
 
-        return ResponseEntity.ok(new ResponseData(null, status.getStatus(), message));
+        return ResponseEntity.ok(new ResponseData(null, status.getStatus(), message, null));
 
     }
 

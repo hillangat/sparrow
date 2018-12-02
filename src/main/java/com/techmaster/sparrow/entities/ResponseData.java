@@ -1,21 +1,21 @@
 package com.techmaster.sparrow.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @ToString
 @EqualsAndHashCode
 @AllArgsConstructor
+@NoArgsConstructor
 public class ResponseData implements Serializable {
 
-    private Object data;
-    private String message;
-    private String status;
+    protected Object data;
+    protected String message;
+    protected String status;
+    protected Map<String, List<String>> errors;
 }

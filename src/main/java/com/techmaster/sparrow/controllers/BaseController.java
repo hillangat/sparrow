@@ -10,15 +10,21 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RestController
+@RequestMapping("/api/")
 public abstract class BaseController {
 
     public static final String SUCCESS_RETRIEVAL_MSG = "Successfully retrieved the data";
+    public static final String SUCCESS_SAVED_MSG = "Saved successfully";
+    public static final String FAILED_VALIDATION_MSG = "Action failed validation";
 
     @ExceptionHandler(SparrowRestfulApiException.class)
     public final ResponseEntity<ErrorResponse> handleException(SparrowRestfulApiException ex, WebRequest request) {

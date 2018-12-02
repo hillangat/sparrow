@@ -1,4 +1,4 @@
-package com.techmaster.sparrow.rules;
+package com.techmaster.sparrow.rules.abstracts;
 
 import com.techmaster.sparrow.entities.User;
 import com.techmaster.sparrow.util.SparrowUtil;
@@ -13,10 +13,10 @@ import org.drools.builder.ResourceType;
 import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 
-public class KnowledgeBaseHelper {
+public class KnowledgeBaseHelper_ {
 
     public static void main(String[] args) {
-        KnowledgeBaseHelper helper = new KnowledgeBaseHelper();
+        KnowledgeBaseHelper_ helper = new KnowledgeBaseHelper_();
         helper.executeUserDrools();
     }
 

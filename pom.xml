@@ -118,6 +118,12 @@
             <artifactId>knowledge-api</artifactId>
             <version>6.1.0.Final</version>
         </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-reflect</artifactId>
+            <version>1.6.1</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 

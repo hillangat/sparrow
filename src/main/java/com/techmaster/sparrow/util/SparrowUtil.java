@@ -25,9 +25,11 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyAccessor;
 import org.springframework.beans.PropertyAccessorFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -62,6 +64,11 @@ import java.util.Map.Entry;
 public class SparrowUtil {
 
 public static Logger logger = LoggerFactory.getLogger(SparrowUtil.class);
+
+  public static <T> T clone (T dest, Object o) {
+	  BeanUtils.copyProperties(dest, o);
+	  return dest;
+  }
 
   public static String getRequestBaseURL(HttpServletRequest request){
 	  try {

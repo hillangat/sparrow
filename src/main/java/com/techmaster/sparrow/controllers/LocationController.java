@@ -56,13 +56,13 @@ public class LocationController extends BaseController {
 
         locationRepository.save(location);
 
-        return ResponseEntity.ok(new ResponseData(location, StatusEnum.SUCCESS.getStatus(), SUCCESS_RETRIEVAL_MSG));
+        return ResponseEntity.ok(new ResponseData(location, StatusEnum.SUCCESS.getStatus(), SUCCESS_RETRIEVAL_MSG, null));
     }
 
     @GetMapping(value = "/locations")
     @ResponseBody
     public ResponseEntity<ResponseData> getAllLocations() {
         List<Location> locations = SparrowCacheUtil.getInstance().getLocationHierarchies();
-        return ResponseEntity.ok(new ResponseData(locations, StatusEnum.SUCCESS.getStatus(), SUCCESS_RETRIEVAL_MSG));
+        return ResponseEntity.ok(new ResponseData(locations, StatusEnum.SUCCESS.getStatus(), SUCCESS_RETRIEVAL_MSG, null));
     }
 }
