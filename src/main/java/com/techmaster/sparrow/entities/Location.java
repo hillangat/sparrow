@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.awt.event.HierarchyListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "LCTN")
+@EntityListeners( { HierarchyListener.class })
 public class Location extends AuditInfoBean {
 
     @Id
@@ -42,7 +44,6 @@ public class Location extends AuditInfoBean {
     @Column(name = "LCTN_TYP")
     private LocationTypeEnum locationType;
 
-    @OneToMany( cascade = CascadeType.ALL, orphanRemoval = true )
-    @JoinColumn(name = "PRNT_ID")
+    @Transient
     private List<Location> subLocations = new ArrayList<>();
 }

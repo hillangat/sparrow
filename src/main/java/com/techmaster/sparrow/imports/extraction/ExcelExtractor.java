@@ -2,6 +2,7 @@ package com.techmaster.sparrow.imports.extraction;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +11,7 @@ import java.util.Map;
  * @author hillangat
  *
  */
-public interface ExcelExtractor  {
+public interface ExcelExtractor<E>  {
 	
 	/**
 	 * This will be a list of constant string to retrieve extractors.
@@ -22,10 +23,9 @@ public interface ExcelExtractor  {
 	public static final String SURFACE_VALIDATION = "SURFACE_VALIDATION";
 	public static final String DATA_BEANS = "DATA_BEANS";
 	public static final String RETURNED_WORKBOOK = "RETURNED_WORKBOOK";
-	public static final String EXTRACTED_BUNDLE = "EXTRACTED_BUNDLE";
-	public static final String SESSION_ID = "SESSION_ID";
-	
+
 	public static final String LOCATION_EXTRACTOR = "LOCATION_EXTRACTOR";
+	public static final String LOCATION_EXTRACTOR_SHEET = "LOCATIONS";
 
 	/**
 	 * @param workbook : The excel sheet workbook
@@ -99,7 +99,15 @@ public interface ExcelExtractor  {
 	 * @return boolean : returns true if the operation succeeded.
 	 */
 	public abstract boolean success();
-	
+
+	/**
+	 *
+	 * @return the list of the beans created after import,
+	 * returns an empty list otherwise.
+	 */
+	List<E> getBeanList();
+
+	void saveBeanList(CrudRepository<E, ?> repository);
 	
 }
 

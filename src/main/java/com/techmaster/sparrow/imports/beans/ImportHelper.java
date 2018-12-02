@@ -3,19 +3,18 @@ package com.techmaster.sparrow.imports.beans;
 import com.techmaster.sparrow.constants.SparrowURLConstants;
 import com.techmaster.sparrow.entities.AuditInfoBean;
 import com.techmaster.sparrow.entities.ImportBean;
+import com.techmaster.sparrow.repositories.SparrowDaoFactory;
 import com.techmaster.sparrow.util.SparrowUtility;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.hibernate.Hibernate;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.persistence.EntityManagerFactory;
 import java.io.*;
 import java.sql.Blob;
 import java.sql.SQLException;
@@ -42,7 +41,7 @@ public class ImportHelper {
 		}
 		
 		byte[] bytes = bos.toByteArray();
-		
+
 		ImportBean importBean = SparrowUtility.addAuditInfo(new ImportBean(), userName);
 		importBean.setWorkbook(workbook);
 		importBean.setOriginalFileName(fileName);
@@ -50,6 +49,15 @@ public class ImportHelper {
 		importBean.setByteLen(bytes.length);
 		importBean.setExcelBytes(bytes);
 		importBean.setStatus(status);
+
+		ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(importBean.getExcelBytes());
+		EntityManagerFactory entityManagerFactory = (EntityManagerFactory)SparrowDaoFactory.applicationContext.getBean("entityManagerFactory");
+		if (entityManagerFactory != null) {
+			SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
+			Session session = sessionFactory.openSession();
+			Blob blob = Hibernate.getLobCreator(session).createBlob(byteArrayInputStream, (long) importBean.getByteLen());
+			importBean.setExcelBlob(blob);
+		}
 		
 		return importBean;
 	}
@@ -77,7 +85,7 @@ public class ImportHelper {
 			importBean.setExcelBlob(blob);
 			session.save(importBean);
 			trans.commit();
-			logger.debug("Successfully saved the import bean with it's blob!!"); 
+			logger.debug("Successfully saved the import bean with it's blob!!");
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			trans.rollback();

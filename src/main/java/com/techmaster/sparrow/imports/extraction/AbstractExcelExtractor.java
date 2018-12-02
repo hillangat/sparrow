@@ -1,14 +1,18 @@
 package com.techmaster.sparrow.imports.extraction;
 
+import com.techmaster.sparrow.repositories.SparrowDaoFactory;
 import com.techmaster.sparrow.util.SparrowUtility;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.data.repository.CrudRepository;
 
 import java.util.*;
 
-public abstract class AbstractExcelExtractor<E> implements ExcelExtractor {
+public abstract class AbstractExcelExtractor<E> implements ExcelExtractor<E> {
 
 	protected boolean success = false;
 	protected String[] surfaceErrors = null;
@@ -17,6 +21,7 @@ public abstract class AbstractExcelExtractor<E> implements ExcelExtractor {
 	protected Workbook workbook;
 	protected String originalFileName;
 	protected String userName;
+	protected List<E> listBean = new ArrayList<>();
 
 	public boolean isSuccess() {
 		return success;
@@ -44,6 +49,11 @@ public abstract class AbstractExcelExtractor<E> implements ExcelExtractor {
 
 	public String getUserName() {
 		return userName;
+	}
+
+	@Override
+	public List<E> getBeanList() {
+		return listBean;
 	}
 
 	@Override
@@ -185,22 +195,18 @@ public abstract class AbstractExcelExtractor<E> implements ExcelExtractor {
 	@Override
 	public Object getCellValue(Cell cell) {
 		Cell hcell = (Cell)cell;
-		Object obj = null;
-		if(cell != null){
-			int type = hcell.getCellType();
-			if(type== HSSFCell.CELL_TYPE_STRING){
-				obj = hcell.getStringCellValue();
-			}else if(type== HSSFCell.CELL_TYPE_NUMERIC){
-				obj = hcell.getNumericCellValue();
-			}else if(type== HSSFCell.CELL_TYPE_BOOLEAN){
-				obj = hcell.getBooleanCellValue();
-			}else if(type== HSSFCell.CELL_TYPE_ERROR){
-				obj = hcell.getErrorCellValue();
-			}else if(type== HSSFCell.CELL_TYPE_BLANK){
-				obj = "";
-			}
-		}
-		return obj;
+		return ExcelExtractorUtil.getInstance().getCellValue(cell);
 	}
 
+	public Session getSession() {
+		SessionFactory sessionFactory = SparrowDaoFactory.getDaoObject(SessionFactory.class);
+		if (sessionFactory != null)
+			return sessionFactory.openSession();
+		return null;
+	}
+
+	@Override
+	public void saveBeanList(CrudRepository<E, ?> repository) {
+		repository.saveAll(this.listBean);
+	}
 }

@@ -14,6 +14,7 @@ import com.techmaster.sparrow.repositories.LocationRepository;
 import com.techmaster.sparrow.repositories.SparrowDaoFactory;
 import com.techmaster.sparrow.util.SparrowUtility;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,17 +89,18 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 				}else if( i == 3 || i == 4 ){
 
 					Long val = objStr != null ? SparrowUtility.getLongFromObject(objStr) : -1;
-					if (!SparrowUtility.isNumeric(objStr) || SparrowUtility.isNumeric(objStr) && !( 0 >= val && 180 <= val)) {
-						rowErrors.add("Must be a number between 0 and 180");
+					String type = i == 3 ? "Longitude" : "Latitude";
+					if (!SparrowUtility.isNumeric(objStr) || SparrowUtility.isNumeric(objStr) && !( val >= 0 && val <= 180)) {
+						rowErrors.add(type + " must be a number between 0 and 180");
 					}
 					
 				// parentId
 				}else if( i == 5 ){
 
-					if (objStr != null && !SparrowUtility.isNumeric(objStr)) {
-						rowErrors.add("Parent ID must be a number");
+					if (objStr == null || !SparrowUtility.isNumeric(objStr)) {
+						rowErrors.add("Parent ID must be a number and not blank");
 					} else {
-						if (!locationIds.contains(objStr)) {
+						if (objStr.equalsIgnoreCase(Integer.toString(0)) && !locationIds.contains(objStr)) {
 							rowErrors.add("The parent row of ID: " + objStr + ", not found!");
 						}
 					}
@@ -150,7 +152,7 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 		for(Map.Entry<Integer, List<Object>> dataRows : data.entrySet()){
 			
 			List<Object> dataRow = dataRows.getValue();
-			Location location = new Location();
+			Location location = SparrowUtility.addAuditInfo(new Location(), userName);
 			
 			for(int i=0; i<dataRow.size(); i++){
 
@@ -164,7 +166,7 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 
 				// locationId
 				if(i==0){
-					location.setLocationId(Long.valueOf(objStr));
+					location.setLocationId(SparrowUtility.getLongFromObject(objStr));
 				
 				// name
 				}else if(i==1){
@@ -184,7 +186,7 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 					
 				//parentId
 				}else if(i==5){
-					location.setParentId(objStr != null ? Long.valueOf(objStr) : 0);
+					location.setParentId(objStr != null ? SparrowUtility.getLongFromObject(objStr) : 0L);
 					
 				// locationType
 				}else if(i==6){
@@ -205,7 +207,7 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 		
 		logger.info("Starting extraction execution process for HunterMessageReceiverExtractor..."); 
 		Map<String, Object> bundle = new HashMap<String, Object>();
-		List<String> sheets = Arrays.asList(new String[]{LOCATION_EXTRACTOR});
+		List<String> sheets = Arrays.asList(new String[]{LOCATION_EXTRACTOR_SHEET});
 		List<String> sheetsMsgs = ExcelExtractorUtil.validateSheets(sheets, workbook);
 		
 		if(sheetsMsgs != null && sheetsMsgs.size() > 0){
@@ -222,10 +224,10 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 		}
 		
 		List<Location> locations = null;
-		int lastRowNum = ExcelExtractorUtil.getInstance().getLastRowNumber(LOCATION_EXTRACTOR, workbook);
+		int lastRowNum = ExcelExtractorUtil.getInstance().getLastRowNumber(LOCATION_EXTRACTOR_SHEET, workbook);
 		String status = null;
 		
-		String[] headers = extractHeaders(LOCATION_EXTRACTOR, workbook);
+		String[] headers = extractHeaders(LOCATION_EXTRACTOR_SHEET, workbook);
 		String[] invalidHeaders = validateHeaders(headers, validHeaders);
 		
 		if(invalidHeaders != null && invalidHeaders.length > 0){
@@ -241,7 +243,7 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 			return bundle;
 		}
 		
-		Map<Integer, List<Object>> data = extractData(LOCATION_EXTRACTOR, this.workbook);
+		Map<Integer, List<Object>> data = extractData(LOCATION_EXTRACTOR_SHEET, this.workbook);
 		Map<Integer, List<String>> errors = validate(data);
 		
 		if(!errors.isEmpty()){
@@ -255,7 +257,7 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 
 				if(rowErrorsArray.length > 0){
 					String [] stringArray = SparrowUtility.convertToStringArray(rowErrorsArray);
-	 				createErrorCell(LOCATION_EXTRACTOR, workbook, rowNum, stringArray);
+	 				createErrorCell(LOCATION_EXTRACTOR_SHEET, workbook, rowNum, stringArray);
 				}
 			}
 			
@@ -274,7 +276,7 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 				bundle.put(DATA_BEANS, locations);
 				bundle.put(RETURNED_WORKBOOK, workbook);
 				bundle.put(STATUS_STR, true);
-
+				this.listBean = locations;
 				this.bundle = bundle;
 				this.success = true;
 				this.surfaceErrors = null;
@@ -284,11 +286,15 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 			
 		}
 		
-		createStatusCell(LOCATION_EXTRACTOR, workbook, lastRowNum, status);
+		createStatusCell(LOCATION_EXTRACTOR_SHEET, workbook, lastRowNum, status);
 		
 		logger.debug("Saving excel file to db.."); 
 		String stsStr = this.isSuccess() ? SparrowConstants.STATUS_SUCCESS : SparrowConstants.STATUS_FAILED;
 		ImportBean importBean = ImportHelper.createImportBeanFromWorkbook(workbook, userName, originalFileName, Location.class.getSimpleName(), stsStr);
+		Session session = getSession();
+		if (session != null) {
+			ImportHelper.createImportBeanBlobAndSave(importBean, session);
+		}
 
 		ImportBeanRepository repository = SparrowDaoFactory.getDaoObject(ImportBeanRepository.class);
 		if (repository != null) {
@@ -297,6 +303,12 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 			logger.error("Import Bean Repository bean not found!! Import bean not save to db");
 		}
 
+        LocationRepository locationRepository = SparrowDaoFactory.getObject(LocationRepository.class);
+		if ( success && locationRepository != null) {
+		    saveBeanList(locationRepository);
+        } else if (locationRepository == null) {
+		    logger.error("LocationRepository bean not found, bean list not saved to db");
+        }
 		
 		return bundle;
 	}

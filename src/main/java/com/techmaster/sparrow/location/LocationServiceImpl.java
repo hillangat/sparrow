@@ -21,7 +21,7 @@ public class LocationServiceImpl implements LocationService{
 
         List<Location> hierarchies = locations
                 .stream()
-                .filter(l -> locations.stream().anyMatch(c -> c.getParentId() == l.getLocationId()))
+                .filter(l -> isParent(locations, l))
                 .map(p -> {
 
                     List<Location> subLocations = locations
@@ -36,4 +36,11 @@ public class LocationServiceImpl implements LocationService{
 
         return hierarchies;
     }
+
+    private boolean isParent (List<Location> locations, Location l) {
+        boolean hasChildren = locations.stream()
+                .anyMatch(c -> c.getParentId() == l.getLocationId());
+        return hasChildren || SparrowUtility.getLongFromObject(l.getParentId()).longValue() == 0l;
+    }
+
 }

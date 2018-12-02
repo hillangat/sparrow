@@ -3,6 +3,7 @@ package com.techmaster.sparrow.imports.extraction;
 import com.techmaster.sparrow.util.SparrowUtility;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -126,7 +127,7 @@ public class ExcelExtractorUtil {
 	}
 	
 	public Object getCellValue(Cell cell) {
-		HSSFCell hcell = (HSSFCell)cell;
+		XSSFCell hcell = (XSSFCell)cell;
 		Object obj = null;
 		if(cell != null){
 			int type = hcell.getCellType();

@@ -11,8 +11,9 @@ public interface DataLoaderService {
 
     void execute();
     List<DataLoaderConfig> getDataLoaderConfigs();
-    Map<String, Workbook> getWorkBooks ();
+    Workbook getWorkBook (DataLoaderConfig config);
     void saveDataLoaderConfigs(List<DataLoaderConfig> configs);
     Map<String, JSONObject> getJSONs();
+
 
 }

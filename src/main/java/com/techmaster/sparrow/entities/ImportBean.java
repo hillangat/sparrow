@@ -38,15 +38,16 @@ public class ImportBean extends AuditInfoBean {
 	@Column(name = "STS", nullable = false)
 	private String status;
 
-	@Column(name = "TMP_LOC", nullable = false)
+	@Column(name = "TMP_LOC")
 	private String tempLocation;
 
-	@Column(name = "EXCL_BYTS", nullable = false)
+	@Transient
 	private byte[] excelBytes;
 
-	@Column(name = "EXCL_BLB", nullable = false)
+	@Column(name = "EXCL_BLB")
 	private Blob excelBlob;
 
+	@Transient
 	private Workbook workbook;
 
 }

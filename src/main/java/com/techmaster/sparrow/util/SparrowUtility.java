@@ -1470,6 +1470,14 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtility.class);
 		return new Object[]{};
 
 	}
+
+	public static String getOrifinalFileNameForPath( String path ) {
+		if ( null != path ) {
+			String [] parts = path.split("\\\\");
+			return parts[parts.length - 1];
+		}
+		return null;
+	}
 	
 	
 }

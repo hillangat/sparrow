@@ -44,15 +44,23 @@ public class SparrowCacheUtil {
 		logger.debug("Finished refreshing hunter cache...");
 	}
 
-	public void refreshAllLocations() {
+	public List<Location> refreshAllLocations() {
 		LocationService locationService = SparrowDaoFactory.getDaoObject(LocationService.class);
+		List<Location> locations = null;
 		if (locationService != null) {
-			List<Location> locations = locationService.getLocationHierarchies();
-			SparrowCache.getInstance().put(SparrowConstants.QUERY_XML_CACHED_SERVICE, locations);
+			locations = locationService.getLocationHierarchies();
+			SparrowCache.getInstance().put(SparrowConstants.LOCATIONS_CACHE_KEY, locations);
 			logger.debug("Locations loaded to cache successfully. Size: " + locations.size());
 		} else {
 			logger.error("No location service bean found. locations not loaded to cache!!");
 		}
+		return locations;
+	}
+
+	public List<Location> getLocationHierarchies() {
+		List<Location> locations = (List<Location>)SparrowCache.getInstance().get(SparrowConstants.LOCATIONS_CACHE_KEY);
+		locations = locations == null || locations.isEmpty() ? refreshAllLocations() : locations;
+		return locations;
 	}
 
 	public void refreshAllXMLServices(){

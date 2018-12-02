@@ -1,8 +1,10 @@
 package com.techmaster.sparrow.controllers;
 
+import com.techmaster.sparrow.cache.SparrowCacheUtil;
 import com.techmaster.sparrow.entities.Location;
 import com.techmaster.sparrow.entities.ResponseData;
 import com.techmaster.sparrow.enums.StatusEnum;
+import com.techmaster.sparrow.location.LocationService;
 import com.techmaster.sparrow.repositories.LocationRepository;
 import com.techmaster.sparrow.util.SparrowUtility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import java.util.List;
 public class LocationController extends BaseController {
 
     @Autowired private LocationRepository locationRepository;
+    @Autowired private LocationService locationService;
 
     @RequestMapping("/create")
     public ResponseEntity<ResponseData> createLocation() {
@@ -60,7 +63,7 @@ public class LocationController extends BaseController {
     @GetMapping(value = "/locations")
     @ResponseBody
     public ResponseEntity<ResponseData> getAllLocations() {
-        List<Location> locations = SparrowUtility.getListOf(locationRepository.findAll());
+        List<Location> locations = SparrowCacheUtil.getInstance().getLocationHierarchies();
         return ResponseEntity.ok(new ResponseData(locations, StatusEnum.SUCCESS.getStatus(), SUCCESS_RETRIEVAL_MSG));
     }
 }

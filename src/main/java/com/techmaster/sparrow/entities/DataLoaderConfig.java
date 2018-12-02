@@ -32,10 +32,10 @@ public class DataLoaderConfig extends AuditInfoBean {
     @Column(name = "FL_TYP", nullable = false)
     private FileTypeEnum fileType;
 
-    @Column(name = "IS_LDED")
-    private boolean isLoaded;
+    @Column(name = "LDED")
+    private String loaded;
 
-    @Column(name = "LD_DTE", nullable = false)
+    @Column(name = "LD_DTE")
     private LocalDateTime loadDate;
 
     @Column(name = "TBL", nullable = false)
@@ -44,7 +44,13 @@ public class DataLoaderConfig extends AuditInfoBean {
     @Column(name = "ID_CLMN", nullable = false)
     private String idColumn;
 
-    @Column(name = "FLE", nullable = false)
+    @Column(name = "FLE")
     private Blob file;
+
+    @Column(name = "FLE_EXTNSN", nullable = false)
+    private String fileExtension;
+
+    @Column(name = "EXTRCTR", nullable = false)
+    private String extractor;
 
 }
