@@ -19,20 +19,20 @@ public abstract class AbstractKnowledgeBaseHelper<T, I> implements KnowledgeBase
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    protected abstract Map<String, ResourceType> getRules();
+    protected abstract List<RuleTypeBean> getRules();
 
     /**
      *
-     * @param resources - Map of url to resource and the type it is.
+     * @param ruleTypeBeans - Map of url to resource and the type it is.
      * @return
      * @throws Exception
      */
-    protected StatefulKnowledgeSession readKnowledgeBase(Map<String, ResourceType> resources) throws Exception {
+    protected KnowledgeBase readKnowledgeBase(List<RuleTypeBean> ruleTypeBeans) throws Exception {
 
         KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 
-        resources.entrySet().forEach(r -> {
-            kbuilder.add(ResourceFactory.newClassPathResource(r.getKey()), r.getValue());
+        ruleTypeBeans.forEach(r -> {
+            kbuilder.add(ResourceFactory.newClassPathResource(r.getResource()), r.getType());
         });
 
         KnowledgeBuilderErrors errors = kbuilder.getErrors();
@@ -46,18 +46,20 @@ public abstract class AbstractKnowledgeBaseHelper<T, I> implements KnowledgeBase
 
         KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
         kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
-        return kbase.newStatefulKnowledgeSession();
+        return kbase;
     }
 
-    protected <T> RuleExceptionType fireRules (Map<String, ResourceType> rules, List<T> ruleBeans) {
+    protected <T> RuleExceptionType fireRules (List<RuleTypeBean> ruleTypeBeans, List<T> ruleBeans) {
         try {
-            StatefulKnowledgeSession kSession = readKnowledgeBase(getRules());
-            ruleBeans.forEach(r -> kSession.insert(r));
-            kSession.fireAllRules();
+            KnowledgeBase kbase = readKnowledgeBase(ruleTypeBeans);
+            StatefulKnowledgeSession ksession = kbase.newStatefulKnowledgeSession();
+            ruleBeans.forEach(r -> ksession.insert(r));
+            ksession.fireAllRules();
+            ksession.dispose();
             return null;
         } catch (Exception e) {
             logger.error("Application error occurred while trying to execute rules: " +
-                    SparrowUtil.stringifySet(rules.entrySet().stream().map(r -> r.getKey()).collect(Collectors.toSet())));
+                    SparrowUtil.stringifySet(ruleTypeBeans.stream().map(r -> r.getResource()).collect(Collectors.toSet())));
             e.printStackTrace();
             return RuleExceptionType.APPLICATION;
         }

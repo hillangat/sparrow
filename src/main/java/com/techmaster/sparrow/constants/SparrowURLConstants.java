@@ -13,6 +13,7 @@ public interface SparrowURLConstants {
 	public static final String JSONS_APTH = SparrowURLConstants.RESOURCE_BASE_PATH + "jsons\\";
 	public static final String CACHE_REFRESH_JSON = JSONS_APTH + "cache_refresh.json";
 	public static final String DATA_LOAD_CONFIG_JSON = JSONS_APTH + "data_load_config.json";
+	public static final String RULE_TYPES_JSON_PATH = RESOURCE_BASE_PATH + "rules\\ruleTypes\\ruleTypes.json";
 
 	public static final String IMPORT_EXCEL_FOLDER = RESOURCE_BASE_PATH + "\\import";
 	

@@ -53,6 +53,7 @@ public class SparrowConstants {
 	public static final String UI_MSG_CACHED_BEANS = "UI_MSG_CACHED_BEANS";
 
 	public static final String LOCATIONS_CACHE_KEY = "LOCATIONS_CACHE_KEY";
+	public static final String RULE_TYPES_KEY = "RULE_TYPES_KEY";
 	
 }
 

@@ -1,12 +1,15 @@
 package com.techmaster.sparrow.cache;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.techmaster.sparrow.constants.SparrowURLConstants;
 import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.entities.Location;
 import com.techmaster.sparrow.location.LocationService;
 import com.techmaster.sparrow.repositories.SparrowBeanContext;
+import com.techmaster.sparrow.rules.abstracts.RuleTypeBean;
 import com.techmaster.sparrow.util.SparrowUtil;
 import com.techmaster.sparrow.xml.XMLService;
+import org.h2.bnf.Rule;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -15,7 +18,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class SparrowCacheUtil {
@@ -41,6 +46,7 @@ public class SparrowCacheUtil {
 		refreshAllXMLServices();
 		populateUIMessages();
 		refreshAllLocations();
+		cacheRuleTypes();
 		logger.debug("Finished refreshing hunter cache...");
 	}
 
@@ -158,6 +164,40 @@ public class SparrowCacheUtil {
 	@SuppressWarnings("unchecked")
 	private Map<String, String> getUIMsgMap() {
 		return (Map<String, String>) SparrowCache.getInstance().get(SparrowConstants.UI_MSG_CACHED_BEANS);
+	}
+
+	public List<RuleTypeBean> cacheRuleTypes() {
+		List<RuleTypeBean> ruleTypeBeans = new ArrayList<>();
+		String path = SparrowURLConstants.RULE_TYPES_JSON_PATH;
+		File file = new File(SparrowURLConstants.RULE_TYPES_JSON_PATH);
+		if (file.exists()) {
+			String fileStr = SparrowUtil.getStringOfFile(file);
+			JSONArray array = new JSONArray(fileStr);
+			for( int i = 0; i < array.length(); i++ ) {
+				ObjectMapper objectMapper = new ObjectMapper();
+				try {
+					RuleTypeBean bean = objectMapper.readValue(array.getJSONObject(i).toString(), RuleTypeBean.class);
+					ruleTypeBeans.add(bean);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			SparrowCache.getInstance().put(SparrowConstants.RULE_TYPES_KEY, ruleTypeBeans);
+			logger.debug("Finished caching rule type beans: Size = " + ruleTypeBeans.size());
+		} else {
+			logger.error("No rule type file found. Rule types not cached!!!!, path: " + file.getAbsolutePath());
+		}
+		return ruleTypeBeans;
+	}
+
+	public List<RuleTypeBean> getRuleTypeBeans(String name) {
+		List<RuleTypeBean> ruleTypeBeans = (List<RuleTypeBean> )SparrowCache.getInstance().get(SparrowConstants.RULE_TYPES_KEY);
+		ruleTypeBeans = ruleTypeBeans == null || ruleTypeBeans.isEmpty() ? cacheRuleTypes() : ruleTypeBeans;
+		return ruleTypeBeans
+                .stream()
+                .filter(r -> r.getName().equalsIgnoreCase(name))
+                .sorted(Comparator.comparingInt(RuleTypeBean::getIndex))
+                .collect(Collectors.toList());
 	}
 	
 }

@@ -30,7 +30,7 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("user")
-    public ResponseEntity<ResponseData> saveUser(@RequestBody User user) {
+    public ResponseEntity<ResponseData> saveOrUpdate(@RequestBody User user) {
 
         List<User> userList = new ArrayList<>(1);
         userList.add(user);

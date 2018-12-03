@@ -1,9 +1,11 @@
 package com.techmaster.sparrow.rules.beans;
 
+import com.techmaster.sparrow.cache.SparrowCacheUtil;
 import com.techmaster.sparrow.entities.User;
 import com.techmaster.sparrow.enums.StatusEnum;
 import com.techmaster.sparrow.rules.abstracts.AbstractKnowledgeBaseHelper;
 import com.techmaster.sparrow.rules.abstracts.RuleExceptionType;
+import com.techmaster.sparrow.rules.abstracts.RuleTypeBean;
 import com.techmaster.sparrow.util.SparrowUtil;
 import org.drools.builder.ResourceType;
 import org.drools.runtime.StatefulKnowledgeSession;
@@ -35,9 +37,8 @@ public class UserKnowledgeBaseHelper extends AbstractKnowledgeBaseHelper<UserRul
     }
 
 
-    public Map<String, ResourceType> getRules() {
-        Map<String, ResourceType> resources = new HashMap<>();
-        resources.put("\\rules\\User.drl", ResourceType.DRL);
-        return resources;
+    public List<RuleTypeBean> getRules() {
+        List<RuleTypeBean> types = SparrowCacheUtil.getInstance().getRuleTypeBeans("user.create");
+        return types;
     }
 }

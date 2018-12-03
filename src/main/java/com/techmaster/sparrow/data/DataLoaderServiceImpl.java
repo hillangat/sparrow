@@ -3,10 +3,13 @@ package com.techmaster.sparrow.data;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.techmaster.sparrow.constants.SparrowURLConstants;
 import com.techmaster.sparrow.entities.DataLoaderConfig;
+import com.techmaster.sparrow.entities.User;
 import com.techmaster.sparrow.enums.FileTypeEnum;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractor;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractorFactory;
 import com.techmaster.sparrow.repositories.DataLoaderConfigRepository;
+import com.techmaster.sparrow.repositories.SparrowBeanContext;
+import com.techmaster.sparrow.repositories.UserRepository;
 import com.techmaster.sparrow.util.SparrowUtil;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -55,6 +58,8 @@ public class DataLoaderServiceImpl implements DataLoaderService {
                 excelExtractor.execute();
             }
         });
+
+        createUser();
     }
 
     @Override
@@ -120,5 +125,22 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         logger.debug("Saving data loader configs to the database...");
         List<DataLoaderConfig> dataLoaderConfigs = getDataLoaderConfigs();
         configRepository.saveAll(dataLoaderConfigs);
+    }
+
+    public void createUser() {
+
+        logger.debug("Creating default admin user....");
+
+        User user = SparrowUtil.addAuditInfo(new User(), "admin");
+        user.setEmail("hillangat@gmail.com");
+        user.setUserName("admin");
+        user.setFirstName("Hillary");
+        user.setLastName("Langat");
+        user.setNickName("Kip");
+        UserRepository repository = SparrowBeanContext.getBean(UserRepository.class);
+        if (repository != null) {
+            repository.deleteAll();
+            repository.save(user);
+        }
     }
 }

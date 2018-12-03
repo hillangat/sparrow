@@ -41,7 +41,7 @@ public class Event extends AuditInfoBean{
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usr_id")
-    private Dj dj;
+    private User dj;
 
 
 

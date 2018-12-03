@@ -36,7 +36,7 @@ public class UserControllerTest {
         user.setFirstName("Hillary");
         user.setLastName("Langat");
         user.setEmail("hillangat@gmail.comss");
-        ResponseEntity<ResponseData> data = userController.saveUser(user);
+        ResponseEntity<ResponseData> data = userController.saveOrUpdate(user);
         System.out.println("data :" +  data.toString());
         Assert.assertNotNull(data);
     }

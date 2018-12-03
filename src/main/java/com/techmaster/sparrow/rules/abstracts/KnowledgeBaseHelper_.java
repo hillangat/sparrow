@@ -1,6 +1,7 @@
 package com.techmaster.sparrow.rules.abstracts;
 
 import com.techmaster.sparrow.entities.User;
+import com.techmaster.sparrow.rules.beans.UserRuleBean;
 import com.techmaster.sparrow.util.SparrowUtil;
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
@@ -26,9 +27,9 @@ public class KnowledgeBaseHelper_ {
             KnowledgeBase kbase = readKnowledgeBase();
             StatefulKnowledgeSession ksession = kbase.newStatefulKnowledgeSession();
 
-            User user = SparrowUtil.addAuditInfo(new User(), "admin");
+            UserRuleBean user = SparrowUtil.addAuditInfo(new UserRuleBean(), "admin");
             user.setUserName(null);
-            user.setLastName("Langat");
+            user.setLastName(null);
             user.setNickName("Kip");
             user.setEmail("hillangat@gmail.com");
             user.setUserId(1);
@@ -51,7 +52,7 @@ public class KnowledgeBaseHelper_ {
         KnowledgeBuilder kbuilder =
                 KnowledgeBuilderFactory.newKnowledgeBuilder();
 
-        kbuilder.add(ResourceFactory.newClassPathResource("\\rules\\User.drl"),
+        kbuilder.add(ResourceFactory.newClassPathResource("\\rules\\resources\\user_create.drl"),
                 ResourceType.DRL);
 
         KnowledgeBuilderErrors errors = kbuilder.getErrors();

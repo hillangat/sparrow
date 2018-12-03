@@ -31,7 +31,10 @@ public class SparrowConfigs {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**");
+                registry.addMapping("/api/**")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedOrigins("*")
+                        .allowedHeaders("*");
             }
         };
     }

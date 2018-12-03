@@ -6,13 +6,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Blob;
 
-@Getter
-@Setter
-@ToString
+@Data
+@ToString(callSuper = true)
 @EqualsAndHashCode
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@Embeddable
-@MappedSuperclass
+@Table(name = "USR")
+@Entity
 public class User  extends AuditInfoBean implements Serializable {
 
     @Id()
@@ -20,10 +19,10 @@ public class User  extends AuditInfoBean implements Serializable {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long userId;
 
-    @Column(name = "usr_nam", nullable = false)
+    @Column(name = "usr_nam", nullable = false, unique = true)
     private String userName;
 
-    @Column(name = "eml", nullable = false)
+    @Column(name = "eml", nullable = false, unique = true)
     private String email;
 
     @Column(name = "frst_nam", nullable = false)
@@ -32,7 +31,7 @@ public class User  extends AuditInfoBean implements Serializable {
     @Column(name = "lst_nam", nullable = false)
     private String lastName;
 
-    @Column(name = "PRFL_PIC", nullable = false)
+    @Column(name = "PRFL_PIC")
     private Blob profilePic;
 
     @Column(name = "NCK_NAM")
