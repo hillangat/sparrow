@@ -52,7 +52,7 @@ public class KnowledgeBaseHelper_ {
         KnowledgeBuilder kbuilder =
                 KnowledgeBuilderFactory.newKnowledgeBuilder();
 
-        kbuilder.add(ResourceFactory.newClassPathResource("\\rules\\resources\\user_create.drl"),
+        kbuilder.add(ResourceFactory.newClassPathResource("\\rules\\files\\user_create.drl"),
                 ResourceType.DRL);
 
         KnowledgeBuilderErrors errors = kbuilder.getErrors();

@@ -15,6 +15,7 @@ public class RuleResultBean {
 
     private StatusEnum status = StatusEnum.SUCCESS;
     private Map<String, List<String>> errors = new HashMap<>();
+    private RuleExceptionType exceptionType;
 
     public void setError(String field, String error) {
         List<String> fieldErrors = errors.get(field);
@@ -24,7 +25,8 @@ public class RuleResultBean {
         status = StatusEnum.FAILED;
     }
 
-    public void setApplicationError () {
+    public void setApplicationError ( RuleExceptionType exceptionType ) {
+        this.exceptionType = exceptionType;
         setError("applicationError", "Application error occurred");
     }
 }

@@ -2,7 +2,7 @@
   {
     "name": "user.create",
     "index": 1,
-    "resource": "\\rules\\resources\\user_create.drl",
+    "resource": "rules/files/user_create.drl",
     "resourceType": "DRL"
   }
 ]

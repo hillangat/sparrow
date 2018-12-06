@@ -54,6 +54,7 @@ public class SparrowConstants {
 
 	public static final String LOCATIONS_CACHE_KEY = "LOCATIONS_CACHE_KEY";
 	public static final String RULE_TYPES_KEY = "RULE_TYPES_KEY";
+	public static final String DRL_FILES_KEY = "DRL_FILES_KEY";
 	
 }
 

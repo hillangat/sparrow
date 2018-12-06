@@ -4,11 +4,30 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.context.ApplicationContext;
 
+import javax.servlet.ServletContext;
+import java.net.URL;
 import java.util.Map;
 
 public class SparrowBeanContext {
 
-    public static ApplicationContext applicationContext;
+    private static ApplicationContext applicationContext;
+    private static ServletContext servletContext;
+
+    public static void setAppContext(ApplicationContext applicationContext) {
+        SparrowBeanContext.applicationContext = applicationContext;
+    }
+
+    public static void setServletContext(ServletContext servletContext) {
+        SparrowBeanContext.servletContext = servletContext;
+    }
+
+    public static String getRealPath(String path) {
+        return servletContext.getRealPath(path);
+    }
+
+    public static URL getResource(String path) {
+        return servletContext.getClassLoader().getResource(path);
+    }
 
     public static <T>T getBean(Class<T> clzz){
         String key = getKeyForClass(clzz);

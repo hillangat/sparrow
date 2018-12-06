@@ -2,18 +2,13 @@ package com.techmaster.sparrow.rules.beans;
 
 import com.techmaster.sparrow.cache.SparrowCacheUtil;
 import com.techmaster.sparrow.entities.User;
-import com.techmaster.sparrow.enums.StatusEnum;
 import com.techmaster.sparrow.rules.abstracts.AbstractKnowledgeBaseHelper;
 import com.techmaster.sparrow.rules.abstracts.RuleExceptionType;
 import com.techmaster.sparrow.rules.abstracts.RuleTypeBean;
 import com.techmaster.sparrow.util.SparrowUtil;
-import org.drools.builder.ResourceType;
-import org.drools.runtime.StatefulKnowledgeSession;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class UserKnowledgeBaseHelper extends AbstractKnowledgeBaseHelper<UserRuleBean, User> {
 
@@ -30,7 +25,7 @@ public class UserKnowledgeBaseHelper extends AbstractKnowledgeBaseHelper<UserRul
         RuleExceptionType exceptionType = fireRules(getRules(), ruleBeans);
 
         if (exceptionType != null) {
-            ruleBeans.forEach(r -> r.getRuleResultBean().setApplicationError());
+            ruleBeans.forEach(r -> r.getRuleResultBean().setApplicationError(exceptionType));
         }
 
         return ruleBeans;

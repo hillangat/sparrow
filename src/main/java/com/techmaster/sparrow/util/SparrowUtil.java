@@ -473,7 +473,7 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtil.class);
 				counter = 2;
 				builder.append("\n");
 			}
-			builder.append(obj.toString()).append("\n;"); 
+			builder.append(obj.toString()).append("\n");
 		}
 		return builder.toString();
 	}
@@ -891,6 +891,21 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtil.class);
 		String returned = str.substring(0, str.length()-1);
 		
 		return returned;
+	}
+
+	/**
+	 *
+	 * @param str
+	 * @return if str.length == 1 or str.length == 0, it returns "".
+	 */
+	public static String removeFirstChar(String str){
+
+		if(str == null)
+			return str;
+		if(str.trim() == "" || str.trim().length() == 1)
+			return "";
+
+		return str.substring(1);
 	}
 	
 	public static String[] convertToStringArray(Object[] objects){

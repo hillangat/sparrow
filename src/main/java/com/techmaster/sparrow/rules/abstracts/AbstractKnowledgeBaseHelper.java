@@ -9,8 +9,11 @@ import org.drools.runtime.StatefulKnowledgeSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public abstract class AbstractKnowledgeBaseHelper<T, I> implements KnowledgeBaseHelper<T, I> {
@@ -27,12 +30,13 @@ public abstract class AbstractKnowledgeBaseHelper<T, I> implements KnowledgeBase
      * @return
      * @throws Exception
      */
-    protected KnowledgeBase readKnowledgeBase(List<RuleTypeBean> ruleTypeBeans) throws Exception {
+    protected KnowledgeBase readKnowledgeBase(List<RuleTypeBean> ruleTypeBeans) throws URISyntaxException {
 
         KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 
         ruleTypeBeans.forEach(r -> {
-            kbuilder.add(ResourceFactory.newClassPathResource(r.getResource()), r.getType());
+            String path = this.getClass().getClassLoader().getResource("rules/files/user_create.drl").getFile();
+            kbuilder.add(ResourceFactory.newFileResource(new File(path)), r.getType());
         });
 
         KnowledgeBuilderErrors errors = kbuilder.getErrors();
@@ -51,15 +55,24 @@ public abstract class AbstractKnowledgeBaseHelper<T, I> implements KnowledgeBase
 
     protected <T> RuleExceptionType fireRules (List<RuleTypeBean> ruleTypeBeans, List<T> ruleBeans) {
         try {
+
             KnowledgeBase kbase = readKnowledgeBase(ruleTypeBeans);
             StatefulKnowledgeSession ksession = kbase.newStatefulKnowledgeSession();
             ruleBeans.forEach(r -> ksession.insert(r));
             ksession.fireAllRules();
             ksession.dispose();
+
             return null;
         } catch (Exception e) {
-            logger.error("Application error occurred while trying to execute rules: " +
-                    SparrowUtil.stringifySet(ruleTypeBeans.stream().map(r -> r.getResource()).collect(Collectors.toSet())));
+
+            Set<String> stringSet = ruleTypeBeans
+                    .stream().map(r -> r.getResource())
+                    .collect(Collectors.toSet());
+
+            String str = SparrowUtil.stringifySet(stringSet);
+
+            logger.error("Application error occurred while trying to execute rules: " + str );
+
             e.printStackTrace();
             return RuleExceptionType.APPLICATION;
         }

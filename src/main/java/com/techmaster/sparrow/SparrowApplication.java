@@ -12,6 +12,6 @@ public class SparrowApplication {
 
     public static void main(String[] args) {
         ApplicationContext applicationContext = SpringApplication.run(SparrowApplication.class, args);
-        SparrowBeanContext.applicationContext = applicationContext;
+        SparrowBeanContext.setAppContext(applicationContext);
     }
 }

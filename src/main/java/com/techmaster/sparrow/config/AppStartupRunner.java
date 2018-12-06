@@ -1,6 +1,7 @@
 package com.techmaster.sparrow.config;
 
 import com.techmaster.sparrow.cache.SparrowCacheUtil;
+import com.techmaster.sparrow.constants.SparrowURLConstants;
 import com.techmaster.sparrow.data.DataLoaderService;
 import com.techmaster.sparrow.repositories.SparrowBeanContext;
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.ServletContext;
 
 @Component
 public class AppStartupRunner implements ApplicationRunner {
@@ -19,13 +21,15 @@ public class AppStartupRunner implements ApplicationRunner {
     private static final Logger logger = LoggerFactory.getLogger(AppStartupRunner.class);
 
     @Autowired
-    private ApplicationContext context;
+    private ApplicationContext applicationContext;
+
+    @Autowired
+    private ServletContext servletContext;
 
     @PostConstruct
     private void setSparrowDaoFactoryContext () {
-        if (SparrowBeanContext.applicationContext == null) {
-            SparrowBeanContext.applicationContext = this.context;
-        }
+        SparrowBeanContext.setAppContext(this.applicationContext);
+        SparrowBeanContext.setServletContext(this.servletContext);
     }
 
     @Override

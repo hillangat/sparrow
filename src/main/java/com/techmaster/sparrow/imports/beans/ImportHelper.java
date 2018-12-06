@@ -50,7 +50,7 @@ public class ImportHelper {
 		importBean.setStatus(status);
 
 		ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(importBean.getExcelBytes());
-		EntityManagerFactory entityManagerFactory = (EntityManagerFactory) SparrowBeanContext.applicationContext.getBean("entityManagerFactory");
+		EntityManagerFactory entityManagerFactory = SparrowBeanContext.getBean(EntityManagerFactory.class);
 		if (entityManagerFactory != null) {
 			SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
 			Session session = sessionFactory.openSession();

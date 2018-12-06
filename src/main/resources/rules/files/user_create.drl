@@ -7,7 +7,6 @@ rule "Validate First Name"
       user : UserRuleBean( firstName == null )
    then
       user.getRuleResultBean().setError("firstName", "First name is required");
-      update(user)
 end
 
 rule "Validate Last Name"
@@ -16,5 +15,4 @@ rule "Validate Last Name"
       user : UserRuleBean( lastName == null )
    then
       user.getRuleResultBean().setError("lastName", "Last name is required");
-      update(user)
 end

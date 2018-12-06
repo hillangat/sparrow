@@ -47,6 +47,7 @@ public class SparrowCacheUtil {
 		populateUIMessages();
 		refreshAllLocations();
 		cacheRuleTypes();
+		cacheDroolDrlFiles();
 		logger.debug("Finished refreshing hunter cache...");
 	}
 
@@ -198,6 +199,30 @@ public class SparrowCacheUtil {
                 .filter(r -> r.getName().equalsIgnoreCase(name))
                 .sorted(Comparator.comparingInt(RuleTypeBean::getIndex))
                 .collect(Collectors.toList());
+	}
+
+	private Map<String, String> getAllFiles ( String folder ) {
+		Map<String, String> files = new HashMap<>();
+		File fFolder = new File(folder);
+		if (fFolder.exists() && fFolder.isDirectory()) {
+			for( final File file : fFolder.listFiles() ) {
+				files.put(file.getName(), SparrowUtil.getStringOfFile(file));
+			}
+		}
+		return files;
+	}
+
+	public Map<String, String> cacheDroolDrlFiles() {
+		String path = SparrowURLConstants.DROOL_DRL_FILES;
+		Map<String, String>  files = getAllFiles(path);
+		SparrowCache.getInstance().put(SparrowConstants.DRL_FILES_KEY, files);
+		return files;
+	}
+
+	public Map<String, String> getCacheDroolDrlFiles() {
+		Map<String, String> files = (Map<String, String>)SparrowCache.getInstance().get(SparrowConstants.DRL_FILES_KEY);
+		files = files == null || files.isEmpty() ? cacheDroolDrlFiles() : files;
+		return files;
 	}
 	
 }
