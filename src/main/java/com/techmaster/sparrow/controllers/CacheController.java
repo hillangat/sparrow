@@ -20,7 +20,7 @@ import javax.ws.rs.Produces;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
 public class CacheController extends BaseController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -28,7 +28,7 @@ public class CacheController extends BaseController {
     @GetMapping("cache")
     public ResponseEntity<ResponseData> getCacheRecords() {
         List<CacheBean> cacheBeans = SparrowCacheUtil.getInstance().getCacheBeans();
-        return ResponseEntity.ok(new ResponseData(cacheBeans, SUCCESS_RETRIEVAL_MSG, StatusEnum.SUCCESS.getStatus(), null));
+        return ResponseEntity.ok(new ResponseData(cacheBeans, SUCCESS_ACTION_COMPLETION, StatusEnum.SUCCESS.getStatus(), null));
     }
 
     @PostMapping("cache")

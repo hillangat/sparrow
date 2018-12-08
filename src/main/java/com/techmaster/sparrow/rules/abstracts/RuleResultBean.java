@@ -29,4 +29,9 @@ public class RuleResultBean {
         this.exceptionType = exceptionType;
         setError("applicationError", "Application error occurred");
     }
+
+    public boolean isSuccess() {
+        return errors.isEmpty() &&
+                status.equals(StatusEnum.SUCCESS);
+    };
 }

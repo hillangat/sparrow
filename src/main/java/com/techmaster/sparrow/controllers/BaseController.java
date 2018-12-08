@@ -1,8 +1,12 @@
 package com.techmaster.sparrow.controllers;
 
+import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.entities.AuditInfoBean;
 import com.techmaster.sparrow.entities.ErrorResponse;
+import com.techmaster.sparrow.entities.ResponseData;
+import com.techmaster.sparrow.enums.StatusEnum;
 import com.techmaster.sparrow.exception.SparrowRestfulApiException;
+import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.util.SparrowUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,6 +69,18 @@ public abstract class BaseController {
     protected <T extends AuditInfoBean> T addAuditInfo(T auditInfoBean) {
         SparrowUtil.addAuditInfo(auditInfoBean, getUserName());
         return auditInfoBean;
+    }
+
+    protected ResponseEntity<ResponseData> getResponse (boolean isGet, Object data, RuleResultBean ruleBean) {
+
+        String status = ruleBean.isSuccess() ? StatusEnum.SUCCESS.getStatus() : StatusEnum.FAILED.getStatus();
+
+        String otherError = ruleBean.getErrors().containsKey(SparrowConstants.APPLICATION_ERROR_KEY)
+                ? APPLICATION_ERROR_OCCURRED : FAILED_VALIDATION_MSG;
+
+        String msg = ruleBean.isSuccess() ? ( isGet ? SUCCESS_RETRIEVAL_MSG : SUCCESS_ACTION_COMPLETION ) : otherError;
+
+        return ResponseEntity.ok(new ResponseData(data, msg, status, ruleBean.getErrors()));
     }
 
     protected boolean isAdmin() {

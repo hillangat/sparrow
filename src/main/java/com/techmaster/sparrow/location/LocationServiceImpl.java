@@ -1,18 +1,20 @@
 package com.techmaster.sparrow.location;
 
+import com.techmaster.sparrow.cache.SparrowCacheUtil;
 import com.techmaster.sparrow.entities.Location;
 import com.techmaster.sparrow.repositories.LocationRepository;
 import com.techmaster.sparrow.repositories.SparrowJDBCExecutor;
+import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.util.SparrowUtil;
-import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class LocationServiceImpl implements LocationService{
+public class LocationServiceImpl implements LocationService {
 
     @Autowired private LocationRepository locationRepository;
     @Autowired private SparrowJDBCExecutor sparrowJDBCExecutor;
@@ -72,4 +74,41 @@ public class LocationServiceImpl implements LocationService{
         return hasChildren;
     }
 
+    @Override
+    public Location getLocationById(Long locationId) {
+        if (locationId != null && locationId > 0) {
+            List<Location> locations = SparrowCacheUtil.getInstance().getLocationHierarchies();
+            return getLocation(locations, locationId);
+        }
+        return null;
+    }
+
+    private Location getLocation(List<Location> locations, long locationIId) {
+        for (Location l : locations) {
+            if (l.getLocationId() == locationIId) {
+                return l;
+            } else {
+                if (SparrowUtil.isCollNotEmpty(l.getSubLocations())) {
+                    l = getLocation(l.getSubLocations(), locationIId);
+                    if (l != null) {
+                        return l;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public RuleResultBean save(Location location) {
+        locationRepository.save(location);
+        SparrowCacheUtil.getInstance().refreshAllLocations();
+        return new RuleResultBean();
+    }
+
+    @Override
+    public void deleteLocation(Long locationId) {
+        locationRepository.deleteById(locationId);
+        SparrowCacheUtil.getInstance().refreshAllLocations();
+    }
 }

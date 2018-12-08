@@ -14,7 +14,6 @@ public class UserRuleBean extends User {
     RuleResultBean ruleResultBean = new RuleResultBean();
 
     public boolean isSuccess() {
-        return ruleResultBean.getErrors().isEmpty() &&
-                ruleResultBean.getStatus().equals(StatusEnum.SUCCESS);
+        return ruleResultBean.isSuccess();
     };
 }
