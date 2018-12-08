@@ -36,7 +36,7 @@ public class LocationController extends BaseController {
     }
 
     @DeleteMapping(value = "location/{locationId}")
-    public ResponseEntity<ResponseData> deleteLocation(@PathVariable(value = "locationId", required = false) Long locationId) {
+    public ResponseEntity<ResponseData> deleteLocation(@PathVariable(value = "locationId", required = true) Long locationId) {
         locationService.deleteLocation(locationId);
         return getResponse(false, null, new RuleResultBean());
     }

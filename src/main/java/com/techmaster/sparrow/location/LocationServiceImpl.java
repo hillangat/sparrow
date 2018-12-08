@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 public class LocationServiceImpl implements LocationService {
 
     @Autowired private LocationRepository locationRepository;
-    @Autowired private SparrowJDBCExecutor sparrowJDBCExecutor;
 
     @Override
     public List<Location> getLocationHierarchies() {
