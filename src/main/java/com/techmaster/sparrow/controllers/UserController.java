@@ -1,6 +1,7 @@
 package com.techmaster.sparrow.controllers;
 
 import com.sun.deploy.security.ruleset.DefaultRule;
+import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.entities.ResponseData;
 import com.techmaster.sparrow.entities.User;
 import com.techmaster.sparrow.enums.StatusEnum;
@@ -51,7 +52,21 @@ public class UserController extends BaseController {
         UserRuleBean ruleBean = userService.changeEmail(args);
         String status = ruleBean.isSuccess() ? StatusEnum.SUCCESS.getStatus() : StatusEnum.FAILED.getStatus();
 
-        String otherError = ruleBean.getRuleResultBean().getErrors().containsKey("applicationError")
+        String otherError = ruleBean.getRuleResultBean().getErrors().containsKey(SparrowConstants.APPLICATION_ERROR_KEY)
+                ? APPLICATION_ERROR_OCCURRED : FAILED_VALIDATION_MSG;
+
+        String msg = ruleBean.isSuccess() ? SUCCESS_SAVED_MSG : otherError;
+
+        return ResponseEntity.ok(new ResponseData(null, msg, status, ruleBean.getRuleResultBean().getErrors()));
+    }
+
+    @PostMapping("user/userName")
+    public ResponseEntity<ResponseData> changeUserName(@RequestBody Map<String, Object> args) {
+
+        UserRuleBean ruleBean = userService.changeUserName(args.get("userId"), args.get("userName"));
+        String status = ruleBean.isSuccess() ? StatusEnum.SUCCESS.getStatus() : StatusEnum.FAILED.getStatus();
+
+        String otherError = ruleBean.getRuleResultBean().getErrors().containsKey(SparrowConstants.APPLICATION_ERROR_KEY)
                 ? APPLICATION_ERROR_OCCURRED : FAILED_VALIDATION_MSG;
 
         String msg = ruleBean.isSuccess() ? SUCCESS_SAVED_MSG : otherError;

@@ -20,4 +20,25 @@
             UPDATE SPARROW_DB.USR u SET u.eml = ? WHERE u.usr_id = ?
         </statement>
     </query>
+    <query id="getUserNameCount">
+        <description>
+            Get the count of existing user names
+        </description>
+        <statement>
+            SELECT
+                count(u.usr_nam)
+            FROM SPARROW_DB.USR u
+            WHERE u.usr_nam = ?
+        </statement>
+    </query>
+    <query id="changeUserName">
+        <description>
+            Change user name of a user
+        </description>
+        <statement>
+            UPDATE SPARROW_DB.USR u
+                SET u.USR_NAM = ?
+            WHERE u.USR_ID = ?
+        </statement>
+    </query>
 </queries>

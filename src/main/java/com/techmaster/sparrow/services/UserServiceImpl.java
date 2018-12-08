@@ -120,11 +120,10 @@ public class UserServiceImpl implements UserService<UserRepository> {
                 String queryStr = SparrowUtil.getQueryForSqlId("changeEmail");
                 SparrowJDBCExecutor jdbcExecutor = SparrowBeanContext.getBean(SparrowJDBCExecutor.class);
 
-                int i = jdbcExecutor.executeUpdate(queryStr, params);
+                jdbcExecutor.executeUpdate(queryStr, params);
 
-                logger.debug("Updated user email to. Rows affected = " + i);
             } else {
-                logger.warn("Change email request failed validation: " + SparrowUtil.stringifyMap(ruleBean.getRuleResultBean().getErrors()));
+                logger.error("Change email request failed validation: " + SparrowUtil.stringifyMap(ruleBean.getRuleResultBean().getErrors()));
             }
         } catch (Exception e) {
             logger.error("Application error while trying to  save email: " + e.getLocalizedMessage());
@@ -135,9 +134,36 @@ public class UserServiceImpl implements UserService<UserRepository> {
     }
 
     @Override
-    public StatusEnum changeUserName(long userId, String userName) {
-        userRepository.changeUserName(userName, userId);
-        return StatusEnum.SUCCESS;
+    public UserRuleBean changeUserName(Object userId, Object userName) {
+
+        UserRuleBean ruleBean = new UserRuleBean();
+
+        try {
+
+            UserValidator.validateUserId(ruleBean, userId, userRepository);
+            UserValidator.validateUserName(ruleBean, userName);
+            UserValidator.validateExistingUserName(ruleBean, userName);
+
+            if (ruleBean.isSuccess()) {
+
+                List<Object> params = new ArrayList<>();
+                params.add(userName);
+                params.add(userId);
+
+                String queryStr = SparrowUtil.getQueryForSqlId("changeUserName");
+                SparrowJDBCExecutor jdbcExecutor = SparrowBeanContext.getBean(SparrowJDBCExecutor.class);
+
+                jdbcExecutor.executeUpdate(queryStr, params);
+
+            } else {
+                logger.error("Change email request failed validation: " + SparrowUtil.stringifyMap(ruleBean.getRuleResultBean().getErrors()));
+            }
+        } catch (Exception e) {
+            logger.error("Application error while trying to  save email: " + e.getLocalizedMessage());
+            ruleBean.getRuleResultBean().setError("applicationError", "Application error occurred!");
+        }
+
+        return ruleBean;
     }
 
     @Override

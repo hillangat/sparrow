@@ -22,7 +22,7 @@ public interface UserService<T> extends RepositoryService<T> {
     StatusEnum unlockUserAccount(long userId);
     Map<String, Object> handleForgotPassword(String userName, String email, String phoneNumber);
     UserRuleBean changeEmail(Map<String, Object> args);
-    StatusEnum changeUserName(long userId, String userName);
+    UserRuleBean changeUserName(Object userId, Object userName);
     StatusEnum deleteProfilePic(long userId);
     StatusEnum reportUser(long userId, long reportedBy, String reason);
 
