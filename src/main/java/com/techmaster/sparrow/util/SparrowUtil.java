@@ -5,6 +5,7 @@ import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.constants.UIMessageConstants;
 import com.techmaster.sparrow.entities.AuditInfoBean;
 import com.techmaster.sparrow.entities.SelectOption;
+import com.techmaster.sparrow.entities.User;
 import com.techmaster.sparrow.exception.SparrowRemoteException;
 import com.techmaster.sparrow.exception.SparrowRunTimeException;
 import com.techmaster.sparrow.repositories.SparrowBeanContext;
@@ -36,6 +37,7 @@ import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.sql.rowset.serial.SerialBlob;
@@ -57,6 +59,7 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -1459,6 +1462,8 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtil.class);
 	public static <T extends AuditInfoBean> T addAuditInfo(T auditInfoBean, String userName) {
 		auditInfoBean.setCreatedBy(userName);
 		auditInfoBean.setUpdatedBy(userName);
+		auditInfoBean.setCreateDate(LocalDateTime.now());
+		auditInfoBean.setLastUpdate(LocalDateTime.now());
 		return auditInfoBean;
 	}
 
@@ -1497,6 +1502,21 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtil.class);
 			String [] parts = path.split("\\\\");
 			return parts[parts.length - 1];
 		}
+		return null;
+	}
+
+	public static <T> T getIfExist( Optional<T> optional ) {
+		if (optional != null && optional.isPresent())
+			return optional.get();
+		return null;
+	}
+
+
+	public static javax.persistence.Query createQueryForParamsAndId(String queryId, List<Object> params) {
+		EntityManager entityManager = SparrowBeanContext.getBean(EntityManager.class);
+		String queryStr = getQueryForSqlId(queryId);
+		SparrowJDBCExecutor jdbcExecutor = SparrowBeanContext.getBean(SparrowJDBCExecutor.class);
+		jdbcExecutor.executeUpdate(queryStr, params);
 		return null;
 	}
 	

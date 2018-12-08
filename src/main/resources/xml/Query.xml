@@ -12,4 +12,12 @@
             FROM sparrow_db.usr u
         </statement>
     </query>
+    <query id="changeEmail">
+        <description>
+            Change email.
+        </description>
+        <statement>
+            UPDATE SPARROW_DB.USR u SET u.eml = ? WHERE u.usr_id = ?
+        </statement>
+    </query>
 </queries>

@@ -1,5 +1,6 @@
 package com.techmaster.sparrow.entities;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.enums.FileTypeEnum;
@@ -32,6 +33,7 @@ public class DataLoaderConfig extends AuditInfoBean {
     private String fileLocation;
 
     @Column(name = "FL_TYP", nullable = false)
+    @Enumerated(EnumType.STRING)
     private FileTypeEnum fileType;
 
     @Column(name = "LDED")

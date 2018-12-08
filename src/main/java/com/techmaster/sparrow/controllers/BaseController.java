@@ -25,6 +25,7 @@ public abstract class BaseController {
     public static final String SUCCESS_RETRIEVAL_MSG = "Successfully retrieved the data";
     public static final String SUCCESS_SAVED_MSG = "Saved successfully";
     public static final String FAILED_VALIDATION_MSG = "Action failed validation";
+    public static final String APPLICATION_ERROR_OCCURRED = "Application error occurred.";
 
     @ExceptionHandler(SparrowRestfulApiException.class)
     public final ResponseEntity<ErrorResponse> handleException(SparrowRestfulApiException ex, WebRequest request) {
