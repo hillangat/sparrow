@@ -25,15 +25,12 @@ public class CacheController extends BaseController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Produces("application/json")
     @GetMapping("cache")
     public ResponseEntity<ResponseData> getCacheRecords() {
         List<CacheBean> cacheBeans = SparrowCacheUtil.getInstance().getCacheBeans();
         return ResponseEntity.ok(new ResponseData(cacheBeans, SUCCESS_RETRIEVAL_MSG, StatusEnum.SUCCESS.getStatus(), null));
     }
 
-    @Produces("application/json")
-    @Consumes("application/json")
     @PostMapping("cache")
     public ResponseEntity<ResponseData> refreshCache(@RequestBody List<CacheBean> cacheBeans){
         SparrowUtil.threadSleepFor(500);
@@ -47,8 +44,9 @@ public class CacheController extends BaseController {
                         if ( bean.getKey().equals("allXMLService") ) {
                             keys.clear();
                             keys.add(bean.getKey());
+                        } else if (!keys.contains("allXMLService")) {
+                            keys.add(bean.getKey());
                         }
-                        keys.add(bean.getKey());
                     }
                 });
                 keys.forEach( k -> SparrowCacheUtil.getInstance().refreshCacheService(k) );
