@@ -42,11 +42,9 @@ public class UserServiceImpl implements UserService<UserRepository> {
 
     @Override
     public UserRuleBean validate(User user) {
-        List<User> users = new ArrayList<>();
-        users.add(user);
-
-        List<UserRuleBean> ruleBeans = KnowledgeBaseFactory.getHelper(RuleTypesEnums.USER).runRules(users);
-        return ruleBeans != null && !ruleBeans.isEmpty() ? ruleBeans.get(0) : null;
+        UserRuleBean userRuleBean = new UserRuleBean();
+        UserValidator.validateUserCreate(user, userRuleBean, userRepository);
+        return userRuleBean;
     }
 
     @Override

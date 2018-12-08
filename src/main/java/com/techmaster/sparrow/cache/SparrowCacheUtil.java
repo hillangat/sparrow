@@ -3,6 +3,7 @@ package com.techmaster.sparrow.cache;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.techmaster.sparrow.constants.SparrowURLConstants;
 import com.techmaster.sparrow.constants.SparrowConstants;
+import com.techmaster.sparrow.entities.CacheBean;
 import com.techmaster.sparrow.entities.Location;
 import com.techmaster.sparrow.location.LocationService;
 import com.techmaster.sparrow.repositories.SparrowBeanContext;
@@ -223,6 +224,32 @@ public class SparrowCacheUtil {
 		Map<String, String> files = (Map<String, String>)SparrowCache.getInstance().get(SparrowConstants.DRL_FILES_KEY);
 		files = files == null || files.isEmpty() ? cacheDroolDrlFiles() : files;
 		return files;
+	}
+
+	public List<CacheBean> cacheCacheBeans() {
+		List<CacheBean> cacheBeans = new ArrayList<>();
+		ObjectMapper objectMapper = new ObjectMapper();
+		JSONArray data = new JSONArray( SparrowUtil.convertFileToString(SparrowURLConstants.CACHE_REFRESH_JSON) );
+		if (data != null) {
+			for(int i = 0; i <  data.length(); i++) {
+				JSONObject obj = data.getJSONObject(i);
+				try {
+					cacheBeans.add(objectMapper.readValue(obj.toString(), CacheBean.class));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		} else {
+			logger.error("Could not find cache refresh json file. No refresh done for the file!!!");
+		}
+		SparrowCache.getInstance().put(SparrowConstants.CACHE_BEANS_KEY, cacheBeans);
+		return cacheBeans;
+	}
+
+	public List<CacheBean> getCacheBeans() {
+		List<CacheBean> cacheBeans = (List<CacheBean>)SparrowCache.getInstance().get(SparrowConstants.CACHE_BEANS_KEY);
+		cacheBeans = cacheBeans == null || cacheBeans.isEmpty() ? cacheCacheBeans() : cacheBeans;
+		return cacheBeans;
 	}
 	
 }

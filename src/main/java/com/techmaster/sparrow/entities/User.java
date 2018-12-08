@@ -27,6 +27,9 @@ public class User  extends AuditInfoBean {
     @Column(name = "usr_nam", nullable = false, unique = true)
     private String userName;
 
+    @Column(name = "psswd", nullable = false)
+    private String password;
+
     @Column(name = "eml", nullable = false, unique = true)
     private String email;
 

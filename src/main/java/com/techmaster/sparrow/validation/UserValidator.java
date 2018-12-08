@@ -1,6 +1,7 @@
 package com.techmaster.sparrow.validation;
 
 import com.techmaster.sparrow.constants.SparrowConstants;
+import com.techmaster.sparrow.entities.User;
 import com.techmaster.sparrow.repositories.SparrowBeanContext;
 import com.techmaster.sparrow.repositories.SparrowJDBCExecutor;
 import com.techmaster.sparrow.repositories.UserRepository;
@@ -63,6 +64,24 @@ public class UserValidator {
         }
     }
 
+    public static void validateSpecialChar(UserRuleBean ruleBean, String obj, String key, String message) {
+        if (obj != null && ValidatorUtil.isSpecialChar(obj)) {
+            ruleBean.getRuleResultBean().setError(key, message);
+        }
+    }
+
+    public static void validateLength (int min, int max, UserRuleBean ruleBean, String obj, String key, String uiName) {
+
+        String msg = uiName + " must have between " + min + " and " + max + " number of characters";
+
+        if (!SparrowUtil.notNullNotEmpty(obj) ||
+                obj.toString().length() < min ||
+                obj.toString().length() > max) {
+
+            ruleBean.getRuleResultBean().setError(key, msg);
+        }
+    }
+
     public static void validateExistingUserName (UserRuleBean ruleBean, Object userName) {
         SparrowJDBCExecutor jdbcExecutor = SparrowBeanContext.getBean(SparrowJDBCExecutor.class);
         if (jdbcExecutor != null) {
@@ -76,6 +95,31 @@ public class UserValidator {
         } else {
             ruleBean.getRuleResultBean().setError(SparrowConstants.APPLICATION_ERROR_KEY, "Cannot connect to database");
         }
+    }
+
+    public static void validateUserCreate(User user, UserRuleBean ruleBean, UserRepository repository) {
+
+        // first name
+        validateEmpty(ruleBean, user.getFirstName(), "firstName", "First name is required");
+        validateSpecialChar(ruleBean, user.getFirstName(), "firstName", "Fist name has special characters");
+
+        // last name
+        validateEmpty(ruleBean, user.getLastName(), "lastName", "Last name is required");
+        validateSpecialChar(ruleBean, user.getFirstName(), "lastName", "Last name has special characters");
+
+        // user name
+        validateUserName(ruleBean, user.getUserName());
+        validateExistingUserName(ruleBean, user.getUserName());
+        validateSpecialChar(ruleBean, user.getFirstName(), "userName", "User name has special characters");
+
+        // email
+        validateEmail(ruleBean, user.getEmail());
+
+        // password
+        validateEmpty(ruleBean, user.getLastName(), "lastName", "Last name is required");
+        validateSpecialChar(ruleBean, user.getFirstName(), "lastName", "Last name has special characters");
+        validateLength(5, 50, ruleBean, user.getPassword(), "password", "Password");
+
     }
 
 }

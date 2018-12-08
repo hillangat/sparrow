@@ -134,6 +134,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         User user = SparrowUtil.addAuditInfo(new User(), "admin");
         user.setEmail("hillangat@gmail.com");
         user.setUserName("admin");
+        user.setPassword("hlangat.ten.245.34");
         user.setFirstName("Hillary");
         user.setLastName("Langat");
         user.setNickName("Kip");
