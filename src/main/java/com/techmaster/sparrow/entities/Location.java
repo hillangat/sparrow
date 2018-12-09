@@ -1,11 +1,13 @@
 package com.techmaster.sparrow.entities;
 
+import com.techmaster.sparrow.enums.LocationTypeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.awt.event.HierarchyListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,7 @@ import java.util.List;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "LCTN")
+@EntityListeners( { HierarchyListener.class })
 public class Location extends AuditInfoBean {
 
     @Id
@@ -37,7 +40,16 @@ public class Location extends AuditInfoBean {
     @Column(name = "PRNT_ID")
     private long parentId;
 
-    @OneToMany( cascade = CascadeType.ALL, orphanRemoval = true )
-    @JoinColumn(name = "PRNT_ID")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "LCTN_TYP")
+    private LocationTypeEnum locationType;
+
+    @Transient
+    private long uiParentId;
+
+    @Transient
+    private long uiLocationId;
+
+    @Transient
     private List<Location> subLocations = new ArrayList<>();
 }

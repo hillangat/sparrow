@@ -1,7 +1,7 @@
 package com.techmaster.sparrow.xml;
 
 import com.techmaster.sparrow.exception.SparrowRunTimeException;
-import com.techmaster.sparrow.util.SparrowUtility;
+import com.techmaster.sparrow.util.SparrowUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.*;
@@ -120,7 +120,7 @@ public class XMLServiceImpl implements XMLService{
 		Document xmlTreeDoc = this.xmlTree.getDoc();
 		NodeList nodeList = xmlTreeDoc.getElementsByTagName(tag);
 		
-		if(SparrowUtility.isNodeListNotEmptpy(nodeList)){
+		if(SparrowUtil.isNodeListNotEmptpy(nodeList)){
 			Node node = nodeList.item(0);
 			if(node != null){
 				NodeList subNodeList = node.getChildNodes();
@@ -180,7 +180,7 @@ public class XMLServiceImpl implements XMLService{
 	
 	@Override
 	public String getCData(String xPath) {
-		if(!SparrowUtility.notNullNotEmpty(xPath))
+		if(!SparrowUtil.notNullNotEmpty(xPath))
 			throw new IllegalArgumentException();
 		String end = "text()";
 		String path = xPath.toLowerCase();

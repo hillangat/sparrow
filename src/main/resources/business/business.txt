@@ -1,0 +1,25 @@
+
+Business Scenarios:
+-----------------------
+1. Create and manage user account
+2. User session management - Login, logout
+2. Create Event Records - Nigh Club, Concerts, Meetings, Conferences, etc.
+    - Create event
+    - View event
+    - Edit Event
+    - Set Location of event
+    - Search Location of event
+
+3. Actions:
+    - Sign Int and out
+    - View locations of events
+    - View how many people are there
+    - See types of events
+    -
+
+4. Scene Actions
+    - View possible songs for the event
+    - Create Playlist of an event
+    - Construct your playlist for the event
+    - Merge the playlist with the main playlist
+    - All votes should merge into the main voting and determine the ultimate playlist.

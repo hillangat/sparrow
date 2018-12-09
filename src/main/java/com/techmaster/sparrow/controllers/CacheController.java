@@ -1,14 +1,18 @@
 package com.techmaster.sparrow.controllers;
 
 import com.techmaster.sparrow.cache.SparrowCacheUtil;
-import com.techmaster.sparrow.constants.HunterURLConstants;
-import com.techmaster.sparrow.util.SparrowUtility;
+import com.techmaster.sparrow.constants.SparrowURLConstants;
+import com.techmaster.sparrow.entities.CacheBean;
+import com.techmaster.sparrow.entities.ResponseData;
+import com.techmaster.sparrow.enums.StatusEnum;
+import com.techmaster.sparrow.util.SparrowUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -16,54 +20,48 @@ import javax.ws.rs.Produces;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
-@RequestMapping("/cache")
+@RestController
 public class CacheController extends BaseController {
 
-    // private Logger logger = Logger.getLogger(this.getClass());
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Produces("application/json")
-    @RequestMapping(value="/read", method= RequestMethod.GET)
-    @ResponseBody
-    public String refreshCache() {
-        try {
-            return new JSONArray( SparrowUtility.convertFileToString(HunterURLConstants.CACHE_REFRESH_JSONS) ).toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return SparrowUtility.setJSONObjectForFailure(null, "Application error occurred while loading caches").toString();
-        }
+    @GetMapping("cache")
+    public ResponseEntity<ResponseData> getCacheRecords() {
+        List<CacheBean> cacheBeans = SparrowCacheUtil.getInstance().getCacheBeans();
+        return ResponseEntity.ok(new ResponseData(cacheBeans, SUCCESS_ACTION_COMPLETION, StatusEnum.SUCCESS.getStatus(), null));
     }
 
-    @Produces("application/json")
-    @Consumes("application/json")
-    @RequestMapping(value="/refresh", method=RequestMethod.POST)
-    @ResponseBody
-    public String refreshCache( HttpServletRequest request ){
-        SparrowUtility.threadSleepFor(500);
+    @PostMapping("cache")
+    public ResponseEntity<ResponseData> refreshCache(@RequestBody List<CacheBean> cacheBeans){
+        SparrowUtil.threadSleepFor(500);
+        String message = null;
+        String status = StatusEnum.SUCCESS.getStatus();
         try{
-            JSONArray jsonArray = new JSONArray( SparrowUtility.getRequestBodyAsStringSafely(request) );
-            if( jsonArray != null && jsonArray.length() > 0 ){
+            if( cacheBeans != null && !cacheBeans.isEmpty() ){
                 List<String> keys = new ArrayList<>();
-                for( int i = 0; i < jsonArray.length(); i++ ) {
-                    JSONObject cache = jsonArray.getJSONObject(i);
-                    String key = SparrowUtility.getStringOrNulFromJSONObj(cache, "key");
-                    if ( SparrowUtility.notNullNotEmpty(key) ) {
-                        if ( key.equals("allXMLService") ) {
+                cacheBeans.forEach(bean -> {
+                    if ( SparrowUtil.notNullNotEmpty(bean.getKey()) ) {
+                        if ( bean.getKey().equals("allXMLService") ) {
                             keys.clear();
-                            keys.add(key);
-                            break;
+                            keys.add(bean.getKey());
+                        } else if (!keys.contains("allXMLService")) {
+                            keys.add(bean.getKey());
                         }
-                        keys.add(key);
                     }
-                }
+                });
                 keys.forEach( k -> SparrowCacheUtil.getInstance().refreshCacheService(k) );
-                return SparrowUtility.setJSONObjectForSuccess(null, "Successfully refreshed cache!").toString();
+                message = "Successfully refreshed cache!";
             }else{
-                return SparrowUtility.setJSONObjectForFailure(null, "No cache service specified in request.").toString();
+                message = "No cache service specified in request.";
+                status = StatusEnum.FAILED.getStatus();
             }
         }catch(Exception e){
-            return SparrowUtility.setJSONObjectForFailure(null, "Applicaiton error : " + e.getMessage()).toString();
+            logger.error("Error occurred while trying to refresh cache!!");
+            message = APPLICATION_ERROR_OCCURRED;
+            status = StatusEnum.FAILED.getStatus();
         }
+
+        return ResponseEntity.ok(new ResponseData(null, message, status, null));
     }
 
 }

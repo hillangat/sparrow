@@ -4,7 +4,13 @@ public enum StatusEnum {
 
     FAILED("failed", "Failed processing"),
     SUCCESS("success", "Successful processing"),
-    PENDING("pending", "Pending processing");
+    PENDING("pending", "Pending processing"),
+    DRAFT("draft", "Draft content"),
+    CONCEPTUAL("conceptual", "Just created"),
+    REVIEW("review", "Review"),
+    APPROVED("approved", "Approved"),
+    INVALID("invalid", "Failed validation"),
+    REJECTED("rejected", "Rejected");
 
     private String status;
     private String description;
