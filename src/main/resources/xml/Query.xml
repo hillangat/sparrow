@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<queries>
+    <query id="getUserNameFullNameSelVals">
+        <description>
+            Get select values for user name and full names.
+        </description>
+        <statement>
+            SELECT
+                CONCAT(u.frst_nam, " ", u.lst_nam) as TEXT,
+                u.usr_nam as VALUE
+            FROM sparrow_db.usr u
+        </statement>
+    </query>
+    <query id="changeEmail">
+        <description>
+            Change email.
+        </description>
+        <statement>
+            UPDATE SPARROW_DB.USR u SET u.eml = ? WHERE u.usr_id = ?
+        </statement>
+    </query>
+    <query id="getUserNameCount">
+        <description>
+            Get the count of existing user names
+        </description>
+        <statement>
+            SELECT
+                count(u.usr_nam)
+            FROM SPARROW_DB.USR u
+            WHERE u.usr_nam = ?
+        </statement>
+    </query>
+    <query id="changeUserName">
+        <description>
+            Change user name of a user
+        </description>
+        <statement>
+            UPDATE SPARROW_DB.USR u
+                SET u.USR_NAM = ?
+            WHERE u.USR_ID = ?
+        </statement>
+    </query>
+    <query id="getEmailReceiverDetails" >
+        <description>Get Email receiver details</description>
+        <statement>
+            SELECT
+                u.usr_id,
+                u.frst_nam,
+                u.lst_nam,
+                u.eml
+            FROM SPARROW_DB.usr u
+            WHERE u.usr_id IN ( ? )
+        </statement>
+    </query>
+</queries>

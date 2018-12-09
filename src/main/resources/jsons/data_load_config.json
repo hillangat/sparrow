@@ -1,0 +1,15 @@
+[
+  {
+    "loadId": "1",
+    "name": "LOCATIONS_KENYA",
+    "fileLocation": "\\imports\\kenya_locations.xlsx",
+    "fileType": "EXCEL",
+    "loaded": "Y",
+    "loadDate": null,
+    "table": "LCTN",
+    "idColumn": "LCTN_ID",
+    "file": null,
+    "fileExtension": "xlsx",
+    "extractor": "LOCATION_EXTRACTOR"
+  }
+]

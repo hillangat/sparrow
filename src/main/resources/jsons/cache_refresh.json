@@ -1,0 +1,23 @@
+[
+  {
+    "name": "All",
+    "key": "allXMLService",
+    "refreshing": false,
+    "selected": false,
+    "active": true
+  },
+  {
+    "name": "Query",
+    "key": "queryXML",
+    "refreshing": false,
+    "selected": false,
+    "active": true
+  },
+  {
+    "name": "UI Message",
+    "key": "uiMsgXML",
+    "refreshing": false,
+    "selected": false,
+    "active": true
+  }
+]

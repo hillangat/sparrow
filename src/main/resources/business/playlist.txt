@@ -1,0 +1,5 @@
+1. Search playlist
+2. Explore songs
+3. Like song
+4. show likes for each song
+5. Text playlist

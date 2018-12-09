@@ -1,35 +1,59 @@
 package com.techmaster.sparrow.controllers;
 
+import com.techmaster.sparrow.constants.SparrowConstants;
+import com.techmaster.sparrow.entities.AuditInfoBean;
+import com.techmaster.sparrow.entities.ErrorResponse;
+import com.techmaster.sparrow.entities.ResponseData;
+import com.techmaster.sparrow.enums.StatusEnum;
+import com.techmaster.sparrow.exception.SparrowRestfulApiException;
+import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
+import com.techmaster.sparrow.util.SparrowUtil;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RestController
+@RequestMapping("/api/")
 public abstract class BaseController {
 
     public static final String SUCCESS_RETRIEVAL_MSG = "Successfully retrieved the data";
+    public static final String SUCCESS_SAVED_MSG = "Saved successfully";
+    public static final String SUCCESS_ACTION_COMPLETION = "Action completed successfully";
+    public static final String FAILED_VALIDATION_MSG = "Action failed validation";
+    public static final String APPLICATION_ERROR_OCCURRED = "Application error occurred.";
 
-    protected UserDetails getUserDetails() {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder
-                .getContext().getAuthentication().getPrincipal();
-        if (userDetails == null) {
-            throw new UsernameNotFoundException("User could not be found in the context");
-        }
-        return userDetails;
+    @ExceptionHandler(SparrowRestfulApiException.class)
+    public final ResponseEntity<ErrorResponse> handleException(SparrowRestfulApiException ex, WebRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    protected Authentication getAuthentication() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication;
     }
 
     protected String getUserName() {
-        UserDetails userDetails = getUserDetails();
-        return userDetails.getUsername();
+        Authentication authentication = getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentUserName = authentication.getName();
+            return currentUserName;
+        }
+        return null;
     }
 
     protected List<String> getUserRoles() {
-        UserDetails userDetails = getUserDetails();
+        Authentication userDetails = getAuthentication();
         if (userDetails.getAuthorities() != null &&
                 !userDetails.getAuthorities().isEmpty()) {
 
@@ -40,6 +64,23 @@ public abstract class BaseController {
                     .collect(Collectors.toList());
         }
         return new ArrayList<>();
+    }
+
+    protected <T extends AuditInfoBean> T addAuditInfo(T auditInfoBean) {
+        SparrowUtil.addAuditInfo(auditInfoBean, getUserName());
+        return auditInfoBean;
+    }
+
+    protected ResponseEntity<ResponseData> getResponse (boolean isGet, Object data, RuleResultBean ruleBean) {
+
+        String status = ruleBean.isSuccess() ? StatusEnum.SUCCESS.getStatus() : StatusEnum.FAILED.getStatus();
+
+        String otherError = ruleBean.getErrors().containsKey(SparrowConstants.APPLICATION_ERROR_KEY)
+                ? APPLICATION_ERROR_OCCURRED : FAILED_VALIDATION_MSG;
+
+        String msg = ruleBean.isSuccess() ? ( isGet ? SUCCESS_RETRIEVAL_MSG : SUCCESS_ACTION_COMPLETION ) : otherError;
+
+        return ResponseEntity.ok(new ResponseData(data, msg, status, ruleBean.getErrors()));
     }
 
     protected boolean isAdmin() {
