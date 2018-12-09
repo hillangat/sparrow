@@ -1,6 +1,8 @@
 package com.techmaster.sparrow.entities.email;
 
+import com.techmaster.sparrow.converters.BooleanToYNStringConverter;
 import com.techmaster.sparrow.entities.AuditInfoBean;
+import com.techmaster.sparrow.entities.MediaObj;
 import com.techmaster.sparrow.enums.StatusEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,6 +10,10 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.sql.Blob;
+
+/**
+ * Email attachment content
+ */
 
 @Data
 @Entity
@@ -25,19 +31,33 @@ public class EmailAttachment extends AuditInfoBean {
     @Column(name = "DSCRPTN", nullable = false)
     private String description;
 
-    @Column(name = "CNTNT", nullable = false)
-    private Blob content;
+    @Column(name = "WDTH")
+    private int width;
 
-    @Column(name = "ORGNL_NAM", nullable = false)
-    private String originalName;
+    @Column(name = "HGHT")
+    private int height;
 
-    @Column(name = "EXTNSN", nullable = false)
-    private String extension;
+    @Column(name = "EMBDD")
+    @Convert(converter = BooleanToYNStringConverter.class)
+    private boolean embedded;
 
-    @Column(name = "BYT_SZ", nullable = false)
-    private Double byteSize;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "MDA_ID")
+    private MediaObj mediaObj;
+
+    @Column(name = "KY", nullable = false)
+    private String key;
 
     @Column(name = "RVW_STS", nullable = false)
     @Enumerated(EnumType.STRING)
-    private StatusEnum reviewStatus;
+    private StatusEnum reviewStatus = StatusEnum.DRAFT;
+
+    @Column(name = "UNIT", nullable = false)
+    private String unit;
+
+    @Column(name = "MDA_REF", nullable = false)
+    private String mediaRef;
+
+
+
 }

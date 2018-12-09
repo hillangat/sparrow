@@ -4,6 +4,6 @@ import com.techmaster.sparrow.enums.EmailReasonType;
 
 public interface SparrowEmailService {
 
-    void sendEmail(EmailReasonType reasonType, String email);
+    void send(EmailReasonType reasonType, String email);
 
 }

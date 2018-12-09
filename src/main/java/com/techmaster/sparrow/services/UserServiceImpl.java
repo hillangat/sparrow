@@ -179,4 +179,9 @@ public class UserServiceImpl implements UserService<UserRepository> {
     public UserRepository getRepository() {
         return userRepository;
     }
+
+    @Override
+    public Long getMaxUserId() {
+        return userRepository.getMaxUserId();
+    }
 }

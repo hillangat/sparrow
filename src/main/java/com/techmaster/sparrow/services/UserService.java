@@ -25,6 +25,7 @@ public interface UserService<T> extends RepositoryService<T> {
     UserRuleBean changeUserName(Object userId, Object userName);
     StatusEnum deleteProfilePic(long userId);
     StatusEnum reportUser(long userId, long reportedBy, String reason);
+    Long getMaxUserId();
 
 
 }

@@ -9,6 +9,7 @@ import com.techmaster.sparrow.util.SparrowUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -109,5 +110,12 @@ public class LocationServiceImpl implements LocationService {
     public void deleteLocation(Long locationId) {
         locationRepository.deleteById(locationId);
         SparrowCacheUtil.getInstance().refreshAllLocations();
+    }
+
+    @Override
+    public List<Location> getLocationChildrenById(Long locationId) {
+        Location location = getLocationById(locationId);
+        List<Location> locations = location == null ? new ArrayList<>() : location.getSubLocations();
+        return locations;
     }
 }

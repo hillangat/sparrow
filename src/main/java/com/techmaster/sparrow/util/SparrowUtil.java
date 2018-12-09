@@ -786,6 +786,10 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtil.class);
 		builder.append(id);
 		builder.append("\"]/statement");
 		XMLService service = SparrowCacheUtil.getInstance().getXMLService(SparrowConstants.QUERY_XML_CACHED_SERVICE);
+		if (service == null){
+			SparrowCacheUtil.getInstance().refreshAllXMLServices();
+			service = SparrowCacheUtil.getInstance().getXMLService(SparrowConstants.QUERY_XML_CACHED_SERVICE);
+		}
 		String query  = service.getTextValue(builder.toString());
 		return query.trim();
 	}
@@ -1392,7 +1396,11 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtil.class);
 	}
 
 	public static boolean isTextNode(Node node) {
-		return node != null && node.getNodeName().equals("#text");
+		return node.getNodeType() == Node.TEXT_NODE;
+	}
+
+	public static boolean isElement( Node node ) {
+		return node.getNodeType() == Node.ELEMENT_NODE;
 	}
 	
 	public static List<SelectOption> getSelectValsForQueryId(String queryId ) {
@@ -1517,6 +1525,23 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtil.class);
 		String queryStr = getQueryForSqlId(queryId);
 		SparrowJDBCExecutor jdbcExecutor = SparrowBeanContext.getBean(SparrowJDBCExecutor.class);
 		jdbcExecutor.executeUpdate(queryStr, params);
+		return null;
+	}
+
+	public static Blob getSqlBlobForFile( File file ) {
+		try {
+			FileInputStream fis = new FileInputStream(file);
+			byte[] bytes = new byte[(int)file.length()];
+			fis.read(bytes);
+			Blob blob = new SerialBlob(bytes);
+			return blob;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 	

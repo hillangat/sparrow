@@ -13,6 +13,10 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Contents sent on an email instance
+ */
+
 @Data
 @Entity
 @ToString(callSuper = true)
@@ -35,12 +39,12 @@ public class EmailContent extends AuditInfoBean {
     private LocalDateTime sendTime;
 
     @Column(name = "LF_STS", nullable = false)
-    private StatusEnum lifeStatus;
+    private StatusEnum lifeStatus = StatusEnum.DRAFT;
 
     @Column(name = "DLVRY_STS", nullable = false)
-    private StatusEnum deliveryStatus;
+    private StatusEnum deliveryStatus = StatusEnum.CONCEPTUAL;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Transient
     private EmailTemplate template;
 
     @Transient

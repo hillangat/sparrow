@@ -1,13 +1,16 @@
 package com.techmaster.sparrow.entities.email;
 
 import com.techmaster.sparrow.entities.AuditInfoBean;
-import com.techmaster.sparrow.entities.User;
 import com.techmaster.sparrow.enums.EmailReceiverType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
+
+/**
+ * Email receiver every time there is an email sent.
+ */
 
 @Data
 @Entity
@@ -38,7 +41,7 @@ public class EmailReceiver extends AuditInfoBean {
     @Column(name = "LST_NAM", nullable = false)
     private String lastName;
 
-    @Column(name = "MDDL_NAM", nullable = false)
+    @Column(name = "MDDL_NAM")
     private String middleName;
 
 }

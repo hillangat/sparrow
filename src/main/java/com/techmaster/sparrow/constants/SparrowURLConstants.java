@@ -2,20 +2,22 @@ package com.techmaster.sparrow.constants;
 
 public interface SparrowURLConstants {
 	
-	public static final String COMPUTER_USER_BASE_URL = "C:\\Users\\hillangat\\programming\\intelliJ\\workspaces\\sparrow\\";
+	String COMPUTER_USER_BASE_URL = "C:\\Users\\hillangat\\programming\\intelliJ\\workspaces\\sparrow\\";
 	
-	public static final String RESOURCE_BASE_PATH = COMPUTER_USER_BASE_URL + "src\\main\\resources\\";
-	public static final String RESOURCE_BASE_XML_PATH = RESOURCE_BASE_PATH + "xml\\";
+	String RESOURCE_BASE_PATH = COMPUTER_USER_BASE_URL + "src\\main\\resources\\";
+	String RESOURCE_BASE_XML_PATH = RESOURCE_BASE_PATH + "xml\\";
 
-	public static final String QRY_XML_FL_LOC_PATH = RESOURCE_BASE_XML_PATH + "Query.xml";
-	public static final String UI_MSG_XML_FL_LOC_PATH = RESOURCE_BASE_XML_PATH + "UIMessages.xml";
+	String QRY_XML_FL_LOC_PATH = RESOURCE_BASE_XML_PATH + "Query.xml";
+	String UI_MSG_XML_FL_LOC_PATH = RESOURCE_BASE_XML_PATH + "UIMessages.xml";
 
-	public static final String JSONS_APTH = SparrowURLConstants.RESOURCE_BASE_PATH + "jsons\\";
-	public static final String CACHE_REFRESH_JSON = JSONS_APTH + "cache_refresh.json";
-	public static final String DATA_LOAD_CONFIG_JSON = JSONS_APTH + "data_load_config.json";
-	public static final String RULE_TYPES_JSON_PATH = RESOURCE_BASE_PATH + "rules\\ruleTypes\\ruleTypes.json";
-	public static final String DROOL_DRL_FILES = RESOURCE_BASE_PATH + "rules\\files";
+	String JSONS_APTH = SparrowURLConstants.RESOURCE_BASE_PATH + "jsons\\";
+	String CACHE_REFRESH_JSON = JSONS_APTH + "cache_refresh.json";
+	String DATA_LOAD_CONFIG_JSON = JSONS_APTH + "data_load_config.json";
+	String RULE_TYPES_JSON_PATH = RESOURCE_BASE_PATH + "rules\\ruleTypes\\ruleTypes.json";
+	String DROOL_DRL_FILES = RESOURCE_BASE_PATH + "rules\\files";
+	String EMAIL_TEMPLATES_PATH = RESOURCE_BASE_XML_PATH + "templates\\";
 
-	public static final String IMPORT_EXCEL_FOLDER = RESOURCE_BASE_PATH + "\\import";
+	String IMPORT_EXCEL_FOLDER = RESOURCE_BASE_PATH + "\\import";
+	String MEDIA_FILES_FOLDER = RESOURCE_BASE_PATH + "media";
 	
 }

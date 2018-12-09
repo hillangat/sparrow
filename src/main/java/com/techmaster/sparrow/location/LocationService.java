@@ -10,6 +10,7 @@ public interface LocationService {
     List<Location> getLocationHierarchies();
     List<Location> recursivelySave( List<Location> locations );
     Location getLocationById(Long locationId);
+    List<Location> getLocationChildrenById(Long locationId);
     RuleResultBean save(Location location);
     void deleteLocation(Long locationId);
 

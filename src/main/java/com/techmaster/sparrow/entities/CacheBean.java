@@ -15,7 +15,7 @@ import javax.persistence.*;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "CCH_BN")
-public class CacheBean extends AuditInfoBean{
+public class CacheBean extends AuditInfoBean {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -3,13 +3,15 @@ package com.techmaster.sparrow.data;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.techmaster.sparrow.constants.SparrowURLConstants;
 import com.techmaster.sparrow.entities.DataLoaderConfig;
+import com.techmaster.sparrow.entities.MediaObj;
 import com.techmaster.sparrow.entities.User;
+import com.techmaster.sparrow.entities.email.EmailReceiver;
+import com.techmaster.sparrow.entities.email.EmailTemplate;
 import com.techmaster.sparrow.enums.FileTypeEnum;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractor;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractorFactory;
-import com.techmaster.sparrow.repositories.DataLoaderConfigRepository;
-import com.techmaster.sparrow.repositories.SparrowBeanContext;
-import com.techmaster.sparrow.repositories.UserRepository;
+import com.techmaster.sparrow.repositories.*;
+import com.techmaster.sparrow.services.UserService;
 import com.techmaster.sparrow.util.SparrowUtil;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -31,8 +33,12 @@ import java.util.*;
 @Component
 public class DataLoaderServiceImpl implements DataLoaderService {
 
-    @Autowired
-    private DataLoaderConfigRepository configRepository;
+    @Autowired private DataLoaderConfigRepository configRepository;
+    @Autowired private EmailTemplateRepository emailTemplateRepository;
+    @Autowired private UserService userService;
+    @Autowired private EmailReceiverRepo emailReceiverRepo;
+    @Autowired private EmailAttachmentRepo emailAttachmentRepo;
+    @Autowired private MediaObjRepo mediaObjRepo;
 
     @Value("${spring.security.user.name}")
     private String adminUserName;
@@ -60,6 +66,9 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         });
 
         createUser();
+        List<MediaObj> mediaObjs = loadMediaObjects();
+        loadEmailTemplates(mediaObjs);
+        loadEmailReceivers();
     }
 
     @Override
@@ -143,5 +152,32 @@ public class DataLoaderServiceImpl implements DataLoaderService {
             repository.deleteAll();
             repository.save(user);
         }
+    }
+
+    @Override
+    public List<EmailTemplate> loadEmailTemplates(List<MediaObj> mediaObjs) {
+        List<EmailTemplate> emailTemplates = EmailTemplates.createTemplates(mediaObjs);
+        for (EmailTemplate e : emailTemplates) {
+            emailAttachmentRepo.saveAll(e.getAttachments());
+            emailTemplateRepository.save(e);
+        }
+        return emailTemplates;
+    }
+
+    @Override
+    public List<EmailReceiver> loadEmailReceivers() {
+        User users = userService.getUserById(userService.getMaxUserId());
+        List<Long> userIds = new ArrayList<>();
+        userIds.add(users.getUserId());
+        List<EmailReceiver> emailReceivers = EmailDataService.createEmailReceivers(userIds, 1L);
+        emailReceiverRepo.saveAll(emailReceivers);
+        return emailReceivers;
+    }
+
+    @Override
+    public List<MediaObj> loadMediaObjects() {
+        List<MediaObj> objs = MediaObjects.createMediaObjects();
+        mediaObjRepo.saveAll(objs);
+        return objs;
     }
 }

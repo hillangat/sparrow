@@ -25,4 +25,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     @Query(value = "UPDATE User u SET u.profilePic = null WHERE u.userId = ?0", nativeQuery = true)
     void deleteUserProfilePic(Long userId);
+
+    @Query(value = "SELECT MAX(u.userId) FROM User u", nativeQuery = false)
+    Long getMaxUserId();
 }

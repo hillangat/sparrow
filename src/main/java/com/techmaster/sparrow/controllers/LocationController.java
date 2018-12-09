@@ -35,6 +35,12 @@ public class LocationController extends BaseController {
         return getResponse(true, location, new RuleResultBean());
     }
 
+    @GetMapping(value = "location/{locationId}/children")
+    public ResponseEntity<ResponseData> getLocationChildren(@PathVariable(value = "locationId", required = false) Long locationId) {
+        List<Location> children = locationService.getLocationChildrenById(locationId);
+        return getResponse(true, children, new RuleResultBean());
+    }
+
     @DeleteMapping(value = "location/{locationId}")
     public ResponseEntity<ResponseData> deleteLocation(@PathVariable(value = "locationId", required = true) Long locationId) {
         locationService.deleteLocation(locationId);

@@ -6,6 +6,7 @@ public enum StatusEnum {
     SUCCESS("success", "Successful processing"),
     PENDING("pending", "Pending processing"),
     DRAFT("draft", "Draft content"),
+    CONCEPTUAL("conceptual", "Just created"),
     REVIEW("review", "Review"),
     APPROVED("approved", "Approved"),
     INVALID("invalid", "Failed validation"),

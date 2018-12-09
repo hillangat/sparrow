@@ -41,4 +41,16 @@
             WHERE u.USR_ID = ?
         </statement>
     </query>
+    <query id="getEmailReceiverDetails" >
+        <description>Get Email receiver details</description>
+        <statement>
+            SELECT
+                u.usr_id,
+                u.frst_nam,
+                u.lst_nam,
+                u.eml
+            FROM SPARROW_DB.usr u
+            WHERE u.usr_id IN ( ? )
+        </statement>
+    </query>
 </queries>
