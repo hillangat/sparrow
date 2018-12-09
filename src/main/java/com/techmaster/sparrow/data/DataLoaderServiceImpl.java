@@ -125,11 +125,6 @@ public class DataLoaderServiceImpl implements DataLoaderService {
     }
 
     @Override
-    public Map<String, JSONObject> getJSONs() {
-        return null;
-    }
-
-    @Override
     public void saveDataLoaderConfigs(List<DataLoaderConfig> configs) {
         logger.debug("Saving data loader configs to the database...");
         List<DataLoaderConfig> dataLoaderConfigs = getDataLoaderConfigs();
