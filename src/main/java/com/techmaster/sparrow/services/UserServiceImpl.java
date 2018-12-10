@@ -1,13 +1,10 @@
 package com.techmaster.sparrow.services;
 
 import com.techmaster.sparrow.entities.User;
-import com.techmaster.sparrow.enums.RuleTypesEnums;
 import com.techmaster.sparrow.enums.StatusEnum;
 import com.techmaster.sparrow.repositories.SparrowBeanContext;
 import com.techmaster.sparrow.repositories.SparrowJDBCExecutor;
 import com.techmaster.sparrow.repositories.UserRepository;
-import com.techmaster.sparrow.rules.abstracts.KnowledgeBaseFactory;
-import com.techmaster.sparrow.rules.beans.DefaultRuleBean;
 import com.techmaster.sparrow.rules.beans.UserRuleBean;
 import com.techmaster.sparrow.util.SparrowUtil;
 import com.techmaster.sparrow.validation.UserValidator;
@@ -16,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
 import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +22,7 @@ import java.util.Map;
 public class UserServiceImpl implements UserService<UserRepository> {
 
     @Autowired private UserRepository userRepository;
-    @Autowired private EntityManager entityManager;
+    @Autowired private UserValidator userValidator;
 
     private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -43,7 +39,7 @@ public class UserServiceImpl implements UserService<UserRepository> {
     @Override
     public UserRuleBean validate(User user) {
         UserRuleBean userRuleBean = new UserRuleBean();
-        UserValidator.validateUserCreate(user, userRuleBean, userRepository);
+        userValidator.validateUserCreate(user, userRuleBean, userRepository);
         return userRuleBean;
     }
 
@@ -107,8 +103,8 @@ public class UserServiceImpl implements UserService<UserRepository> {
             Object userId = args.get("userId");
             Object email = args.get("email");
 
-            UserValidator.validateEmail(ruleBean, email);
-            UserValidator.validateUserId(ruleBean, userId, userRepository);
+            userValidator.validateEmail(ruleBean.getRuleResultBean(), email);
+            userValidator.validateUserId(ruleBean, userId, userRepository);
 
             if (ruleBean.isSuccess()) {
                 List<Object> params = new ArrayList<>();
@@ -138,9 +134,9 @@ public class UserServiceImpl implements UserService<UserRepository> {
 
         try {
 
-            UserValidator.validateUserId(ruleBean, userId, userRepository);
-            UserValidator.validateUserName(ruleBean, userName);
-            UserValidator.validateExistingUserName(ruleBean, userName);
+            userValidator.validateUserId(ruleBean, userId, userRepository);
+            userValidator.validateUserName(ruleBean, userName);
+            userValidator.validateExistingUserName(ruleBean, userName);
 
             if (ruleBean.isSuccess()) {
 

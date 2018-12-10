@@ -1,16 +1,11 @@
 package com.techmaster.sparrow.controllers;
 
-import com.sun.deploy.security.ruleset.DefaultRule;
 import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.entities.ResponseData;
 import com.techmaster.sparrow.entities.User;
 import com.techmaster.sparrow.enums.StatusEnum;
-import com.techmaster.sparrow.rules.beans.DefaultRuleBean;
 import com.techmaster.sparrow.rules.beans.UserRuleBean;
-import com.techmaster.sparrow.services.RepositoryService;
 import com.techmaster.sparrow.services.UserService;
-import com.techmaster.sparrow.services.UserServiceImpl;
-import com.techmaster.sparrow.util.SparrowUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
