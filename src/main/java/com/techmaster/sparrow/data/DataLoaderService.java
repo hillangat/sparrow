@@ -16,7 +16,6 @@ public interface DataLoaderService {
     List<DataLoaderConfig> getDataLoaderConfigs();
     Workbook getWorkBook (DataLoaderConfig config);
     void saveDataLoaderConfigs(List<DataLoaderConfig> configs);
-    Map<String, JSONObject> getJSONs();
     List<EmailTemplate> loadEmailTemplates(List<MediaObj> mediaObjs);
     List<EmailReceiver> loadEmailReceivers();
     List<MediaObj> loadMediaObjects();
