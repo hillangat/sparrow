@@ -5,7 +5,7 @@ import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.entities.ImportBean;
 import com.techmaster.sparrow.entities.Location;
 import com.techmaster.sparrow.enums.LocationTypeEnum;
-import com.techmaster.sparrow.imports.beans.ImportHelper;
+import com.techmaster.sparrow.imports.extraction.ImportHelper;
 import com.techmaster.sparrow.imports.extraction.AbstractExcelExtractor;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractor;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractorUtil;

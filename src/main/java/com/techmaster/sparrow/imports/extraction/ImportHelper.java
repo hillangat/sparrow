@@ -1,4 +1,4 @@
-package com.techmaster.sparrow.imports.beans;
+package com.techmaster.sparrow.imports.extraction;
 
 import com.techmaster.sparrow.constants.SparrowURLConstants;
 import com.techmaster.sparrow.entities.ImportBean;
