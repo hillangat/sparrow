@@ -43,4 +43,10 @@ public abstract class AbstractValidator {
         }
     }
 
+    public void validateEmpty (RuleResultBean ruleResultBean, Object obj, String key, String message) {
+        if (!SparrowUtil.notNullNotEmpty(obj)) {
+            ruleResultBean.setError(key, message);
+        }
+    }
+
 }

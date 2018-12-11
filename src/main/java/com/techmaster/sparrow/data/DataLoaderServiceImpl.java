@@ -4,9 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.techmaster.sparrow.constants.SparrowURLConstants;
 import com.techmaster.sparrow.entities.DataLoaderConfig;
 import com.techmaster.sparrow.entities.MediaObj;
+import com.techmaster.sparrow.entities.Rating;
 import com.techmaster.sparrow.entities.User;
 import com.techmaster.sparrow.entities.email.EmailReceiver;
 import com.techmaster.sparrow.entities.email.EmailTemplate;
+import com.techmaster.sparrow.entities.playlist.Playlist;
+import com.techmaster.sparrow.entities.playlist.Song;
 import com.techmaster.sparrow.enums.FileTypeEnum;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractor;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractorFactory;
@@ -17,7 +20,6 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,8 @@ import org.springframework.util.Assert;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class DataLoaderServiceImpl implements DataLoaderService {
@@ -39,6 +42,9 @@ public class DataLoaderServiceImpl implements DataLoaderService {
     @Autowired private EmailReceiverRepo emailReceiverRepo;
     @Autowired private EmailAttachmentRepo emailAttachmentRepo;
     @Autowired private MediaObjRepo mediaObjRepo;
+    @Autowired private SongRepo songRepo;
+    @Autowired private PlaylistRepo playlistRepo;
+    @Autowired private RatingRepo ratingRepo;
 
     @Value("${spring.security.user.name}")
     private String adminUserName;
@@ -69,6 +75,8 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         List<MediaObj> mediaObjs = loadMediaObjects();
         loadEmailTemplates(mediaObjs);
         loadEmailReceivers();
+        loadSongs();
+        loadPlaylists();
     }
 
     @Override
@@ -147,32 +155,69 @@ public class DataLoaderServiceImpl implements DataLoaderService {
             repository.deleteAll();
             repository.save(user);
         }
+
+        logger.debug("Successfully created default admin user!");
     }
 
     @Override
     public List<EmailTemplate> loadEmailTemplates(List<MediaObj> mediaObjs) {
+        logger.debug("Loading email templates...");
         List<EmailTemplate> emailTemplates = EmailTemplates.createTemplates(mediaObjs);
         for (EmailTemplate e : emailTemplates) {
             emailAttachmentRepo.saveAll(e.getAttachments());
             emailTemplateRepository.save(e);
         }
+        logger.debug("successfully loaded email templates!!!");
         return emailTemplates;
     }
 
     @Override
     public List<EmailReceiver> loadEmailReceivers() {
+        logger.debug("Loading email receivers...");
         User users = userService.getUserById(userService.getMaxUserId());
         List<Long> userIds = new ArrayList<>();
         userIds.add(users.getUserId());
         List<EmailReceiver> emailReceivers = EmailDataService.createEmailReceivers(userIds, 1L);
         emailReceiverRepo.saveAll(emailReceivers);
+        logger.debug("successfully loaded email receivers!!!");
         return emailReceivers;
     }
 
     @Override
     public List<MediaObj> loadMediaObjects() {
+        logger.debug("Loading media objects...");
         List<MediaObj> objs = MediaObjects.createMediaObjects();
         mediaObjRepo.saveAll(objs);
+        logger.debug("successfully loaded media objects!!!");
         return objs;
+    }
+
+    @Override
+    public List<Song> loadSongs() {
+        logger.debug("Loading songs...");
+        List<Song> songs = Playlists.createSongs();
+        songRepo.saveAll(songs);
+        logger.debug("successfully loaded songs!!!");
+        return songs;
+    }
+
+    @Override
+    public List<Rating> ratings() {
+        long userId = userService.getMaxUserId();
+        List<Rating> ratings = Playlists.createRatings(userId);
+        ratingRepo.saveAll(ratings);
+        return ratings;
+    }
+
+    @Override
+    public List<Playlist> loadPlaylists() {
+        logger.debug("Loading playlists...");
+        long userId = userService.getMaxUserId();
+        List<Song> songs = SparrowUtil.getListOf(songRepo.findAll());
+        List<Rating> ratings = SparrowUtil.getListOf(ratingRepo.findAll());
+        List<Playlist>  playlists = Playlists.createPlaylist(userId, songs, ratings);
+        playlistRepo.saveAll(playlists);
+        logger.debug("Successfully loaded playlists!!!");
+        return playlists;
     }
 }

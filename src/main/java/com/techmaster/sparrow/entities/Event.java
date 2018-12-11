@@ -2,6 +2,8 @@ package com.techmaster.sparrow.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.techmaster.sparrow.constants.SparrowConstants;
+import com.techmaster.sparrow.entities.playlist.Playlist;
+import com.techmaster.sparrow.entities.playlist.Song;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -35,9 +37,9 @@ public class Event extends AuditInfoBean{
     @Column(name = "END_TIME", nullable = false)
     private LocalDateTime endTime;
 
-    @OneToMany( cascade = CascadeType.ALL, orphanRemoval = true )
-    @JoinColumn(name = "SNG_ID")
-    private List<Song> playList;
+    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "USR_ID")
+    private Playlist playlist;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usr_id")

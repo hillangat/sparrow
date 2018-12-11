@@ -15,12 +15,6 @@ import java.util.List;
 @Component
 public class UserValidator extends AbstractValidator {
 
-    public void validateEmpty (UserRuleBean userRuleBean, Object obj, String key, String message) {
-        if (!SparrowUtil.notNullNotEmpty(obj)) {
-            userRuleBean.getRuleResultBean().setError(key, message);
-        }
-    }
-
     public void validateUserId (UserRuleBean ruleBean, Object userId, UserRepository repository) {
 
         if (!SparrowUtil.isNumeric(userId)) {
@@ -44,7 +38,7 @@ public class UserValidator extends AbstractValidator {
 
     public void validateUserName (UserRuleBean ruleBean, Object userName) {
 
-        validateEmpty(ruleBean, userName, "userName", "Username cannot be empty");
+        validateEmpty(ruleBean.getRuleResultBean(), userName, "userName", "Username cannot be empty");
 
         if (!ruleBean.isSuccess() &&
                 ValidatorUtil.isSpecialChar(userName.toString())) {
@@ -71,11 +65,11 @@ public class UserValidator extends AbstractValidator {
     public void validateUserCreate(User user, UserRuleBean ruleBean, UserRepository repository) {
 
         // first name
-        validateEmpty(ruleBean, user.getFirstName(), "firstName", "First name is required");
+        validateEmpty(ruleBean.getRuleResultBean(), user.getFirstName(), "firstName", "First name is required");
         validateSpecialChar(ruleBean.getRuleResultBean(), user.getFirstName(), "firstName", "Fist name has special characters");
 
         // last name
-        validateEmpty(ruleBean, user.getLastName(), "lastName", "Last name is required");
+        validateEmpty(ruleBean.getRuleResultBean(), user.getLastName(), "lastName", "Last name is required");
         validateSpecialChar(ruleBean.getRuleResultBean(), user.getFirstName(), "lastName", "Last name has special characters");
 
         // user name
@@ -87,7 +81,7 @@ public class UserValidator extends AbstractValidator {
         validateEmail(ruleBean.getRuleResultBean(), user.getEmail());
 
         // password
-        validateEmpty(ruleBean, user.getLastName(), "lastName", "Last name is required");
+        validateEmpty(ruleBean.getRuleResultBean(), user.getLastName(), "lastName", "Last name is required");
         validateSpecialChar(ruleBean.getRuleResultBean(), user.getFirstName(), "lastName", "Last name has special characters");
         validateLength(5, 50, ruleBean.getRuleResultBean(), user.getPassword(), "password", "Password");
 

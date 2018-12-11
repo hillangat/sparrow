@@ -73,12 +73,18 @@ public abstract class BaseController {
 
     protected ResponseEntity<ResponseData> getResponse (boolean isGet, Object data, RuleResultBean ruleBean) {
 
+        String retrievalCompletionMsg = isGet ? SUCCESS_RETRIEVAL_MSG : SUCCESS_ACTION_COMPLETION;
+
+        if (ruleBean == null) {
+            return ResponseEntity.ok(new ResponseData(data, retrievalCompletionMsg, StatusEnum.SUCCESS.getStatus(), null));
+        }
+
         String status = ruleBean.isSuccess() ? StatusEnum.SUCCESS.getStatus() : StatusEnum.FAILED.getStatus();
 
         String otherError = ruleBean.getErrors().containsKey(SparrowConstants.APPLICATION_ERROR_KEY)
                 ? APPLICATION_ERROR_OCCURRED : FAILED_VALIDATION_MSG;
 
-        String msg = ruleBean.isSuccess() ? ( isGet ? SUCCESS_RETRIEVAL_MSG : SUCCESS_ACTION_COMPLETION ) : otherError;
+        String msg = ruleBean.isSuccess() ? ( retrievalCompletionMsg ) : otherError;
 
         return ResponseEntity.ok(new ResponseData(data, msg, status, ruleBean.getErrors()));
     }

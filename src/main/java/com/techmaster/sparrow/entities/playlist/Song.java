@@ -1,5 +1,8 @@
-package com.techmaster.sparrow.entities;
+package com.techmaster.sparrow.entities.playlist;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.techmaster.sparrow.constants.SparrowConstants;
+import com.techmaster.sparrow.entities.AuditInfoBean;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -7,6 +10,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.sql.Blob;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -21,8 +25,8 @@ public class Song extends AuditInfoBean {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long songId;
 
-    @Column(name = "CLBRTY_ID", nullable = false)
-    private String celebrityId;
+    @Column(name = "ARTST", nullable = false)
+    private String artist;
 
     @Column(name = "NAM", nullable = false)
     private String name;
@@ -36,7 +40,17 @@ public class Song extends AuditInfoBean {
     @Column(name = "RTNG_CNT", nullable = false)
     private int ratingCount;
 
-    @Column(name = "PICTR", nullable = false)
+    @Column(name = "PICTR")
     private Blob picture;
+
+    @Column(name = "PRDCR")
+    private String producer;
+
+    @Column(name = "RLS_DTE")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = SparrowConstants.DATE_FORMAT_STRING)
+    private LocalDateTime releaseDate;
+
+    @Column(name = "ALBM")
+    private String album;
 
 }

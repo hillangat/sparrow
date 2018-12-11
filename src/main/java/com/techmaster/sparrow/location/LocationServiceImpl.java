@@ -3,7 +3,6 @@ package com.techmaster.sparrow.location;
 import com.techmaster.sparrow.cache.SparrowCacheUtil;
 import com.techmaster.sparrow.entities.Location;
 import com.techmaster.sparrow.repositories.LocationRepository;
-import com.techmaster.sparrow.repositories.SparrowJDBCExecutor;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.util.SparrowUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +67,6 @@ public class LocationServiceImpl implements LocationService {
     }
 
     private boolean isParent (List<Location> locations, Location l) {
-        String name = l.getName();
         boolean hasChildren = locations.stream()
                 .anyMatch(c -> c.getUiParentId() == l.getUiLocationId());
         return hasChildren;

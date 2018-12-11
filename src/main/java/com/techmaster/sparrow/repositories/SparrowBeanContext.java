@@ -4,6 +4,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.context.ApplicationContext;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.servlet.ServletContext;
 import java.net.URL;
 import java.util.Map;
@@ -48,6 +50,11 @@ public class SparrowBeanContext {
         if (sessionFactory != null)
             return sessionFactory.openSession();
         return null;
+    }
+
+    public static EntityManager getEntityManager() {
+        EntityManagerFactory entityManagerFactory = SparrowBeanContext.getBean(EntityManagerFactory.class);
+        return entityManagerFactory != null ? entityManagerFactory.createEntityManager() : null;
     }
 
 

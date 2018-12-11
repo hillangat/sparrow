@@ -1,5 +1,14 @@
 1. Search playlist
 2. Explore songs
-3. Like song
-4. show likes for each song
-5. Text playlist
+3. Show likes for each song
+4. Text playlist
+5. Create playlist
+6. Add song to playlist
+7. Edit Playlist
+    - Edit name
+    - Add Song
+    - Remove Song
+    - Delete playlist
+    - Add song order
+
+8.

@@ -1,0 +1,7 @@
+1. Create song - import songs
+2. Import song images
+3. Edit songs - name, image, etc.
+4. Remove Song
+5. Like song
+6. Dislike song
+7. Song content - the blob - create and make sure it works.
