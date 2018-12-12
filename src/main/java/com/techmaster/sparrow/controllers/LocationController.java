@@ -1,10 +1,9 @@
 package com.techmaster.sparrow.controllers;
 
 import com.techmaster.sparrow.cache.SparrowCacheUtil;
-import com.techmaster.sparrow.entities.Location;
-import com.techmaster.sparrow.entities.ResponseData;
+import com.techmaster.sparrow.entities.misc.Location;
+import com.techmaster.sparrow.entities.misc.ResponseData;
 import com.techmaster.sparrow.location.LocationService;
-import com.techmaster.sparrow.repositories.LocationRepository;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

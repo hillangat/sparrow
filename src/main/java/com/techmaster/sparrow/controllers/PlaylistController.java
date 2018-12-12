@@ -1,8 +1,8 @@
 package com.techmaster.sparrow.controllers;
 
-import com.techmaster.sparrow.entities.ResponseData;
-import com.techmaster.sparrow.entities.SearchArg;
-import com.techmaster.sparrow.entities.SearchResult;
+import com.techmaster.sparrow.entities.misc.ResponseData;
+import com.techmaster.sparrow.entities.misc.SearchArg;
+import com.techmaster.sparrow.entities.misc.SearchResult;
 import com.techmaster.sparrow.entities.playlist.Playlist;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.services.PlaylistService;
@@ -23,7 +23,7 @@ public class PlaylistController extends BaseController {
         return getResponse(false, playlist, resultBean);
     }
 
-    // @PostMapping(value = "playlist/search")
+    @PostMapping(value = "playlist/search")
     public ResponseEntity<ResponseData> searchPlaylist(@RequestBody SearchArg searchArg) {
         SearchResult searchResult = playlistService.searchPlaylist(searchArg);
         return getResponse(true, searchResult, null);

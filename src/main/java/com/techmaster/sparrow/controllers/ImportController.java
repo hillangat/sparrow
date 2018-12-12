@@ -1,6 +1,6 @@
 package com.techmaster.sparrow.controllers;
 
-import com.techmaster.sparrow.entities.ResponseData;
+import com.techmaster.sparrow.entities.misc.ResponseData;
 import com.techmaster.sparrow.enums.StatusEnum;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractor;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractorFactory;
@@ -9,7 +9,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 

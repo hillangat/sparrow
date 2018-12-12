@@ -1,7 +1,6 @@
 package com.techmaster.sparrow.entities.playlist;
 
-import com.techmaster.sparrow.entities.AuditInfoBean;
-import com.techmaster.sparrow.entities.User;
+import com.techmaster.sparrow.entities.misc.AuditInfoBean;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

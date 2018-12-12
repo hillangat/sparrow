@@ -1,6 +1,6 @@
 package com.techmaster.sparrow.repositories;
 
-import com.techmaster.sparrow.entities.Location;
+import com.techmaster.sparrow.entities.misc.Location;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

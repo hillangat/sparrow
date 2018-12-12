@@ -1,7 +1,7 @@
 package com.techmaster.sparrow.entities.configs;
 
 
-import com.techmaster.sparrow.entities.AuditInfoBean;
+import com.techmaster.sparrow.entities.misc.AuditInfoBean;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

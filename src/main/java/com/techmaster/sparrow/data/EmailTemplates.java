@@ -1,7 +1,7 @@
 package com.techmaster.sparrow.data;
 
 import com.techmaster.sparrow.constants.SparrowURLConstants;
-import com.techmaster.sparrow.entities.MediaObj;
+import com.techmaster.sparrow.entities.misc.MediaObj;
 import com.techmaster.sparrow.entities.email.EmailAttachment;
 import com.techmaster.sparrow.entities.email.EmailTemplate;
 import com.techmaster.sparrow.util.SparrowUtil;

@@ -1,15 +1,13 @@
 package com.techmaster.sparrow.data;
 
 import com.techmaster.sparrow.constants.SparrowURLConstants;
-import com.techmaster.sparrow.entities.MediaObj;
+import com.techmaster.sparrow.entities.misc.MediaObj;
 import com.techmaster.sparrow.enums.StorageType;
 import com.techmaster.sparrow.util.SparrowUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.sql.rowset.serial.SerialBlob;
 import java.io.File;
-import java.io.FileInputStream;
 import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;

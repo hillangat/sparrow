@@ -1,6 +1,6 @@
 package com.techmaster.sparrow.services;
 
-import com.techmaster.sparrow.entities.User;
+import com.techmaster.sparrow.entities.misc.User;
 import com.techmaster.sparrow.enums.StatusEnum;
 import com.techmaster.sparrow.repositories.SparrowBeanContext;
 import com.techmaster.sparrow.repositories.SparrowJDBCExecutor;

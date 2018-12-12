@@ -1,6 +1,6 @@
 package com.techmaster.sparrow.entities.email;
 
-import com.techmaster.sparrow.entities.AuditInfoBean;
+import com.techmaster.sparrow.entities.misc.AuditInfoBean;
 import com.techmaster.sparrow.enums.EmailReceiverType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

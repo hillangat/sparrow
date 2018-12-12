@@ -1,6 +1,6 @@
 package com.techmaster.sparrow.location;
 
-import com.techmaster.sparrow.entities.Location;
+import com.techmaster.sparrow.entities.misc.Location;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 
 import java.util.List;

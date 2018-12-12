@@ -1,8 +1,8 @@
 package com.techmaster.sparrow.controllers;
 
 import com.techmaster.sparrow.constants.SparrowConstants;
-import com.techmaster.sparrow.entities.ResponseData;
-import com.techmaster.sparrow.entities.User;
+import com.techmaster.sparrow.entities.misc.ResponseData;
+import com.techmaster.sparrow.entities.misc.User;
 import com.techmaster.sparrow.enums.StatusEnum;
 import com.techmaster.sparrow.rules.beans.UserRuleBean;
 import com.techmaster.sparrow.services.UserService;

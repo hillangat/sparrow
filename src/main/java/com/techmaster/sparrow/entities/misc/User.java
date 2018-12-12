@@ -1,13 +1,11 @@
-package com.techmaster.sparrow.entities;
+package com.techmaster.sparrow.entities.misc;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.converters.BooleanToYNStringConverter;
 import lombok.*;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.sql.Blob;
 import java.time.LocalDateTime;
 

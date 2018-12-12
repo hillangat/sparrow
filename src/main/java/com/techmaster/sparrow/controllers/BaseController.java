@@ -1,9 +1,9 @@
 package com.techmaster.sparrow.controllers;
 
 import com.techmaster.sparrow.constants.SparrowConstants;
-import com.techmaster.sparrow.entities.AuditInfoBean;
-import com.techmaster.sparrow.entities.ErrorResponse;
-import com.techmaster.sparrow.entities.ResponseData;
+import com.techmaster.sparrow.entities.misc.AuditInfoBean;
+import com.techmaster.sparrow.entities.misc.ErrorResponse;
+import com.techmaster.sparrow.entities.misc.ResponseData;
 import com.techmaster.sparrow.enums.StatusEnum;
 import com.techmaster.sparrow.exception.SparrowRestfulApiException;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;

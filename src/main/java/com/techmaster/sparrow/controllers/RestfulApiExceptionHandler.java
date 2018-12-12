@@ -1,6 +1,6 @@
 package com.techmaster.sparrow.controllers;
 
-import com.techmaster.sparrow.entities.ErrorResponse;
+import com.techmaster.sparrow.entities.misc.ErrorResponse;
 import com.techmaster.sparrow.exception.SparrowRestfulApiException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

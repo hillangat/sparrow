@@ -1,6 +1,6 @@
 package com.techmaster.sparrow.search;
 
-import com.techmaster.sparrow.entities.SearchArg;
+import com.techmaster.sparrow.entities.misc.SearchArg;
 import lombok.Data;
 
 import java.util.ArrayList;

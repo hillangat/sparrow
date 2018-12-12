@@ -1,6 +1,6 @@
 package com.techmaster.sparrow.repositories;
 
-import com.techmaster.sparrow.entities.User;
+import com.techmaster.sparrow.entities.misc.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

@@ -1,22 +1,15 @@
 package com.techmaster.sparrow.controllers;
 
 import com.techmaster.sparrow.cache.SparrowCacheUtil;
-import com.techmaster.sparrow.constants.SparrowURLConstants;
-import com.techmaster.sparrow.entities.CacheBean;
-import com.techmaster.sparrow.entities.ResponseData;
+import com.techmaster.sparrow.entities.misc.CacheBean;
+import com.techmaster.sparrow.entities.misc.ResponseData;
 import com.techmaster.sparrow.enums.StatusEnum;
 import com.techmaster.sparrow.util.SparrowUtil;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
 import java.util.ArrayList;
 import java.util.List;
 

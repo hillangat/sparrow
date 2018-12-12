@@ -1,9 +1,8 @@
-package com.techmaster.sparrow.entities;
+package com.techmaster.sparrow.entities.misc;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.entities.playlist.Playlist;
-import com.techmaster.sparrow.entities.playlist.Song;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -11,7 +10,6 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Data

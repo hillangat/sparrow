@@ -1,7 +1,7 @@
 package com.techmaster.sparrow.rules.beans;
 
 import com.techmaster.sparrow.cache.SparrowCacheUtil;
-import com.techmaster.sparrow.entities.User;
+import com.techmaster.sparrow.entities.misc.User;
 import com.techmaster.sparrow.rules.abstracts.AbstractKnowledgeBaseHelper;
 import com.techmaster.sparrow.rules.abstracts.RuleExceptionType;
 import com.techmaster.sparrow.rules.abstracts.RuleTypeBean;

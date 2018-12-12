@@ -1,7 +1,7 @@
 package com.techmaster.sparrow.controllers;
 
-import com.techmaster.sparrow.entities.ResponseData;
-import com.techmaster.sparrow.entities.User;
+import com.techmaster.sparrow.entities.misc.ResponseData;
+import com.techmaster.sparrow.entities.misc.User;
 import com.techmaster.sparrow.repositories.UserRepository;
 import com.techmaster.sparrow.util.SparrowUtil;
 import org.junit.Assert;

@@ -1,7 +1,7 @@
 package com.techmaster.sparrow.validation;
 
 import com.techmaster.sparrow.constants.SparrowConstants;
-import com.techmaster.sparrow.entities.User;
+import com.techmaster.sparrow.entities.misc.User;
 import com.techmaster.sparrow.repositories.SparrowBeanContext;
 import com.techmaster.sparrow.repositories.SparrowJDBCExecutor;
 import com.techmaster.sparrow.repositories.UserRepository;

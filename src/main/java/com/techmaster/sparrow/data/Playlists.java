@@ -1,6 +1,6 @@
 package com.techmaster.sparrow.data;
 
-import com.techmaster.sparrow.entities.Rating;
+import com.techmaster.sparrow.entities.misc.Rating;
 import com.techmaster.sparrow.entities.playlist.Playlist;
 import com.techmaster.sparrow.entities.playlist.Song;
 import com.techmaster.sparrow.entities.playlist.SongOrder;

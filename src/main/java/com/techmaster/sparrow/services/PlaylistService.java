@@ -1,7 +1,7 @@
 package com.techmaster.sparrow.services;
 
-import com.techmaster.sparrow.entities.SearchArg;
-import com.techmaster.sparrow.entities.SearchResult;
+import com.techmaster.sparrow.entities.misc.SearchArg;
+import com.techmaster.sparrow.entities.misc.SearchResult;
 import com.techmaster.sparrow.entities.playlist.Playlist;
 import com.techmaster.sparrow.entities.playlist.SongOrder;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;

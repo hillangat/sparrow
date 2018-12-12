@@ -2,8 +2,8 @@ package com.techmaster.sparrow.imports.extractors;
 
 import com.techmaster.sparrow.cache.SparrowCacheUtil;
 import com.techmaster.sparrow.constants.SparrowConstants;
-import com.techmaster.sparrow.entities.ImportBean;
-import com.techmaster.sparrow.entities.Location;
+import com.techmaster.sparrow.entities.misc.ImportBean;
+import com.techmaster.sparrow.entities.misc.Location;
 import com.techmaster.sparrow.enums.LocationTypeEnum;
 import com.techmaster.sparrow.imports.extraction.ImportHelper;
 import com.techmaster.sparrow.imports.extraction.AbstractExcelExtractor;

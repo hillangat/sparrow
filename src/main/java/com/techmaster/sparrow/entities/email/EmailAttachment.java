@@ -1,15 +1,14 @@
 package com.techmaster.sparrow.entities.email;
 
 import com.techmaster.sparrow.converters.BooleanToYNStringConverter;
-import com.techmaster.sparrow.entities.AuditInfoBean;
-import com.techmaster.sparrow.entities.MediaObj;
+import com.techmaster.sparrow.entities.misc.AuditInfoBean;
+import com.techmaster.sparrow.entities.misc.MediaObj;
 import com.techmaster.sparrow.enums.StatusEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.sql.Blob;
 
 /**
  * Email attachment content

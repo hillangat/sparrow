@@ -1,8 +1,8 @@
 package com.techmaster.sparrow.data;
 
-import com.techmaster.sparrow.entities.DataLoaderConfig;
-import com.techmaster.sparrow.entities.MediaObj;
-import com.techmaster.sparrow.entities.Rating;
+import com.techmaster.sparrow.entities.misc.DataLoaderConfig;
+import com.techmaster.sparrow.entities.misc.MediaObj;
+import com.techmaster.sparrow.entities.misc.Rating;
 import com.techmaster.sparrow.entities.email.EmailReceiver;
 import com.techmaster.sparrow.entities.email.EmailTemplate;
 import com.techmaster.sparrow.entities.playlist.Playlist;

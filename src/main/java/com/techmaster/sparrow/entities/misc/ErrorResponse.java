@@ -1,4 +1,4 @@
-package com.techmaster.sparrow.entities;
+package com.techmaster.sparrow.entities.misc;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.techmaster.sparrow.constants.SparrowConstants;

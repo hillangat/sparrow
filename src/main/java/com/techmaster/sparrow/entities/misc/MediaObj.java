@@ -1,4 +1,4 @@
-package com.techmaster.sparrow.entities;
+package com.techmaster.sparrow.entities.misc;
 
 import com.techmaster.sparrow.enums.StorageType;
 import lombok.Data;

@@ -1,7 +1,7 @@
 package com.techmaster.sparrow.imports.extraction;
 
 import com.techmaster.sparrow.constants.SparrowURLConstants;
-import com.techmaster.sparrow.entities.ImportBean;
+import com.techmaster.sparrow.entities.misc.ImportBean;
 import com.techmaster.sparrow.repositories.SparrowBeanContext;
 import com.techmaster.sparrow.util.SparrowUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;

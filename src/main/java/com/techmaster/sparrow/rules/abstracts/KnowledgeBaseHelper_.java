@@ -1,6 +1,5 @@
 package com.techmaster.sparrow.rules.abstracts;
 
-import com.techmaster.sparrow.entities.User;
 import com.techmaster.sparrow.rules.beans.UserRuleBean;
 import com.techmaster.sparrow.util.SparrowUtil;
 import org.drools.KnowledgeBase;

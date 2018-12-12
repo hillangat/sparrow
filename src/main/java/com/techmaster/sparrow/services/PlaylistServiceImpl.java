@@ -1,7 +1,7 @@
 package com.techmaster.sparrow.services;
 
-import com.techmaster.sparrow.entities.SearchArg;
-import com.techmaster.sparrow.entities.SearchResult;
+import com.techmaster.sparrow.entities.misc.SearchArg;
+import com.techmaster.sparrow.entities.misc.SearchResult;
 import com.techmaster.sparrow.entities.playlist.Playlist;
 import com.techmaster.sparrow.entities.playlist.SongOrder;
 import com.techmaster.sparrow.repositories.PlaylistRepo;
@@ -16,7 +16,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
