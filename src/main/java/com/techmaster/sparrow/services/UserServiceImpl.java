@@ -1,7 +1,7 @@
 package com.techmaster.sparrow.services;
 
 import com.techmaster.sparrow.entities.misc.User;
-import com.techmaster.sparrow.enums.StatusEnum;
+import com.techmaster.sparrow.enums.Status;
 import com.techmaster.sparrow.repositories.SparrowBeanContext;
 import com.techmaster.sparrow.repositories.SparrowJDBCExecutor;
 import com.techmaster.sparrow.repositories.UserRepository;
@@ -77,15 +77,15 @@ public class UserServiceImpl implements UserService<UserRepository> {
     }
 
     @Override
-    public StatusEnum lockUserAccount(long userId, long lockerUserId, String reason) {
+    public Status lockUserAccount(long userId, long lockerUserId, String reason) {
         userRepository.lockUnlockUser("Y", userId, lockerUserId, reason);
-        return StatusEnum.SUCCESS;
+        return Status.SUCCESS;
     }
 
     @Override
-    public StatusEnum unlockUserAccount(long userId) {
+    public Status unlockUserAccount(long userId) {
         userRepository.lockUnlockUser("N", userId, 0, null);
-        return StatusEnum.SUCCESS;
+        return Status.SUCCESS;
     }
 
     @Override
@@ -161,13 +161,13 @@ public class UserServiceImpl implements UserService<UserRepository> {
     }
 
     @Override
-    public StatusEnum deleteProfilePic(long userId) {
+    public Status deleteProfilePic(long userId) {
         userRepository.deleteUserProfilePic(userId);
-        return StatusEnum.SUCCESS;
+        return Status.SUCCESS;
     }
 
     @Override
-    public StatusEnum reportUser(long userId, long reportedBy, String reason) {
+    public Status reportUser(long userId, long reportedBy, String reason) {
         return null;
     }
 

@@ -1,6 +1,6 @@
 package com.techmaster.sparrow.entities.misc;
 
-import com.techmaster.sparrow.enums.LocationTypeEnum;
+import com.techmaster.sparrow.enums.LocationType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -42,7 +42,7 @@ public class Location extends AuditInfoBean {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "LCTN_TYP")
-    private LocationTypeEnum locationType;
+    private LocationType locationType;
 
     @Transient
     private long uiParentId;

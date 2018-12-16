@@ -9,10 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class SparrowJDBCExecutorImpl implements SparrowJDBCExecutor{
@@ -228,17 +225,6 @@ public class SparrowJDBCExecutorImpl implements SparrowJDBCExecutor{
     }
 
     @Override
-    public List<Object> getValuesList(Object[] array) {
-        List<Object> values = new ArrayList<>();
-        if(array != null && array.length > 0){
-            for(Object obj : array){
-                values.add(obj);
-            }
-        }
-        return values;
-    }
-
-    @Override
     public Object executeQueryForOneReturn(String query, List<Object> values) {
         Map<Integer, List<Object>>  rowListMap = executeQueryRowList(query, values);
         if(!rowListMap.isEmpty() && rowListMap.get(1) != null && !rowListMap.get(1).isEmpty()){
@@ -306,4 +292,8 @@ public class SparrowJDBCExecutorImpl implements SparrowJDBCExecutor{
         return obj == null ? 0 : Integer.parseInt(obj.toString());
     }
 
+    @Override
+    public List<Object> getList(Object... objs) {
+        return Arrays.asList(objs);
+    }
 }

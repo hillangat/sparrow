@@ -2,7 +2,7 @@ package com.techmaster.sparrow.entities.misc;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.techmaster.sparrow.constants.SparrowConstants;
-import com.techmaster.sparrow.enums.FileTypeEnum;
+import com.techmaster.sparrow.enums.FileType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -33,7 +33,7 @@ public class DataLoaderConfig extends AuditInfoBean {
 
     @Column(name = "FL_TYP", nullable = false)
     @Enumerated(EnumType.STRING)
-    private FileTypeEnum fileType;
+    private FileType fileType;
 
     @Column(name = "LDED")
     private String loaded;

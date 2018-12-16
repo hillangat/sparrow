@@ -1,7 +1,7 @@
 package com.techmaster.sparrow.services;
 
 import com.techmaster.sparrow.entities.misc.User;
-import com.techmaster.sparrow.enums.StatusEnum;
+import com.techmaster.sparrow.enums.Status;
 import com.techmaster.sparrow.rules.beans.UserRuleBean;
 
 import java.sql.Blob;
@@ -17,13 +17,13 @@ public interface UserService<T> extends RepositoryService<T> {
     UserRuleBean createUser(User user);
     void deleteUser(long userId);
     UserRuleBean uploadProfilePic(long userId, Blob profilePic);
-    StatusEnum lockUserAccount(long userId, long lockerUserId, String message);
-    StatusEnum unlockUserAccount(long userId);
+    Status lockUserAccount(long userId, long lockerUserId, String message);
+    Status unlockUserAccount(long userId);
     Map<String, Object> handleForgotPassword(String userName, String email, String phoneNumber);
     UserRuleBean changeEmail(Map<String, Object> args);
     UserRuleBean changeUserName(Object userId, Object userName);
-    StatusEnum deleteProfilePic(long userId);
-    StatusEnum reportUser(long userId, long reportedBy, String reason);
+    Status deleteProfilePic(long userId);
+    Status reportUser(long userId, long reportedBy, String reason);
     Long getMaxUserId();
 
 

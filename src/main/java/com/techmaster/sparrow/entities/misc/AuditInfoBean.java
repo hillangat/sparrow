@@ -20,16 +20,16 @@ import java.time.LocalDateTime;
 public abstract class AuditInfoBean implements Serializable {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = SparrowConstants.DATE_FORMAT_STRING)
-    @Column(name = "cret_dt", nullable = false)
+    @Column(name = "CRET_DT", nullable = false)
     protected LocalDateTime createDate;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = SparrowConstants.DATE_FORMAT_STRING)
-    @Column(name = "lst_updt", nullable = false)
+    @Column(name = "LST_UPDT", nullable = false)
     protected LocalDateTime lastUpdate;
 
-    @Column(name = "cretd_by", nullable = false)
+    @Column(name = "CRETD_BY", nullable = false)
     protected String createdBy;
 
-    @Column(name = "updtd_by", nullable = false)
+    @Column(name = "UPDTD_BY", nullable = false)
     protected String updatedBy;
 }

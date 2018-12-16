@@ -1,6 +1,6 @@
 package com.techmaster.sparrow.rules.abstracts;
 
-import com.techmaster.sparrow.enums.StatusEnum;
+import com.techmaster.sparrow.enums.Status;
 import lombok.Data;
 import lombok.ToString;
 
@@ -13,7 +13,7 @@ import java.util.Map;
 @ToString(callSuper = true)
 public class RuleResultBean {
 
-    private StatusEnum status = StatusEnum.SUCCESS;
+    private Status status = Status.SUCCESS;
     private Map<String, List<String>> errors = new HashMap<>();
     private RuleExceptionType exceptionType;
 
@@ -22,7 +22,7 @@ public class RuleResultBean {
         fieldErrors = fieldErrors == null ? new ArrayList<>() : fieldErrors;
         fieldErrors.add(error);
         errors.put(field, fieldErrors);
-        status = StatusEnum.FAILED;
+        status = Status.FAILED;
     }
 
     public void setApplicationError ( RuleExceptionType exceptionType ) {
@@ -32,6 +32,6 @@ public class RuleResultBean {
 
     public boolean isSuccess() {
         return errors.isEmpty() &&
-                status.equals(StatusEnum.SUCCESS);
+                status.equals(Status.SUCCESS);
     };
 }

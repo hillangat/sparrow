@@ -1,12 +1,16 @@
 package com.techmaster.sparrow.services;
 
+import com.techmaster.sparrow.entities.misc.Rating;
+import com.techmaster.sparrow.entities.misc.ResponseData;
 import com.techmaster.sparrow.entities.misc.SearchArg;
 import com.techmaster.sparrow.entities.misc.SearchResult;
 import com.techmaster.sparrow.entities.playlist.Playlist;
 import com.techmaster.sparrow.entities.playlist.SongOrder;
-import com.techmaster.sparrow.repositories.PlaylistRepo;
-import com.techmaster.sparrow.repositories.SparrowBeanContext;
+import com.techmaster.sparrow.enums.RatingType;
+import com.techmaster.sparrow.repositories.*;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
+import com.techmaster.sparrow.search.beans.GridDataQueryReq;
+import com.techmaster.sparrow.search.data.AngularDataHelper;
 import com.techmaster.sparrow.util.SparrowUtil;
 import com.techmaster.sparrow.validation.PlaylistValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +26,10 @@ import java.util.List;
 @Service
 public class PlaylistServiceImpl implements PlaylistService {
 
-    @Autowired PlaylistRepo playlistRepo;
-    @Autowired PlaylistValidator playlistValidator;
+    @Autowired private PlaylistRepo playlistRepo;
+    @Autowired private PlaylistValidator playlistValidator;
+    @Autowired private RatingRepo ratingRepo;
+    @Autowired private SongOrderRepo songOrderRepo;
 
     @Override
     public Playlist getPlaylistById(long playlistId) {
@@ -44,21 +50,30 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     public RuleResultBean deletePlaylist(long playlistId) {
+        playlistRepo.deleteById(playlistId);
         return null;
     }
 
     @Override
-    public void likePlaylist(long userId, boolean like) {
-
-    }
-
-    @Override
     public void ratePlaylist(long playlistIid, long userId, int rating) {
-
+        Rating ratBean = new Rating();
+        ratBean.setRating(rating);
+        ratBean.setRatingType(RatingType.PLAYLIST);
+        ratBean.setUserId(userId);
+        ratBean.setRatingId(0);
+        ratingRepo.save(ratBean);
     }
 
     @Override
-    public Playlist contributeToPlaylist(List<SongOrder> songOrder) {
+    public Playlist contributeSongOrder(long playlistId, List<SongOrder> songOrder) {
+        songOrderRepo.saveAll(songOrder);
+        SparrowJDBCExecutor executor = SparrowBeanContext.getBean(SparrowJDBCExecutor.class);
+        if (executor != null) {
+            String query = executor.getQueryForSqlId("saveSongOrderToPlaylist");
+            songOrder.forEach(s -> {
+                executor.executeUpdate(query, executor.getList(playlistId, s.getSongOrderId()) );
+            });
+        }
         return null;
     }
 
@@ -92,17 +107,6 @@ public class PlaylistServiceImpl implements PlaylistService {
         Root<Playlist> from = criteriaQuery.from(Playlist.class);
         CriteriaQuery<Playlist> select = criteriaQuery.select(from);
 
-        /*
-        ParameterExpression<Integer> p = cb.parameter(Integer.class);
-        ParameterExpression<Integer> a = cb.parameter(Integer.class);
-
-        select.where(
-                cb.gt(from.get("playlistName"), p),
-                cb.gt(from.get("playlistName"), p)
-        ).orderBy();
-
-        */
-
         TypedQuery<Playlist> typedQuery = entityManager.createQuery(select);
 
         while (pageNumber < count.intValue()) {
@@ -122,5 +126,11 @@ public class PlaylistServiceImpl implements PlaylistService {
         searchResult.setTotal(total);
 
         return searchResult;
+    }
+
+    @Override
+    public ResponseData paginate(GridDataQueryReq queryReq) {
+        ResponseData responseData = AngularDataHelper.getIntance().getBeanForQuery(Playlist.class, "playlistPagination", null);
+        return responseData;
     }
 }

@@ -1,5 +1,5 @@
 package com.techmaster.sparrow.enums;
 
-public enum  RuleTypesEnums {
+public enum RuleTypes {
     USER
 }

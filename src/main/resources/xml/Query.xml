@@ -53,4 +53,19 @@
             WHERE u.usr_id IN ( ? )
         </statement>
     </query>
+    <query id="saveSongOrderToPlaylist" >
+        <description>Maps song orders to playlist</description>
+        <statement>
+            INSERT INTO plylst_sng_ordrs(PLYLST_ID, SNG_ORDR_ID)
+            VALUES(?, ?)
+        </statement>
+    </query>
+    <query id="playlistPagination" >
+        <description>playlist pagination query</description>
+        <statement>
+            SELECT * FROM SPARROW_DB.PLYLST p
+            WHERE p.PLYLST_NAME LIKE '%Tally%'
+            LIMIT :limit OFFSET :offset
+        </statement>
+    </query>
 </queries>

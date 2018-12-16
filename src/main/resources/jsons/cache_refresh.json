@@ -19,5 +19,12 @@
     "refreshing": false,
     "selected": false,
     "active": true
+  },
+  {
+    "name": "Query To Bean Mapper",
+    "key": "queryToBeanMapper",
+    "refreshing": false,
+    "selected": false,
+    "active": true
   }
 ]

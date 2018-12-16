@@ -5,6 +5,8 @@ import com.techmaster.sparrow.entities.misc.SearchArg;
 import com.techmaster.sparrow.entities.misc.SearchResult;
 import com.techmaster.sparrow.entities.playlist.Playlist;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
+import com.techmaster.sparrow.search.beans.GridDataQueryReq;
+import com.techmaster.sparrow.search.beans.GridFieldUserInput;
 import com.techmaster.sparrow.services.PlaylistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,12 @@ public class PlaylistController extends BaseController {
     public ResponseEntity<ResponseData> createEdit(@RequestBody Playlist playlist) {
         RuleResultBean resultBean = playlistService.saveOrEditPlaylist(playlist);
         return getResponse(false, playlist, resultBean);
+    }
+
+    @PostMapping(value = "playlist/pagination")
+    public ResponseEntity<ResponseData> createEdit(@RequestBody GridDataQueryReq queryReq) {
+        ResponseData result = playlistService.paginate(queryReq);
+        return getResponse(false, result, null);
     }
 
     @PostMapping(value = "playlist/search")

@@ -1,8 +1,8 @@
 package com.techmaster.sparrow.cache;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.techmaster.sparrow.constants.SparrowURLConstants;
 import com.techmaster.sparrow.constants.SparrowConstants;
+import com.techmaster.sparrow.constants.SparrowURLConstants;
 import com.techmaster.sparrow.entities.misc.CacheBean;
 import com.techmaster.sparrow.entities.misc.Location;
 import com.techmaster.sparrow.location.LocationService;
@@ -104,6 +104,12 @@ public class SparrowCacheUtil {
 			XMLService uiMsgService = SparrowUtil.getXMLServiceForFileLocation(SparrowURLConstants.UI_MSG_XML_FL_LOC_PATH);
 			SparrowCache.getInstance().put(SparrowConstants.UI_MSG_CACHED_SERVICE, uiMsgService);
 			logger.debug("Done caching ui message xml!!");
+			break;
+		case "queryToBeanMapper" :
+			logger.debug("Caching queryToBeanMapper...");
+			XMLService queryToBeanMapper = SparrowUtil.getXMLServiceForFileLocation(SparrowURLConstants.QUERY_TO_BEAN_MAPPER_PATH);
+			SparrowCache.getInstance().put(SparrowConstants.QUERY_TO_BEAN_MAPPER, queryToBeanMapper);
+			logger.debug("Done caching query to bean xml!!");
 			break;
 		default:
 			break;
@@ -250,5 +256,5 @@ public class SparrowCacheUtil {
 		cacheBeans = cacheBeans == null || cacheBeans.isEmpty() ? cacheCacheBeans() : cacheBeans;
 		return cacheBeans;
 	}
-	
+
 }

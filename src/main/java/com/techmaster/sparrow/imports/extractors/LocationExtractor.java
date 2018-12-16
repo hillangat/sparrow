@@ -4,7 +4,7 @@ import com.techmaster.sparrow.cache.SparrowCacheUtil;
 import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.entities.misc.ImportBean;
 import com.techmaster.sparrow.entities.misc.Location;
-import com.techmaster.sparrow.enums.LocationTypeEnum;
+import com.techmaster.sparrow.enums.LocationType;
 import com.techmaster.sparrow.imports.extraction.ImportHelper;
 import com.techmaster.sparrow.imports.extraction.AbstractExcelExtractor;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractor;
@@ -110,11 +110,11 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 				}else if( i == 6 ){
 
 					boolean valid = !Arrays
-							.stream(LocationTypeEnum.values())
+							.stream(LocationType.values())
 							.anyMatch(l -> l.toString().equalsIgnoreCase(objStr));
 
 					if (valid) {
-						rowErrors.add("Location Type must be one of : " + Arrays.toString(LocationTypeEnum.values()));
+						rowErrors.add("Location Type must be one of : " + Arrays.toString(LocationType.values()));
 					}
 					
 				//subLocations
@@ -191,7 +191,7 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 					
 				// locationType
 				}else if(i==6){
-					location.setLocationType(LocationTypeEnum.valueOf(objStr));
+					location.setLocationType(LocationType.valueOf(objStr));
 				}
 				
 			}

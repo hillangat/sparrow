@@ -3,7 +3,7 @@ package com.techmaster.sparrow.entities.email;
 import com.techmaster.sparrow.converters.BooleanToYNStringConverter;
 import com.techmaster.sparrow.entities.misc.AuditInfoBean;
 import com.techmaster.sparrow.entities.misc.MediaObj;
-import com.techmaster.sparrow.enums.StatusEnum;
+import com.techmaster.sparrow.enums.Status;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -49,7 +49,7 @@ public class EmailAttachment extends AuditInfoBean {
 
     @Column(name = "RVW_STS", nullable = false)
     @Enumerated(EnumType.STRING)
-    private StatusEnum reviewStatus = StatusEnum.DRAFT;
+    private Status reviewStatus = Status.DRAFT;
 
     @Column(name = "UNIT", nullable = false)
     private String unit;

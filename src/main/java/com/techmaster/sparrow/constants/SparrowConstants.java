@@ -49,6 +49,9 @@ public class SparrowConstants {
 	public static final String QUERY_XML_CACHED_SERVICE = "QUERY_XML_CACHED_SERVICE";
 	public static final String UI_MSG_CACHED_SERVICE = "UI_MSG_CACHED_SERVICE";
 	public static final String EMAIL_TEMPLATES_CACHED_SERVICE = "EMAIL_TEMPLATES_CACHED_SERVICE";
+	public static final String ANGULAR_HEADERS_CONFIG_CACHED_SERVICE = "ANGULAR_HEADERS_CONFIG_CACHED_SERVICE";
+	public static final String QUERY_TO_BEAN_MAPPER = "QUERY_TO_BEAN_MAPPER";
+	public static final String QUERY_GRID_FIELD_MAPPER = "QUERY_GRID_FIELD_MAPPER";
 
 	public static final String UI_MSG_CACHED_BEANS = "UI_MSG_CACHED_BEANS";
 
@@ -58,6 +61,8 @@ public class SparrowConstants {
 	public static final String CACHE_BEANS_KEY = "CACHE_BEANS_KEY";
 
 	public static final String APPLICATION_ERROR_KEY = "applicationError";
+
+	public static final String GRID_DATA_COUNT = "GRID_DATA_COUNT";
 	
 }
 

@@ -78,26 +78,28 @@ public class Playlists {
 
         List<Playlist> playlists = new ArrayList<>();
 
-        Playlist playlist = SparrowUtil.addAuditInfo(new Playlist(), "admin");
-        playlist.setActive(true);
-        playlist.setStartTime(LocalDateTime.now());
-        playlist.setEndTime(LocalDateTime.now().plusHours(3));
-        playlist.setPlaylistName("Tally Ho Saturday Night");
-        playlist.setRatings(createRatings(userId));
-        playlist.setSongs(songs);
-        playlist.setSongOrders(createSongOrders(userId, songs));
+        for( int i = 0; i < 100; i++ ) {
+            Playlist playlist = SparrowUtil.addAuditInfo(new Playlist(), "admin");
+            playlist.setActive(true);
+            playlist.setStartTime(LocalDateTime.now());
+            playlist.setEndTime(LocalDateTime.now().plusHours(3));
+            playlist.setPlaylistName("Tally Ho Saturday Night");
+            playlist.setRatings(createRatings(userId));
+            playlist.setSongs(songs);
+            playlist.setSongOrders(createSongOrders(userId, songs));
 
-        Playlist playlist2 = SparrowUtil.addAuditInfo(new Playlist(), "admin");
-        playlist2.setActive(true);
-        playlist2.setStartTime(LocalDateTime.now());
-        playlist2.setEndTime(LocalDateTime.now().plusHours(3));
-        playlist2.setPlaylistName("Birch Saturday Night");
-        playlist2.setRatings(ratings);
-        playlist2.setSongs(songs);
-        playlist2.setSongOrders(createSongOrders(userId, songs));
+            Playlist playlist2 = SparrowUtil.addAuditInfo(new Playlist(), "admin");
+            playlist2.setActive(true);
+            playlist2.setStartTime(LocalDateTime.now());
+            playlist2.setEndTime(LocalDateTime.now().plusHours(3));
+            playlist2.setPlaylistName("Birch Saturday Night");
+            playlist2.setRatings(ratings);
+            playlist2.setSongs(songs);
+            playlist2.setSongOrders(createSongOrders(userId, songs));
 
-        playlists.add(playlist);
-        playlists.add(playlist2);
+            playlists.add(playlist);
+            playlists.add(playlist2);
+        }
 
         return playlists;
     }

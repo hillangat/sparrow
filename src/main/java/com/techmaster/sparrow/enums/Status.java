@@ -1,6 +1,6 @@
 package com.techmaster.sparrow.enums;
 
-public enum StatusEnum {
+public enum Status {
 
     FAILED("failed", "Failed processing"),
     SUCCESS("success", "Successful processing"),
@@ -15,7 +15,7 @@ public enum StatusEnum {
     private String status;
     private String description;
 
-    StatusEnum(String status, String description) {
+    Status(String status, String description) {
         this.status = status;
         this.description = description;
     }

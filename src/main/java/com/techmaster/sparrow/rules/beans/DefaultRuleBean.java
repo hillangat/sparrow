@@ -1,6 +1,6 @@
 package com.techmaster.sparrow.rules.beans;
 
-import com.techmaster.sparrow.enums.StatusEnum;
+import com.techmaster.sparrow.enums.Status;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import lombok.Data;
 
@@ -11,6 +11,6 @@ public class DefaultRuleBean {
 
     public boolean isSuccess() {
         return ruleResultBean.getErrors().isEmpty() &&
-                ruleResultBean.getStatus().equals(StatusEnum.SUCCESS);
+                ruleResultBean.getStatus().equals(Status.SUCCESS);
     };
 }

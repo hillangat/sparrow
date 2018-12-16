@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.entities.misc.AuditInfoBean;
 import com.techmaster.sparrow.enums.EmailReasonType;
-import com.techmaster.sparrow.enums.StatusEnum;
+import com.techmaster.sparrow.enums.Status;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -39,10 +39,10 @@ public class EmailContent extends AuditInfoBean {
     private LocalDateTime sendTime;
 
     @Column(name = "LF_STS", nullable = false)
-    private StatusEnum lifeStatus = StatusEnum.DRAFT;
+    private Status lifeStatus = Status.DRAFT;
 
     @Column(name = "DLVRY_STS", nullable = false)
-    private StatusEnum deliveryStatus = StatusEnum.CONCEPTUAL;
+    private Status deliveryStatus = Status.CONCEPTUAL;
 
     @Transient
     private EmailTemplate template;

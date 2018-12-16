@@ -1,6 +1,6 @@
 package com.techmaster.sparrow.enums;
 
-public enum LocationTypeEnum {
+public enum LocationType {
     COUNTRY,
     STATE,
     COUNTY,

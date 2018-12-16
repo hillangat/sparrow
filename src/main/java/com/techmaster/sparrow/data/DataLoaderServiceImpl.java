@@ -10,7 +10,7 @@ import com.techmaster.sparrow.entities.email.EmailReceiver;
 import com.techmaster.sparrow.entities.email.EmailTemplate;
 import com.techmaster.sparrow.entities.playlist.Playlist;
 import com.techmaster.sparrow.entities.playlist.Song;
-import com.techmaster.sparrow.enums.FileTypeEnum;
+import com.techmaster.sparrow.enums.FileType;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractor;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractorFactory;
 import com.techmaster.sparrow.repositories.*;
@@ -111,8 +111,8 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         logger.debug("Loading workbooks...");
 
         if (config != null) {
-            FileTypeEnum fileType = config.getFileType();
-            if (FileTypeEnum.EXCEL.equals(fileType)) {
+            FileType fileType = config.getFileType();
+            if (FileType.EXCEL.equals(fileType)) {
                 String fileLoc = SparrowURLConstants.RESOURCE_BASE_PATH + config.getFileLocation();
                 File file = new File(fileLoc);
                 if (file.exists()) {

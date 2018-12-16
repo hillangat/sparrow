@@ -4,7 +4,7 @@ import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.entities.misc.AuditInfoBean;
 import com.techmaster.sparrow.entities.misc.ErrorResponse;
 import com.techmaster.sparrow.entities.misc.ResponseData;
-import com.techmaster.sparrow.enums.StatusEnum;
+import com.techmaster.sparrow.enums.Status;
 import com.techmaster.sparrow.exception.SparrowRestfulApiException;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.util.SparrowUtil;
@@ -76,17 +76,17 @@ public abstract class BaseController {
         String retrievalCompletionMsg = isGet ? SUCCESS_RETRIEVAL_MSG : SUCCESS_ACTION_COMPLETION;
 
         if (ruleBean == null) {
-            return ResponseEntity.ok(new ResponseData(data, retrievalCompletionMsg, StatusEnum.SUCCESS.getStatus(), null));
+            return ResponseEntity.ok(new ResponseData(data, retrievalCompletionMsg, Status.SUCCESS.getStatus(), null, 0));
         }
 
-        String status = ruleBean.isSuccess() ? StatusEnum.SUCCESS.getStatus() : StatusEnum.FAILED.getStatus();
+        String status = ruleBean.isSuccess() ? Status.SUCCESS.getStatus() : Status.FAILED.getStatus();
 
         String otherError = ruleBean.getErrors().containsKey(SparrowConstants.APPLICATION_ERROR_KEY)
                 ? APPLICATION_ERROR_OCCURRED : FAILED_VALIDATION_MSG;
 
         String msg = ruleBean.isSuccess() ? ( retrievalCompletionMsg ) : otherError;
 
-        return ResponseEntity.ok(new ResponseData(data, msg, status, ruleBean.getErrors()));
+        return ResponseEntity.ok(new ResponseData(data, msg, status, ruleBean.getErrors(), 0));
     }
 
     protected boolean isAdmin() {

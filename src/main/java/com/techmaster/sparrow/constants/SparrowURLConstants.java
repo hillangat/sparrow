@@ -19,5 +19,7 @@ public interface SparrowURLConstants {
 
 	String IMPORT_EXCEL_FOLDER = RESOURCE_BASE_PATH + "\\import";
 	String MEDIA_FILES_FOLDER = RESOURCE_BASE_PATH + "media";
+
+	String QUERY_TO_BEAN_MAPPER_PATH = RESOURCE_BASE_XML_PATH + "query_to_bean_mapping.xml";
 	
 }

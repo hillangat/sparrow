@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<maps>
+	<map id='Playlist'>
+		<field dbName='PLYLST_ID'   fieldName='playListId'  subType='no' type='java.lang.Long' />
+		<field dbName='PLYLST_NAME' fieldName='playlistName'  subType='no'  type='java.lang.String' />
+		<field dbName='ACTV' 		fieldName='active'  	subType='true' type='java.lang.Boolean' />
+		<field dbName='STRT_TIME'   fieldName='startTime'  	subType='no'	type='java.time.LocalDateTime'/>
+		<field dbName='END_TIME'  	fieldName='endTime'  	subType='no' 	type='java.time.LocalDateTime' />
+		<field dbName='CRET_DT' 	fieldName='createDate' 	subType='no' 	type='java.time.LocalDateTime' />
+		<field dbName='LST_UPDT' 	fieldName='lastUpdate' 	subType='no' 	type='java.time.LocalDateTime' />
+		<field dbName='CRETD_BY' 	fieldName='createdBy' 	subType='no' 	type='java.lang.String' />
+		<field dbName='UPDTD_BY' 	fieldName='updatedBy' 	subType='no' 	type='java.lang.String' />
+	</map>
+	<map id='Song'>
+		<field dbName='SNG_ID'  fieldName='songId'  subType='no' type='java.lang.Long' />
+		<field dbName='ARTST' 	fieldName='artist'  subType='no'  type='java.lang.String' />
+		<field dbName='NAM' 	fieldName='name'  	subType='true' type='java.lang.String' />
+		<field dbName='GNR'   	fieldName='genre'  	subType='no'	type='java.lang.String'/>
+		<field dbName='RTNG'  	fieldName='rating'  subType='no' 	type='java.lang.Integer' />
+		<field dbName='RTNG_CNT'   fieldName='ratingCount'  subType='no' type='java.lang.Integer' />
+		<field dbName='PICTR' 	fieldName='picture'  subType='no'  type='java.sql.Blob' />
+		<field dbName='PRDCR' 	fieldName='producer' subType='true' type='java.lang.String' />
+		<field dbName='RLS_DTE' fieldName='releaseDate'  	subType='no'	type='java.time.LocalDateTime'/>
+		<field dbName='ALBM'  	fieldName='album'  	subType='no' 	type='java.lang.String' />
+		<field dbName='CRET_DT' 	fieldName='createDate' 	subType='no' 	type='java.time.LocalDateTime' />
+		<field dbName='LST_UPDT' 	fieldName='lastUpdate' 	subType='no' 	type='java.time.LocalDateTime' />
+		<field dbName='CRETD_BY' 	fieldName='createdBy' 	subType='no' 	type='java.lang.String' />
+		<field dbName='UPDTD_BY' 	fieldName='updatedBy' 	subType='no' 	type='java.lang.String' />
+	</map>
+	<map id='SongOrder'>
+		<field dbName='SNG_ORDR_ID'  fieldName='songOrderId'  subType='no' type='java.lang.Long' />
+		<field dbName='SNG_ID' 	fieldName='songId'  subType='no'  type='java.lang.Long' />
+		<field dbName='SNG_INDX' 	fieldName='songIndex'  	subType='true' type='java.lang.Integer' />
+		<field dbName='USR_ID'   	fieldName='userId'  	subType='no'	type='java.lang.Long'/>
+		<field dbName='CRET_DT' 	fieldName='createDate' 	subType='no' 	type='java.time.LocalDateTime' />
+		<field dbName='LST_UPDT' 	fieldName='lastUpdate' 	subType='no' 	type='java.time.LocalDateTime' />
+		<field dbName='CRETD_BY' 	fieldName='createdBy' 	subType='no' 	type='java.lang.String' />
+		<field dbName='UPDTD_BY' 	fieldName='updatedBy' 	subType='no' 	type='java.lang.String' />
+	</map>
+	<map id='Rating'>
+		<field dbName='RTNG_ID'  	fieldName='ratingId'  subType='no' type='java.lang.Long' />
+		<field dbName='RTNG' 		fieldName='rating'  subType='no'  type='java.lang.Integer' />
+		<field dbName='USR_ID'   	fieldName='userId'  	subType='no'	type='java.lang.Long'/>
+		<field dbName='RTNG_TYP'   	fieldName='ratingType'  	subType='enum'	type='com.techmaster.sparrow.enums.RatingType'/>
+		<field dbName='CRET_DT' 	fieldName='createDate' 	subType='no' 	type='java.time.LocalDateTime' />
+		<field dbName='LST_UPDT' 	fieldName='lastUpdate' 	subType='no' 	type='java.time.LocalDateTime' />
+		<field dbName='CRETD_BY' 	fieldName='createdBy' 	subType='no' 	type='java.lang.String' />
+		<field dbName='UPDTD_BY' 	fieldName='updatedBy' 	subType='no' 	type='java.lang.String' />
+	</map>
+</maps>
