@@ -37,7 +37,7 @@ import java.util.List;
 public class DataLoaderServiceImpl implements DataLoaderService {
 
     @Autowired private DataLoaderConfigRepository configRepository;
-    @Autowired private EmailTemplateRepository emailTemplateRepository;
+    @Autowired private EmailTemplateRepo emailTemplateRepo;
     @Autowired private UserService userService;
     @Autowired private EmailReceiverRepo emailReceiverRepo;
     @Autowired private EmailAttachmentRepo emailAttachmentRepo;
@@ -165,7 +165,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         List<EmailTemplate> emailTemplates = EmailTemplates.createTemplates(mediaObjs);
         for (EmailTemplate e : emailTemplates) {
             emailAttachmentRepo.saveAll(e.getAttachments());
-            emailTemplateRepository.save(e);
+            emailTemplateRepo.save(e);
         }
         logger.debug("successfully loaded email templates!!!");
         return emailTemplates;

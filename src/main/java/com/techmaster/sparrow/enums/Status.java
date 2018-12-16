@@ -10,6 +10,7 @@ public enum Status {
     REVIEW("review", "Review"),
     APPROVED("approved", "Approved"),
     INVALID("invalid", "Failed validation"),
+    READY("ready", "Ready"),
     REJECTED("rejected", "Rejected");
 
     private String status;

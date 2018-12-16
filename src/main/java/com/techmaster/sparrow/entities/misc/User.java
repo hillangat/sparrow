@@ -18,23 +18,23 @@ import java.time.LocalDateTime;
 public class User  extends AuditInfoBean {
 
     @Id()
-    @Column(name = "usr_id", updatable = false, nullable = false)
+    @Column(name = "USR_ID", updatable = false, nullable = false)
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long userId;
 
-    @Column(name = "usr_nam", nullable = false, unique = true)
+    @Column(name = "USR_NAM", nullable = false, unique = true)
     private String userName;
 
-    @Column(name = "psswd", nullable = false)
+    @Column(name = "PSSWRD", nullable = false)
     private String password;
 
-    @Column(name = "eml", nullable = false, unique = true)
+    @Column(name = "EML", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "frst_nam", nullable = false)
+    @Column(name = "FRST_NAM", nullable = false)
     private String  firstName;
 
-    @Column(name = "lst_nam", nullable = false)
+    @Column(name = "LST_NAM", nullable = false)
     private String lastName;
 
     @Column(name = "PRFL_PIC")

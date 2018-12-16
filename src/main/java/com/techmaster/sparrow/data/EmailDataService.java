@@ -21,9 +21,9 @@ public class EmailDataService {
         for( Map<String, Object> detail : receiverDetails ) {
             EmailReceiver receiver = SparrowUtil.addAuditInfo(new EmailReceiver(), "admin");
             receiver.setContentId(contentId);
-            receiver.setEmail(detail.get("eml").toString());
-            receiver.setFirstName(detail.get("frst_nam").toString());
-            receiver.setLastName(detail.get("lst_nam").toString());
+            receiver.setEmail(detail.get("EML").toString());
+            receiver.setFirstName(detail.get("FRST_NAM").toString());
+            receiver.setLastName(detail.get("LST_NAM").toString());
             receiver.setReceiverId(0);
             receiver.setMiddleName(null);
             receiver.setReceiverType(EmailReceiverType.TO);
