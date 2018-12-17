@@ -9,7 +9,6 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 import java.io.IOException;
 
-// @Converter(autoApply = true)
 public class JpaConverterJson implements AttributeConverter<Object, String> {
 
     private final static ObjectMapper objectMapper = new ObjectMapper();

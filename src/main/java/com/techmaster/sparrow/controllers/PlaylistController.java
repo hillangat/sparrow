@@ -1,12 +1,10 @@
 package com.techmaster.sparrow.controllers;
 
 import com.techmaster.sparrow.entities.misc.ResponseData;
-import com.techmaster.sparrow.entities.misc.SearchArg;
 import com.techmaster.sparrow.entities.misc.SearchResult;
 import com.techmaster.sparrow.entities.playlist.Playlist;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.search.beans.GridDataQueryReq;
-import com.techmaster.sparrow.search.beans.GridFieldUserInput;
 import com.techmaster.sparrow.services.PlaylistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,16 +30,16 @@ public class PlaylistController extends BaseController {
     }
 
     @PostMapping(value = "playlist/search")
-    public ResponseEntity<ResponseData> searchPlaylist(@RequestBody SearchArg searchArg) {
-        SearchResult searchResult = playlistService.searchPlaylist(searchArg);
+    public ResponseEntity<ResponseData> searchPlaylist(@RequestBody GridDataQueryReq queryReq) {
+        SearchResult searchResult = playlistService.searchPlaylist(queryReq);
         return getResponse(true, searchResult, null);
     }
 
     @PostMapping(value = "playlist/{playlistId}/songs")
     public ResponseEntity<ResponseData> searchPlaylistSongs(
-            @PathVariable("playlistId") Long playlistId, @RequestBody SearchArg searchArg) {
+            @PathVariable("playlistId") Long playlistId, @RequestBody GridDataQueryReq queryReq) {
 
-        SearchResult searchResult = playlistService.searchPlaylistSongs(playlistId, searchArg);
+        SearchResult searchResult = playlistService.searchPlaylistSongs(playlistId, queryReq);
         return getResponse(true, searchResult, null);
     }
 

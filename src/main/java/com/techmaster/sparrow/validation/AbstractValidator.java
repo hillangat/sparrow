@@ -5,6 +5,8 @@ import com.techmaster.sparrow.rules.beans.DefaultRuleBean;
 import com.techmaster.sparrow.rules.beans.UserRuleBean;
 import com.techmaster.sparrow.util.SparrowUtil;
 
+import java.util.Collection;
+
 public abstract class AbstractValidator {
 
     public void validateNumber(DefaultRuleBean defaultRuleBean, Object obj, String key, String message) {
@@ -45,6 +47,12 @@ public abstract class AbstractValidator {
 
     public void validateEmpty (RuleResultBean ruleResultBean, Object obj, String key, String message) {
         if (!SparrowUtil.notNullNotEmpty(obj)) {
+            ruleResultBean.setError(key, message);
+        }
+    }
+
+    public <T> void validateCollection(RuleResultBean ruleResultBean, Collection<T> obj, String key, String message) {
+        if (!SparrowUtil.isCollNotEmpty(obj)) {
             ruleResultBean.setError(key, message);
         }
     }

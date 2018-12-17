@@ -12,6 +12,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,6 +50,9 @@ public class EmailContent extends AuditInfoBean {
     @Column(name = "DLVRY_STS", nullable = false)
     private Status deliveryStatus = Status.CONCEPTUAL;
 
+    @Column(name = "SBJCT", nullable = false)
+    private String subject;
+
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinColumn(name = "TMPLT_ID", nullable = false)
     private EmailTemplate template;
@@ -58,5 +62,5 @@ public class EmailContent extends AuditInfoBean {
             name="EML_CNTNT_EML_RCVR",
             joinColumns=@JoinColumn(name="CNTNT_ID", referencedColumnName="CNTNT_ID"),
             inverseJoinColumns=@JoinColumn(name="RCVR_ID", referencedColumnName="RCVR_ID"))
-    private List<EmailReceiver> receivers;
+    private List<EmailReceiver> receivers = new ArrayList<>();
 }

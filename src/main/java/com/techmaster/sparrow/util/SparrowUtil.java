@@ -1543,6 +1543,11 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtil.class);
 		}
 		return null;
 	}
+
+	public static void logException( Logger logger, Throwable e, String message ) {
+		logger.error(message + ": " + e.getLocalizedMessage());
+		logger.debug(SparrowConstants.APPLICATION_ERROR_OCCURRED, e);
+	}
 	
 	
 }

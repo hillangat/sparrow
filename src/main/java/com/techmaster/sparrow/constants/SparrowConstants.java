@@ -63,6 +63,8 @@ public class SparrowConstants {
 	public static final String APPLICATION_ERROR_KEY = "applicationError";
 
 	public static final String GRID_DATA_COUNT = "GRID_DATA_COUNT";
+
+	public static final String APPLICATION_ERROR_OCCURRED = "Application error occurred.";
 	
 }
 

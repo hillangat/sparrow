@@ -30,7 +30,6 @@ public abstract class BaseController {
     public static final String SUCCESS_SAVED_MSG = "Saved successfully";
     public static final String SUCCESS_ACTION_COMPLETION = "Action completed successfully";
     public static final String FAILED_VALIDATION_MSG = "Action failed validation";
-    public static final String APPLICATION_ERROR_OCCURRED = "Application error occurred.";
 
     @ExceptionHandler(SparrowRestfulApiException.class)
     public final ResponseEntity<ErrorResponse> handleException(SparrowRestfulApiException ex, WebRequest request) {
@@ -82,7 +81,7 @@ public abstract class BaseController {
         String status = ruleBean.isSuccess() ? Status.SUCCESS.getStatus() : Status.FAILED.getStatus();
 
         String otherError = ruleBean.getErrors().containsKey(SparrowConstants.APPLICATION_ERROR_KEY)
-                ? APPLICATION_ERROR_OCCURRED : FAILED_VALIDATION_MSG;
+                ? SparrowConstants.APPLICATION_ERROR_OCCURRED : FAILED_VALIDATION_MSG;
 
         String msg = ruleBean.isSuccess() ? ( retrievalCompletionMsg ) : otherError;
 

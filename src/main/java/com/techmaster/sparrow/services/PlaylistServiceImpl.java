@@ -2,7 +2,6 @@ package com.techmaster.sparrow.services;
 
 import com.techmaster.sparrow.entities.misc.Rating;
 import com.techmaster.sparrow.entities.misc.ResponseData;
-import com.techmaster.sparrow.entities.misc.SearchArg;
 import com.techmaster.sparrow.entities.misc.SearchResult;
 import com.techmaster.sparrow.entities.playlist.Playlist;
 import com.techmaster.sparrow.entities.playlist.SongOrder;
@@ -51,7 +50,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Override
     public RuleResultBean deletePlaylist(long playlistId) {
         playlistRepo.deleteById(playlistId);
-        return null;
+        return new RuleResultBean();
     }
 
     @Override
@@ -78,15 +77,15 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public SearchResult searchPlaylist(SearchArg arg) {
+    public SearchResult searchPlaylist(GridDataQueryReq queryReq) {
         return null;
     }
 
     @Override
-    public SearchResult searchPlaylistSongs(Long playlistId, SearchArg arg) {
+    public SearchResult searchPlaylistSongs(Long playlistId, GridDataQueryReq queryReq) {
 
-        int pageNumber = arg.getPageNo();
-        int pageSize = arg.getPageSize();
+        int pageNumber = queryReq.getPageNo();
+        int pageSize = queryReq.getPageSize();
 
         EntityManager entityManager = SparrowBeanContext.getEntityManager();
 
