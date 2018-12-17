@@ -4,7 +4,7 @@ import com.techmaster.sparrow.entities.misc.User;
 import com.techmaster.sparrow.enums.Status;
 import com.techmaster.sparrow.repositories.SparrowBeanContext;
 import com.techmaster.sparrow.repositories.SparrowJDBCExecutor;
-import com.techmaster.sparrow.repositories.UserRepository;
+import com.techmaster.sparrow.repositories.UserRepo;
 import com.techmaster.sparrow.rules.beans.UserRuleBean;
 import com.techmaster.sparrow.util.SparrowUtil;
 import com.techmaster.sparrow.validation.UserValidator;
@@ -19,27 +19,27 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class UserServiceImpl implements UserService<UserRepository> {
+public class UserServiceImpl implements UserService<UserRepo> {
 
-    @Autowired private UserRepository userRepository;
+    @Autowired private UserRepo userRepo;
     @Autowired private UserValidator userValidator;
 
     private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
     public User getUserById(long userId) {
-        return SparrowUtil.getIfExist(userRepository.findById(userId));
+        return SparrowUtil.getIfExist(userRepo.findById(userId));
     }
 
     @Override
     public List<User> getAllUsers() {
-        return SparrowUtil.getListOf(userRepository.findAll());
+        return SparrowUtil.getListOf(userRepo.findAll());
     }
 
     @Override
     public UserRuleBean validate(User user) {
         UserRuleBean userRuleBean = new UserRuleBean();
-        userValidator.validateUserCreate(user, userRuleBean, userRepository);
+        userValidator.validateUserCreate(user, userRuleBean, userRepo);
         return userRuleBean;
     }
 
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService<UserRepository> {
     public UserRuleBean editUser(User user) {
         UserRuleBean userRuleBean = validate(user);
         if (userRuleBean != null && userRuleBean.isSuccess()) {
-            userRepository.save(user);
+            userRepo.save(user);
         }
         return userRuleBean;
     }
@@ -56,35 +56,35 @@ public class UserServiceImpl implements UserService<UserRepository> {
     public UserRuleBean createUser(User user) {
         UserRuleBean userRuleBean = validate(user);
         if (userRuleBean != null && userRuleBean.isSuccess()) {
-            userRepository.save(user);
+            userRepo.save(user);
         }
         return userRuleBean;
     }
 
     @Override
     public void deleteUser(long userId) {
-        userRepository.deleteById(userId);
+        userRepo.deleteById(userId);
     }
 
     @Override
     public UserRuleBean uploadProfilePic(long userId, Blob profilePic) {
-        User user = SparrowUtil.getIfExist(userRepository.findById(userId));
+        User user = SparrowUtil.getIfExist(userRepo.findById(userId));
         if (user != null ) {
             user.setProfilePic(profilePic);
-            userRepository.save(user);
+            userRepo.save(user);
         }
         return SparrowUtil.clone(new UserRuleBean(), user);
     }
 
     @Override
     public Status lockUserAccount(long userId, long lockerUserId, String reason) {
-        userRepository.lockUnlockUser("Y", userId, lockerUserId, reason);
+        userRepo.lockUnlockUser("Y", userId, lockerUserId, reason);
         return Status.SUCCESS;
     }
 
     @Override
     public Status unlockUserAccount(long userId) {
-        userRepository.lockUnlockUser("N", userId, 0, null);
+        userRepo.lockUnlockUser("N", userId, 0, null);
         return Status.SUCCESS;
     }
 
@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService<UserRepository> {
             Object email = args.get("email");
 
             userValidator.validateEmail(ruleBean.getRuleResultBean(), email);
-            userValidator.validateUserId(ruleBean, userId, userRepository);
+            userValidator.validateUserId(ruleBean, userId, userRepo);
 
             if (ruleBean.isSuccess()) {
                 List<Object> params = new ArrayList<>();
@@ -134,7 +134,7 @@ public class UserServiceImpl implements UserService<UserRepository> {
 
         try {
 
-            userValidator.validateUserId(ruleBean, userId, userRepository);
+            userValidator.validateUserId(ruleBean, userId, userRepo);
             userValidator.validateUserName(ruleBean, userName);
             userValidator.validateExistingUserName(ruleBean, userName);
 
@@ -162,7 +162,7 @@ public class UserServiceImpl implements UserService<UserRepository> {
 
     @Override
     public Status deleteProfilePic(long userId) {
-        userRepository.deleteUserProfilePic(userId);
+        userRepo.deleteUserProfilePic(userId);
         return Status.SUCCESS;
     }
 
@@ -172,12 +172,12 @@ public class UserServiceImpl implements UserService<UserRepository> {
     }
 
     @Override
-    public UserRepository getRepository() {
-        return userRepository;
+    public UserRepo getRepository() {
+        return userRepo;
     }
 
     @Override
     public Long getMaxUserId() {
-        return userRepository.getMaxUserId();
+        return userRepo.getMaxUserId();
     }
 }

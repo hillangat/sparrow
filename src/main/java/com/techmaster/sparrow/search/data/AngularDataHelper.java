@@ -36,7 +36,7 @@ public class AngularDataHelper {
 			angularData.setStatus(SparrowConstants.STATUS_SUCCESS);
 		} catch (Exception e) {
 			e.printStackTrace();
-			angularData.setMessage( SparrowUtil.getApplicationErrorMessage() );
+			angularData.setMessage( SparrowConstants.APPLICATION_ERROR_OCCURRED );
 			angularData.setStatus(SparrowConstants.STATUS_FAILED);
 		}
 		return angularData;
@@ -49,7 +49,7 @@ public class AngularDataHelper {
 			return getDataBean(data);
 		} catch (Exception e) {
 			e.printStackTrace();
-			responseData.setMessage( SparrowUtil.getApplicationErrorMessage() );
+			responseData.setMessage( SparrowConstants.APPLICATION_ERROR_OCCURRED );
 			responseData.setStatus(SparrowConstants.STATUS_FAILED);
 		}
 		return responseData;
@@ -63,7 +63,7 @@ public class AngularDataHelper {
 			responseData.setStatus( status );
 		} catch (Exception e) {
 			e.printStackTrace();
-			responseData.setMessage( SparrowUtil.getApplicationErrorMessage() );
+			responseData.setMessage( SparrowConstants.APPLICATION_ERROR_OCCURRED );
 			responseData.setStatus(SparrowConstants.STATUS_FAILED);
 		}
 		return responseData;

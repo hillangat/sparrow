@@ -1,9 +1,12 @@
 package com.techmaster.sparrow.controllers;
 
 import com.techmaster.sparrow.cache.SparrowCacheUtil;
+import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.entities.misc.CacheBean;
 import com.techmaster.sparrow.entities.misc.ResponseData;
+import com.techmaster.sparrow.entities.misc.SearchResult;
 import com.techmaster.sparrow.enums.Status;
+import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.util.SparrowUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,14 +24,14 @@ public class CacheController extends BaseController {
     @GetMapping("cache")
     public ResponseEntity<ResponseData> getCacheRecords() {
         List<CacheBean> cacheBeans = SparrowCacheUtil.getInstance().getCacheBeans();
-        return ResponseEntity.ok(new ResponseData(cacheBeans, SUCCESS_ACTION_COMPLETION, Status.SUCCESS.getStatus(), null, cacheBeans.size()));
+        return getResponse(true, cacheBeans, null);
     }
 
     @PostMapping("cache")
     public ResponseEntity<ResponseData> refreshCache(@RequestBody List<CacheBean> cacheBeans){
+
+        RuleResultBean resultBean = new RuleResultBean();
         SparrowUtil.threadSleepFor(500);
-        String message = null;
-        String status = Status.SUCCESS.getStatus();
         try{
             if( cacheBeans != null && !cacheBeans.isEmpty() ){
                 List<String> keys = new ArrayList<>();
@@ -43,18 +46,15 @@ public class CacheController extends BaseController {
                     }
                 });
                 keys.forEach( k -> SparrowCacheUtil.getInstance().refreshCacheService(k) );
-                message = "Successfully refreshed cache!";
             }else{
-                message = "No cache service specified in request.";
-                status = Status.FAILED.getStatus();
+                resultBean.setError("cacheService", "No cache service specified in request.");
             }
         }catch(Exception e){
             logger.error("Error occurred while trying to refresh cache!!");
-            message = APPLICATION_ERROR_OCCURRED;
-            status = Status.FAILED.getStatus();
+            resultBean.setError(SparrowConstants.APPLICATION_ERROR_KEY, "Error occurred while trying to refresh cache!!");
         }
 
-        return ResponseEntity.ok(new ResponseData(null, message, status, null, 0));
+        return getResponse(false, null, resultBean);
     }
 
 }

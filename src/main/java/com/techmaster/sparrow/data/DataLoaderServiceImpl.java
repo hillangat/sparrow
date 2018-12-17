@@ -150,7 +150,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         user.setFirstName("Hillary");
         user.setLastName("Langat");
         user.setNickName("Kip");
-        UserRepository repository = SparrowBeanContext.getBean(UserRepository.class);
+        UserRepo repository = SparrowBeanContext.getBean(UserRepo.class);
         if (repository != null) {
             repository.deleteAll();
             repository.save(user);

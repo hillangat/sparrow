@@ -75,7 +75,7 @@ public abstract class BaseController {
         String retrievalCompletionMsg = isGet ? SUCCESS_RETRIEVAL_MSG : SUCCESS_ACTION_COMPLETION;
 
         if (ruleBean == null) {
-            return ResponseEntity.ok(new ResponseData(data, retrievalCompletionMsg, Status.SUCCESS.getStatus(), null, 0));
+            return ResponseEntity.ok(new ResponseData(data, retrievalCompletionMsg, Status.SUCCESS.getStatus(), null));
         }
 
         String status = ruleBean.isSuccess() ? Status.SUCCESS.getStatus() : Status.FAILED.getStatus();
@@ -85,7 +85,7 @@ public abstract class BaseController {
 
         String msg = ruleBean.isSuccess() ? ( retrievalCompletionMsg ) : otherError;
 
-        return ResponseEntity.ok(new ResponseData(data, msg, status, ruleBean.getErrors(), 0));
+        return ResponseEntity.ok(new ResponseData(data, msg, status, ruleBean.getErrors()));
     }
 
     protected boolean isAdmin() {

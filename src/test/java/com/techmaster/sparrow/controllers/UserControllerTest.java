@@ -2,7 +2,7 @@ package com.techmaster.sparrow.controllers;
 
 import com.techmaster.sparrow.entities.misc.ResponseData;
 import com.techmaster.sparrow.entities.misc.User;
-import com.techmaster.sparrow.repositories.UserRepository;
+import com.techmaster.sparrow.repositories.UserRepo;
 import com.techmaster.sparrow.util.SparrowUtil;
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,14 +20,14 @@ import static org.mockito.Mockito.when;
 public class UserControllerTest {
 
     private UserController userController;
-    private UserRepository userRepository;
+    private UserRepo userRepo;
 
     @Before
     public void setup() {
         userController = new UserController();
-        userRepository = mock(UserRepository.class);
-        Whitebox.setInternalState(userController, "userRepository", userRepository);
-        when(userRepository.save(any())).thenAnswer(m -> m.getArguments()[0]);
+        userRepo = mock(UserRepo.class);
+        Whitebox.setInternalState(userController, "userRepository", userRepo);
+        when(userRepo.save(any())).thenAnswer(m -> m.getArguments()[0]);
     }
 
     @Test

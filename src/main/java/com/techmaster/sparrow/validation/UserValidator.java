@@ -4,7 +4,7 @@ import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.entities.misc.User;
 import com.techmaster.sparrow.repositories.SparrowBeanContext;
 import com.techmaster.sparrow.repositories.SparrowJDBCExecutor;
-import com.techmaster.sparrow.repositories.UserRepository;
+import com.techmaster.sparrow.repositories.UserRepo;
 import com.techmaster.sparrow.rules.beans.UserRuleBean;
 import com.techmaster.sparrow.util.SparrowUtil;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ import java.util.List;
 @Component
 public class UserValidator extends AbstractValidator {
 
-    public void validateUserId (UserRuleBean ruleBean, Object userId, UserRepository repository) {
+    public void validateUserId (UserRuleBean ruleBean, Object userId, UserRepo repository) {
 
         if (!SparrowUtil.isNumeric(userId)) {
             ruleBean.getRuleResultBean().setError("userId", "Invalid User ID");
@@ -62,7 +62,7 @@ public class UserValidator extends AbstractValidator {
         }
     }
 
-    public void validateUserCreate(User user, UserRuleBean ruleBean, UserRepository repository) {
+    public void validateUserCreate(User user, UserRuleBean ruleBean, UserRepo repository) {
 
         // first name
         validateEmpty(ruleBean.getRuleResultBean(), user.getFirstName(), "firstName", "First name is required");

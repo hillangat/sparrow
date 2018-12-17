@@ -56,5 +56,4 @@ public abstract class AbstractValidator {
             ruleResultBean.setError(key, message);
         }
     }
-
 }

@@ -18,5 +18,4 @@ public class ResponseData implements Serializable {
     protected String message;
     protected String status;
     protected Map<String, List<String>> errors;
-    protected int total;
 }

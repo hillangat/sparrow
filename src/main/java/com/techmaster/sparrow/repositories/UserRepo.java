@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends CrudRepository<User, Long> {
+public interface UserRepo extends CrudRepository<User, Long> {
 
     @Query(value = "SELECT * FROM USR WHERE USR_ID = ?0", nativeQuery = true)
     User findByUserId(Long userId);
@@ -28,4 +28,10 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     @Query(value = "SELECT MAX(u.userId) FROM User u", nativeQuery = false)
     Long getMaxUserId();
+
+    @Query(value = "SELECT u.userName FROM User u WHERE u.userId = ?0")
+    String getUserName(long userId);
+
+    @Query(value = "SELECT u.userId FROM User u WHERE u.userName = ?0")
+    Long getUserId(String userName);
 }

@@ -2,7 +2,6 @@ package com.techmaster.sparrow.util;
 
 import com.techmaster.sparrow.cache.SparrowCacheUtil;
 import com.techmaster.sparrow.constants.SparrowConstants;
-import com.techmaster.sparrow.constants.UIMessageConstants;
 import com.techmaster.sparrow.entities.misc.AuditInfoBean;
 import com.techmaster.sparrow.entities.misc.SelectOption;
 import com.techmaster.sparrow.exception.SparrowRemoteException;
@@ -100,10 +99,6 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtil.class);
            builder.append(URLEncoder.encode(String.valueOf(param.getValue()), encodeFormat));
        }
 	   return builder.toString();
-   }
-   
-   public static String getApplicationErrorMessage() {
-	   return SparrowCacheUtil.getInstance().getUIMsgTxtForMsgId(UIMessageConstants.MSG_TASK_017);
    }
    
    public static Map<String, String> getUIMsgParamMap( String key, String value ) {
@@ -1470,6 +1465,12 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtil.class);
 		auditInfoBean.setCreatedBy(userName);
 		auditInfoBean.setUpdatedBy(userName);
 		auditInfoBean.setCreateDate(LocalDateTime.now());
+		auditInfoBean.setLastUpdate(LocalDateTime.now());
+		return auditInfoBean;
+	}
+
+	public static <T extends AuditInfoBean> T updateAuditInfo(T auditInfoBean, String userName) {
+		auditInfoBean.setUpdatedBy(userName);
 		auditInfoBean.setLastUpdate(LocalDateTime.now());
 		return auditInfoBean;
 	}

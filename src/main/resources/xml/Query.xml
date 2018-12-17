@@ -68,4 +68,27 @@
             LIMIT :limit OFFSET :offset
         </statement>
     </query>
+    <query id="logicallyDeleteEvent" >
+        <description>Sets delete and show flags to Y</description>
+        <statement>
+            UPDATE SPARROW_DB.EVNT e
+            SET e.DLTD = 'Y', e.SHW = 'N', e.UPDTD_BY = ?, e.LST_UPDT = sysdate()
+            WHERE e.EVNT_ID = ?
+        </statement>
+    </query>
+    <query id="hideOrReleaseEventToPublic" >
+        <description>Sets show flag to Y</description>
+        <statement>
+            UPDATE SPARROW_DB.EVNT e
+            SET e.SHW = ?
+            WHERE e.EVNT_ID = ?
+        </statement>
+    </query>
+    <query id="addEventAttendant" >
+        <description>Registers an attendance of an event</description>
+        <statement>
+            INSERT INTO SPARROW_DB.EVNT_ATTNDNTS (EVNT_ID, USR_ID)
+            VALUES (?, ?)
+        </statement>
+    </query>
 </queries>

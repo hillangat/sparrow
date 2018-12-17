@@ -5,43 +5,32 @@ import com.techmaster.sparrow.entities.email.EmailContent;
 import com.techmaster.sparrow.entities.email.EmailReceiver;
 import com.techmaster.sparrow.entities.email.EmailTemplate;
 import com.techmaster.sparrow.entities.misc.MediaObj;
-import com.techmaster.sparrow.enums.EmailReasonType;
 import com.techmaster.sparrow.enums.EmailReceiverType;
 import com.techmaster.sparrow.enums.StorageType;
-import com.techmaster.sparrow.repositories.EmailTemplateRepo;
-import com.techmaster.sparrow.repositories.SparrowBeanContext;
-import com.techmaster.sparrow.rules.abstracts.RuleExceptionType;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.util.SparrowUtil;
+import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
-import javax.mail.*;
-import javax.mail.internet.*;
+import javax.mail.BodyPart;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMultipart;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
-
-import org.apache.axiom.attachments.ByteArrayDataSource;
-import org.springframework.mail.javamail.JavaMailSender;
 
 public class EmailServiceHelper {
 
     private static Logger logger = LoggerFactory.getLogger(EmailServiceHelper.class);
-
-    public static EmailTemplate getTemplate(EmailReasonType reasonType) {
-
-        EmailTemplateRepo repository = SparrowBeanContext.getBean(EmailTemplateRepo.class);
-        EmailTemplate emailTemplate = null;
-
-        return emailTemplate;
-    }
 
     public static RuleResultBean setReceivers(SimpleMailMessage message, EmailContent emailContent, RuleResultBean resultBean) {
 
@@ -183,8 +172,12 @@ public class EmailServiceHelper {
                     logger.debug("Preparing non-embedded attachment: " + attachment.getKey());
                 }
                 DataHandler dataHandler = getDataHandlerForMediaObj(attachment.getMediaObj(), resultBean);
-                messageBodyPart.setDataHandler(dataHandler);
-                mimeMultipart.addBodyPart(messageBodyPart);
+                if (dataHandler != null) {
+                    messageBodyPart.setDataHandler(dataHandler);
+                    mimeMultipart.addBodyPart(messageBodyPart);
+                } else {
+                    logger.error("Could not create datahandler for attachment : " + attachment.getDescription());
+                }
             }
 
         } catch (MessagingException e) {
@@ -214,6 +207,7 @@ public class EmailServiceHelper {
                 ruleResultBean.setApplicationError(e);
             }
         }
+        logger.warn("Data handler could not be formed for media object!!");
         return null;
     }
 
