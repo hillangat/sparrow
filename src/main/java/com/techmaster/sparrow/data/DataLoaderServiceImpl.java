@@ -1,16 +1,15 @@
 package com.techmaster.sparrow.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.techmaster.sparrow.cache.SparrowCacheUtil;
 import com.techmaster.sparrow.constants.SparrowURLConstants;
-import com.techmaster.sparrow.entities.misc.DataLoaderConfig;
-import com.techmaster.sparrow.entities.misc.MediaObj;
-import com.techmaster.sparrow.entities.misc.Rating;
-import com.techmaster.sparrow.entities.misc.User;
+import com.techmaster.sparrow.entities.misc.*;
 import com.techmaster.sparrow.entities.email.EmailReceiver;
 import com.techmaster.sparrow.entities.email.EmailTemplate;
 import com.techmaster.sparrow.entities.playlist.Playlist;
 import com.techmaster.sparrow.entities.playlist.Song;
 import com.techmaster.sparrow.enums.FileType;
+import com.techmaster.sparrow.enums.RatingType;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractor;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractorFactory;
 import com.techmaster.sparrow.repositories.*;
@@ -45,6 +44,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
     @Autowired private SongRepo songRepo;
     @Autowired private PlaylistRepo playlistRepo;
     @Autowired private RatingRepo ratingRepo;
+    @Autowired private EventRepo eventRepo;
 
     @Value("${spring.security.user.name}")
     private String adminUserName;
@@ -76,7 +76,8 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         loadEmailTemplates(mediaObjs);
         loadEmailReceivers();
         loadSongs();
-        loadPlaylists();
+        List<Playlist> playlists = loadPlaylists();
+        loadEvents(playlists);
     }
 
     @Override
@@ -213,11 +214,35 @@ public class DataLoaderServiceImpl implements DataLoaderService {
     public List<Playlist> loadPlaylists() {
         logger.debug("Loading playlists...");
         long userId = userService.getMaxUserId();
-        List<Song> songs = SparrowUtil.getListOf(songRepo.findAll());
-        List<Rating> ratings = SparrowUtil.getListOf(ratingRepo.findAll());
+        List<Song> songs = loadSongs();
+        List<Rating> ratings = createRatings(100, RatingType.PLAYLIST, userId);
         List<Playlist>  playlists = Playlists.createPlaylist(userId, songs, ratings);
-        playlistRepo.saveAll(playlists);
         logger.debug("Successfully loaded playlists!!!");
         return playlists;
+    }
+
+    @Override
+    public List<Event> loadEvents(List<Playlist> playlists) {
+        logger.debug("Loading events for testing....");
+        List<User> users = userService.getAllUsers();
+        List<Location> locations = SparrowCacheUtil.getInstance().getLocationHierarchies();
+        List<Rating> ratings = createRatings(100, RatingType.EVENT, users.get(0).getUserId());
+        logger.debug("Successfully loaded events for testing....");
+        List<Event> events = Events.loadEvents(users, playlists, locations.get(0), ratings);
+        eventRepo.saveAll(events);
+        return events;
+    }
+
+    private List<Rating> createRatings(int size, RatingType type, long userId) {
+        List<Rating> ratings = new ArrayList<>();
+        for( int i = 0; i < size; i++ ) {
+            Rating rating = SparrowUtil.addAuditInfo(new Rating(), "admin");
+            rating.setRatingType(type);
+            Double random = Math.random() * 5;
+            rating.setRating(random.intValue());
+            rating.setUserId(userId);
+            ratings.add(rating);
+        }
+        return ratings;
     }
 }

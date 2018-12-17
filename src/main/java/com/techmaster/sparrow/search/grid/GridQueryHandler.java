@@ -60,7 +60,6 @@ public class GridQueryHandler {
 		
 		List<T> angularRecs = QueryToBeanMapper.getInstance().mapForQuery(clzz, rowMapList, xmlService);
 		ResponseData angData = AngularDataHelper.getIntance().getDataBean(angularRecs);
-		angData.setTotal(total);
 		return angData;
 	}
 	

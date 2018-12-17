@@ -1,6 +1,7 @@
 package com.techmaster.sparrow.data;
 
 import com.techmaster.sparrow.entities.misc.DataLoaderConfig;
+import com.techmaster.sparrow.entities.misc.Event;
 import com.techmaster.sparrow.entities.misc.MediaObj;
 import com.techmaster.sparrow.entities.misc.Rating;
 import com.techmaster.sparrow.entities.email.EmailReceiver;
@@ -23,6 +24,7 @@ public interface DataLoaderService {
     List<Song> loadSongs();
     List<Playlist> loadPlaylists();
     List<Rating> ratings();
+    List<Event> loadEvents(List<Playlist> playlists);
 
 
 }

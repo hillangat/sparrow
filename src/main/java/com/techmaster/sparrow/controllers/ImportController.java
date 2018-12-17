@@ -1,9 +1,11 @@
 package com.techmaster.sparrow.controllers;
 
+import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.entities.misc.ResponseData;
 import com.techmaster.sparrow.enums.Status;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractor;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractorFactory;
+import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.util.SparrowUtil;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
@@ -31,10 +33,14 @@ public class ImportController extends BaseController{
         locationExtractor.execute();
 
         Status status = locationExtractor.success() ? Status.SUCCESS : Status.FAILED;
-        String message = status.equals(Status.SUCCESS) ? "Successfully completed import, please check email for details" :
-                "Import operation failed. Please check email for details.";
 
-        return ResponseEntity.ok(new ResponseData(null, status.getStatus(), message, null, 0));
+        RuleResultBean resultBean = new RuleResultBean();
+
+        if (!status.equals(Status.SUCCESS)) {
+            resultBean.setError(SparrowConstants.APPLICATION_ERROR_KEY, "Import operation failed. Please check email for details.");
+        }
+
+        return getResponse(false, null, resultBean);
 
     }
 
