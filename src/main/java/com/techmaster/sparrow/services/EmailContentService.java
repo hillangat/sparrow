@@ -10,10 +10,11 @@ public interface EmailContentService {
 
     ResponseData search(GridDataQueryReq queryReq);
     EmailContent getById( long emailContentId );
-    EmailContent save( EmailContent emailContent);
-    EmailContent edit( EmailContent emailContent );
+    RuleResultBean save( EmailContent emailContent);
+    RuleResultBean edit( EmailContent emailContent );
     RuleResultBean deleteEmailContent( long emailContentId );
-    RuleResultBean setStatus(long emailContentId, Status status);
+    RuleResultBean setLifeStatus(long emailContentId, Status status);
+    RuleResultBean setDeliveryStatus(long emailContentId, Status status);
     RuleResultBean send( long emailContentId );
 
 }

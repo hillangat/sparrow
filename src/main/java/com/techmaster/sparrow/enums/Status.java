@@ -9,6 +9,7 @@ public enum Status {
     CONCEPTUAL("conceptual", "Just created"),
     REVIEW("review", "Review"),
     APPROVED("approved", "Approved"),
+    COMPLETED("completed", "Completed"),
     INVALID("invalid", "Failed validation"),
     READY("ready", "Ready"),
     REJECTED("rejected", "Rejected");

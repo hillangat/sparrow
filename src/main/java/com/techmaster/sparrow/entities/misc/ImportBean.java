@@ -19,7 +19,7 @@ import java.sql.Blob;
 public class ImportBean extends AuditInfoBean {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	@Column(name = "IMPRT_ID", nullable = false)
 	private Long importId;
 

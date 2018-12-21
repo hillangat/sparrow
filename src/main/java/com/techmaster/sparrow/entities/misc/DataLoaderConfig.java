@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 public class DataLoaderConfig extends AuditInfoBean {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     @Column(name = "LD_ID", nullable = false)
     private long loadId;
 

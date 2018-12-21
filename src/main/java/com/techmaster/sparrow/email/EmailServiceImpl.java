@@ -9,11 +9,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Service;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Transport;
 
+@Service
 public class EmailServiceImpl implements EmailService {
 
     Logger logger = LoggerFactory.getLogger(EmailServiceImpl.class);

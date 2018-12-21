@@ -24,7 +24,7 @@ public class EmailAttachment extends AuditInfoBean {
 
     @Id()
     @Column(name = "ATTCHMNT_ID", updatable = false, nullable = false)
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private long attachmentId;
 
     @Column(name = "DSCRPTN", nullable = false)

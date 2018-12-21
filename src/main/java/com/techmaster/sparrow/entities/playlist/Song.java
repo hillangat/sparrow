@@ -22,7 +22,7 @@ public class Song extends AuditInfoBean {
 
     @Id
     @Column(name = "SNG_ID", nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private long songId;
 
     @Column(name = "ARTST", nullable = false)

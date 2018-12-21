@@ -11,32 +11,32 @@ import org.w3c.dom.NodeList;
 
 public interface XMLService {
 	
-	public XMLService copyXMLService(XMLService xmlService);
-	public String getElementVal(String xPath);
-	public Element createNewElemet(String name);
-	public Attr createAttrNode(String name, String value);
-	public void addElement(String parentPath, Element e, int position);
-	public String getTextValue(String xPath);
-	public void transform(Document xml, Document xsl); 
-	public Node getTheFirstElement() throws XPathExpressionException;
-	public void transform(String xmlLoc, String xslLoc);
-	public void addAttribute(Element element, String name, String val);
-	public void removeAttribute(Element element, String name);
-	public NodeList getNodeList();
-	public NodeList getAllElementsUnderTag(String string);
-	public NamedNodeMap getAttrNodeMap(NodeList nodeList, String nodeName);
-	public NodeList getDocChildNodes();
-	public NodeList getElementsByTagName(String tagName);
-	public String getCData(String xPath);
-	public NodeList getListOfElementsUnderTag(String tag);
-	public void insertCDataToRootEle(String elementName, String cdata);
-	public void insertCDataToElement(Element toAppend, String elementName, String cdata);
-	public NodeList getNodeListForCompiledXpath(String xPath);
-	public NodeList getNodeListForXPath(String xPath);
-	public NodeList getNodeListForPathUsingJavax(String xPath);
-	public XMLTree getXmlTree();
-	public Node importNode(Node node, Node appendTo, boolean bolean);
-	public Node getFirstNodeUsingAjaxByName(String nodeName);
+	XMLService copyXMLService(XMLService xmlService);
+	String getElementVal(String xPath);
+	Element createNewElemet(String name);
+	Attr createAttrNode(String name, String value);
+	void addElement(String parentPath, Element e, int position);
+	String getTextValue(String xPath);
+	void transform(Document xml, Document xsl);
+	Node getTheFirstElement() throws XPathExpressionException;
+	void transform(String xmlLoc, String xslLoc);
+	void addAttribute(Element element, String name, String val);
+	void removeAttribute(Element element, String name);
+	NodeList getNodeList();
+	NodeList getAllElementsUnderTag(String string);
+	NamedNodeMap getAttrNodeMap(NodeList nodeList, String nodeName);
+	NodeList getDocChildNodes();
+	NodeList getElementsByTagName(String tagName);
+	String getCData(String xPath);
+	NodeList getListOfElementsUnderTag(String tag);
+	void insertCDataToRootEle(String elementName, String cdata);
+	void insertCDataToElement(Element toAppend, String elementName, String cdata);
+	NodeList getNodeListForCompiledXpath(String xPath);
+	NodeList getNodeListForXPath(String xPath);
+	NodeList getNodeListForPathUsingJavax(String xPath);
+	XMLTree getXmlTree();
+	Node importNode(Node node, Node appendTo, boolean bolean);
+	Node getFirstNodeUsingAjaxByName(String nodeName);
 	
 	
 

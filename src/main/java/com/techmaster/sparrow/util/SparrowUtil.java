@@ -1469,6 +1469,14 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtil.class);
 		return auditInfoBean;
 	}
 
+	public static <T extends AuditInfoBean, C extends AuditInfoBean> C copyAuditInfo(T from, C to) {
+		to.setCreatedBy(from.getCreatedBy());
+		to.setUpdatedBy(from.getUpdatedBy());
+		to.setCreateDate(from.getCreateDate());
+		to.setLastUpdate(from.getLastUpdate());
+		return to;
+	}
+
 	public static <T extends AuditInfoBean> T updateAuditInfo(T auditInfoBean, String userName) {
 		auditInfoBean.setUpdatedBy(userName);
 		auditInfoBean.setLastUpdate(LocalDateTime.now());

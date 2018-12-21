@@ -18,7 +18,7 @@ public class SongOrder extends AuditInfoBean {
 
     @Id
     @Column(name = "SNG_ORDR_ID", nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private long songOrderId;
 
     @Column(name = "SNG_ID", nullable = false)

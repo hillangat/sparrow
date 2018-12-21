@@ -118,6 +118,11 @@ public class SparrowConfigs {
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.debug", "true");
         props.put("mail.smtp.sendpartial", "true");
+        props.put("mail.smtp.debug", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", 465);
+        props.put("mail.smtp.ssl.enable", "true");
+
         return props;
     }
 

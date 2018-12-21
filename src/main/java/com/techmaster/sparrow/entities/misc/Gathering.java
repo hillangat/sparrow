@@ -19,7 +19,7 @@ import javax.persistence.*;
 public class Gathering extends AuditInfoBean{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     @Column(name = "ID", nullable = false)
     private long id;
 

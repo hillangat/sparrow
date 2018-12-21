@@ -23,7 +23,7 @@ import java.util.List;
 public class Playlist extends AuditInfoBean {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     @Column(name = "PLYLST_ID", nullable = false)
     private long playListId;
 

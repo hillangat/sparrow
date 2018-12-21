@@ -19,7 +19,7 @@ public class User  extends AuditInfoBean {
 
     @Id()
     @Column(name = "USR_ID", updatable = false, nullable = false)
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private long userId;
 
     @Column(name = "USR_NAM", nullable = false, unique = true)
@@ -33,6 +33,9 @@ public class User  extends AuditInfoBean {
 
     @Column(name = "FRST_NAM", nullable = false)
     private String  firstName;
+
+    @Column(name = "MDDL_NAM")
+    private String  middleName;
 
     @Column(name = "LST_NAM", nullable = false)
     private String lastName;

@@ -24,6 +24,10 @@ import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +36,8 @@ public class EmailServiceHelper {
 
     private static Logger logger = LoggerFactory.getLogger(EmailServiceHelper.class);
 
-    public static RuleResultBean setReceivers(SimpleMailMessage message, EmailContent emailContent, RuleResultBean resultBean) {
+    public static RuleResultBean setReceivers(SimpleMailMessage message,
+                                              EmailContent emailContent, RuleResultBean resultBean) {
 
         List<EmailReceiver> receivers = emailContent.getReceivers();
 
@@ -93,6 +98,7 @@ public class EmailServiceHelper {
 
         Message message = javaMailSender.createMimeMessage();
 
+        setReceivers(message, emailContent, EmailReceiverType.FROM, resultBean);
         setReceivers(message, emailContent, EmailReceiverType.TO, resultBean);
         setReceivers(message, emailContent, EmailReceiverType.BCC, resultBean);
         setReceivers(message, emailContent, EmailReceiverType.CC, resultBean);
@@ -121,7 +127,7 @@ public class EmailServiceHelper {
 
         Arrays.stream(receivers).forEach(r -> {
             try {
-                if (receiverType.equals(EmailReceiverType.TO)) {
+                if (receiverType.equals(EmailReceiverType.FROM)) {
                     message.setFrom(new InternetAddress(emailContent.getTemplate().getFrom()));
                 } else {
                     Message.RecipientType recipientType = getJavaMailType(receiverType);
@@ -189,11 +195,11 @@ public class EmailServiceHelper {
 
     }
 
-    public static DataHandler getDataHandlerForMediaObj(MediaObj mo, RuleResultBean ruleResultBean) {
+    /*public static DataHandler getDataHandlerForMediaObj(MediaObj mo, RuleResultBean ruleResultBean) {
         if (mo != null) {
             try {
                 if (mo.getStorageType().equals(StorageType.DB)) {
-                    byte[] bytes = mo.getContent().getBytes(0, Integer.valueOf(Long.toString(mo.getContent().length())));
+                    byte[] bytes = mo.getContent().getBytes(1, Integer.valueOf(Long.toString(mo.getContent().length())));
                     ByteArrayDataSource rawData= new ByteArrayDataSource(bytes);
                     DataHandler data= new DataHandler(rawData);
                     return data;
@@ -209,6 +215,47 @@ public class EmailServiceHelper {
         }
         logger.warn("Data handler could not be formed for media object!!");
         return null;
+    }*/
+
+    public static DataHandler getDataHandlerForMediaObj( MediaObj mediaObj, RuleResultBean resultBean ) {
+
+        Blob blob = mediaObj.getContent();
+        byte[] bytearray = null;
+
+        if (blob != null) {
+
+            ByteArrayOutputStream bao = null;
+            BufferedInputStream bis = null;
+
+            try {
+                bis = new BufferedInputStream(blob.getBinaryStream());
+                bao = new ByteArrayOutputStream();
+                byte[] buffer = new byte[4096];
+                int length = 0;
+                while ((length = bis.read(buffer)) != -1) {
+                    bao.write(buffer, 0, length);
+                }
+                bytearray = bao.toByteArray();
+            } catch ( SQLException | IOException e ) {
+                SparrowUtil.logException(logger, e, "Application error occurred while trying to create attachment from Blob!");
+                resultBean.setApplicationError(e);
+            } finally {
+                try {
+                    bao.close();
+                    bis.close();
+                } catch (IOException e) {
+                    SparrowUtil.logException(logger, e, "Application error occurred while trying to close input and output streams!");
+                    resultBean.setApplicationError(e);
+                }
+            }
+
+        }
+
+        BufferedDataSource bds = new BufferedDataSource(bytearray, mediaObj.getOriginalName());
+        DataHandler dataHandler = new DataHandler(bds);
+
+        return dataHandler;
+
     }
 
 

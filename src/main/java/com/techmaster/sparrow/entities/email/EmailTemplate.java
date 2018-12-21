@@ -25,7 +25,7 @@ public class EmailTemplate extends AuditInfoBean {
 
     @Id()
     @Column(name = "TMPLT_ID", updatable = false, nullable = false)
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private long templateId;
 
     @Column(name = "TMPLT_NAM", nullable = false)
@@ -82,7 +82,7 @@ public class EmailTemplate extends AuditInfoBean {
     @Column(name = "TMPLT")
     private Blob template;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name="EML_TMPLT_ATTCHMNT",
             joinColumns=@JoinColumn(name="TMPLT_ID", referencedColumnName="TMPLT_ID"),

@@ -3,13 +3,14 @@ package com.techmaster.sparrow.data;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.techmaster.sparrow.cache.SparrowCacheUtil;
 import com.techmaster.sparrow.constants.SparrowURLConstants;
+import com.techmaster.sparrow.email.EmailService;
+import com.techmaster.sparrow.entities.email.EmailContent;
 import com.techmaster.sparrow.entities.misc.*;
 import com.techmaster.sparrow.entities.email.EmailReceiver;
 import com.techmaster.sparrow.entities.email.EmailTemplate;
 import com.techmaster.sparrow.entities.playlist.Playlist;
 import com.techmaster.sparrow.entities.playlist.Song;
-import com.techmaster.sparrow.enums.FileType;
-import com.techmaster.sparrow.enums.RatingType;
+import com.techmaster.sparrow.enums.*;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractor;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractorFactory;
 import com.techmaster.sparrow.repositories.*;
@@ -19,6 +20,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.json.JSONArray;
+import org.mvel2.ast.Proto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +31,10 @@ import org.springframework.util.Assert;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class DataLoaderServiceImpl implements DataLoaderService {
@@ -42,9 +46,9 @@ public class DataLoaderServiceImpl implements DataLoaderService {
     @Autowired private EmailAttachmentRepo emailAttachmentRepo;
     @Autowired private MediaObjRepo mediaObjRepo;
     @Autowired private SongRepo songRepo;
-    @Autowired private PlaylistRepo playlistRepo;
-    @Autowired private RatingRepo ratingRepo;
     @Autowired private EventRepo eventRepo;
+    @Autowired private EmailContentRepo emailContentRepo;
+    @Autowired private EmailService emailService;
 
     @Value("${spring.security.user.name}")
     private String adminUserName;
@@ -78,6 +82,9 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         loadSongs();
         List<Playlist> playlists = loadPlaylists();
         loadEvents(playlists);
+
+        EmailContent emailContent = loadEmailContent();
+        emailService.send(emailContent);
     }
 
     @Override
@@ -203,14 +210,6 @@ public class DataLoaderServiceImpl implements DataLoaderService {
     }
 
     @Override
-    public List<Rating> ratings() {
-        long userId = userService.getMaxUserId();
-        List<Rating> ratings = Playlists.createRatings(userId);
-        ratingRepo.saveAll(ratings);
-        return ratings;
-    }
-
-    @Override
     public List<Playlist> loadPlaylists() {
         logger.debug("Loading playlists...");
         long userId = userService.getMaxUserId();
@@ -244,5 +243,39 @@ public class DataLoaderServiceImpl implements DataLoaderService {
             ratings.add(rating);
         }
         return ratings;
+    }
+
+    @Override
+    public EmailContent loadEmailContent() {
+
+        logger.debug("Loading email contents for testing...");
+
+        List<User> users = userService.getAllUsers();
+
+        List<EmailReceiver> receivers = users.stream().map(u -> {
+            EmailReceiver receiver = SparrowUtil.addAuditInfo(new EmailReceiver(), "admin");
+            receiver.setReceiverType(EmailReceiverType.TO);
+            receiver.setMiddleName(u.getMiddleName());
+            receiver.setLastName(u.getLastName());
+            receiver.setEmail(u.getEmail());
+            receiver.setFirstName(u.getFirstName());
+            return receiver;
+        }).collect(Collectors.toList());
+
+        List<EmailTemplate> emailTemplates = SparrowUtil.getListOf(emailTemplateRepo.findAll());
+
+        EmailContent emailContent = SparrowUtil.addAuditInfo(new EmailContent(), "admin");
+        emailContent.setDeliveryStatus(Status.CONCEPTUAL);
+        emailContent.setLifeStatus(Status.DRAFT);
+        emailContent.setReasonType(EmailReasonType.ACCOUNT_CREATION_SUCCESS);
+        emailContent.setReceivers(receivers);
+        emailContent.setSendTime(LocalDateTime.now().plusDays(1));
+        emailContent.setTemplate(emailTemplates.get(0));
+        emailContent.setUser(users.get(0));
+        emailContent.setSubject("Testing email content from sparrow!");
+
+        logger.debug("Finished email content loading!!");
+
+        return emailContentRepo.save(emailContent);
     }
 }

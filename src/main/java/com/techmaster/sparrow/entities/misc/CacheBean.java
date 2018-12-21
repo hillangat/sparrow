@@ -18,7 +18,7 @@ import javax.persistence.*;
 public class CacheBean extends AuditInfoBean {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     @Column(name = "NAM", nullable = false)
     private String name;
 

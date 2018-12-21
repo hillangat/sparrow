@@ -29,7 +29,7 @@ public class EmailContent extends AuditInfoBean {
 
     @Id()
     @Column(name = "CNTNT_ID", updatable = false, nullable = false)
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private long contentId;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
@@ -41,13 +41,15 @@ public class EmailContent extends AuditInfoBean {
     private EmailReasonType reasonType;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = SparrowConstants.DATE_FORMAT_STRING)
-    @Column(name = "SND_TIME", nullable = false)
+    @Column(name = "SND_TIME")
     private LocalDateTime sendTime;
 
     @Column(name = "LF_STS", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Status lifeStatus = Status.DRAFT;
 
     @Column(name = "DLVRY_STS", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Status deliveryStatus = Status.CONCEPTUAL;
 
     @Column(name = "SBJCT", nullable = false)

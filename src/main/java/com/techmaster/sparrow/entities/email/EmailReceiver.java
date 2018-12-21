@@ -22,7 +22,7 @@ public class EmailReceiver extends AuditInfoBean {
 
     @Id()
     @Column(name = "RCVR_ID", updatable = false, nullable = false)
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private long receiverId;
 
     @Column(name = "EML", nullable = false)

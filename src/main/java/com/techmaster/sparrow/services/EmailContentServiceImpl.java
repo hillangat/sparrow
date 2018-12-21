@@ -1,6 +1,5 @@
 package com.techmaster.sparrow.services;
 
-import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.email.EmailService;
 import com.techmaster.sparrow.entities.email.EmailContent;
 import com.techmaster.sparrow.entities.misc.ResponseData;
@@ -14,7 +13,9 @@ import com.techmaster.sparrow.validation.EmailContentValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class EmailContentServiceImpl implements EmailContentService {
 
     @Autowired private EmailContentRepo emailContentRepo;
@@ -30,27 +31,46 @@ public class EmailContentServiceImpl implements EmailContentService {
 
     @Override
     public EmailContent getById(long emailContentId) {
-        return null;
+        EmailContent emailContent = SparrowUtil.getIfExist(emailContentRepo.findById(emailContentId));
+        return emailContent;
     }
 
     @Override
-    public EmailContent save(EmailContent emailContent) {
-        return null;
+    public RuleResultBean save(EmailContent emailContent) {
+        RuleResultBean resultBean = emailContentValidator.validateCreate(emailContent);
+        emailContentRepo.save(emailContent);
+        return resultBean;
     }
 
     @Override
-    public EmailContent edit(EmailContent emailContent) {
-        return null;
+    public RuleResultBean edit(EmailContent emailContent) {
+        RuleResultBean resultBean = emailContentValidator.validateCreate(emailContent);
+        emailContentRepo.save(emailContent);
+        return resultBean;
     }
 
     @Override
     public RuleResultBean deleteEmailContent(long emailContentId) {
-        return null;
+        EmailContent emailContent = SparrowUtil.getIfExist(emailContentRepo.findById(emailContentId));
+        RuleResultBean resultBean = emailContentValidator.validateDelete(emailContent);
+        return resultBean;
     }
 
     @Override
-    public RuleResultBean setStatus(long emailContentId, Status status) {
-        return null;
+    public RuleResultBean setLifeStatus(long emailContentId, Status status) {
+        EmailContent emailContent = SparrowUtil.getIfExist(emailContentRepo.findById(emailContentId));
+        RuleResultBean resultBean = emailContentValidator.validateLifeStatusChange(emailContent, status);
+        if (resultBean.isSuccess()) {
+            emailContentRepo.updateLifeStatus(emailContentId, status);
+        }
+        return resultBean;
+    }
+
+    @Override
+    public RuleResultBean setDeliveryStatus(long emailContentId, Status status) {
+        EmailContent emailContent = SparrowUtil.getIfExist(emailContentRepo.findById(emailContentId));
+        RuleResultBean resultBean = emailContentValidator.validateDeliveryStatusChange(emailContent, status);
+        return resultBean;
     }
 
     @Override
@@ -61,10 +81,11 @@ public class EmailContentServiceImpl implements EmailContentService {
 
         if (emailContent != null) {
             RuleResultBean sendErrors = emailService.send(emailContent);
-            sendErrors.extendTo(resultBean);
+            return sendErrors;
         } else {
-            resultBean.setApplicationError(RuleExceptionType.APPLICATION);
-            logger.error("Email content not found for ID: " + emailContentId);
+            String msg = "Email content not found for ID: " + emailContentId;
+            resultBean.setError("email", msg);
+            logger.error(msg);
         }
 
         return resultBean;

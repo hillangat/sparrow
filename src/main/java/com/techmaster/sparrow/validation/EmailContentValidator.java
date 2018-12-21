@@ -7,6 +7,9 @@ import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.util.SparrowUtil;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * CONCEPTUAL, REVIEW, APPROVED OR REJECTED
  */
@@ -14,7 +17,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class EmailContentValidator extends AbstractValidator {
 
-    RuleResultBean validateCreate(EmailContent emailContent) {
+    public RuleResultBean validateDelete(EmailContent emailContent) {
+        RuleResultBean resultBean = new RuleResultBean();
+        if (Status.DRAFT.equals(emailContent.getDeliveryStatus())) {
+            resultBean.setError("delete", "Email is not in draft status");
+        }
+        return resultBean;
+    }
+
+    public RuleResultBean validateCreate(EmailContent emailContent) {
         RuleResultBean resultBean = new RuleResultBean();
         return resultBean;
     }
@@ -37,7 +48,15 @@ public class EmailContentValidator extends AbstractValidator {
         }
     }
 
-    RuleResultBean validateReviewStatusChange(EmailContent emailContent, Status toStatus) {
+    public RuleResultBean validateDeliveryStatusChange( EmailContent emailContent, Status toStatus ) {
+        RuleResultBean resultBean = new RuleResultBean();
+        if (!toStatus.equals(Status.APPROVED)) {
+            resultBean.setError("deliveryStatus", "Email content is not yet approved.");
+        }
+        return resultBean;
+    }
+
+    public RuleResultBean validateLifeStatusChange(EmailContent emailContent, Status toStatus) {
 
         RuleResultBean resultBean = new RuleResultBean();
 
@@ -47,6 +66,11 @@ public class EmailContentValidator extends AbstractValidator {
 
         if (toStatus.equals(Status.PENDING)) {
             resultBean.setError("deliveryStatus", "Changing status of pending email is not allowed");
+            return resultBean;
+        }
+
+        if (emailContent.getDeliveryStatus().equals(Status.COMPLETED)) {
+            resultBean.setError("deliveryStatus", "Status of sent email is not allowed.");
             return resultBean;
         }
 
@@ -60,7 +84,7 @@ public class EmailContentValidator extends AbstractValidator {
         return resultBean;
     }
 
-    RuleResultBean validateForSend(EmailContent emailContent) {
+    public RuleResultBean validateForSend(EmailContent emailContent) {
 
         RuleResultBean bean = new RuleResultBean();
 

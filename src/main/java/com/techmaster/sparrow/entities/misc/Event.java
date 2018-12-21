@@ -21,11 +21,11 @@ import java.util.List;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "EVNT")
-public class Event extends AuditInfoBean{
+public class Event extends AuditInfoBean {
 
     @Id
     @Column(name = "EVNT_ID", nullable = false)
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private long eventId;
 
     @Column(name = "EVNT_NAM", nullable = false)
