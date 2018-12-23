@@ -91,4 +91,10 @@
             VALUES (?, ?)
         </statement>
     </query>
+    <query id="isUserEmailConfirmed" >
+        <description>Check is email is confirmed.</description>
+        <statement>
+            SELECT u.EML_CNFRMD FROM SPARROW_DB.USR u WHERE u.USR_ID = ?
+        </statement>
+    </query>
 </queries>

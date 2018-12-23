@@ -195,28 +195,6 @@ public class EmailServiceHelper {
 
     }
 
-    /*public static DataHandler getDataHandlerForMediaObj(MediaObj mo, RuleResultBean ruleResultBean) {
-        if (mo != null) {
-            try {
-                if (mo.getStorageType().equals(StorageType.DB)) {
-                    byte[] bytes = mo.getContent().getBytes(1, Integer.valueOf(Long.toString(mo.getContent().length())));
-                    ByteArrayDataSource rawData= new ByteArrayDataSource(bytes);
-                    DataHandler data= new DataHandler(rawData);
-                    return data;
-                } else {
-                    DataSource fds = new FileDataSource(mo.getUrl());
-                    DataHandler data= new DataHandler(fds);
-                    return data;
-                }
-            } catch (SQLException e) {
-                SparrowUtil.logException(logger, e, "Application error occurred while trying to get create DataHandler for : " + mo.getOriginalName());
-                ruleResultBean.setApplicationError(e);
-            }
-        }
-        logger.warn("Data handler could not be formed for media object!!");
-        return null;
-    }*/
-
     public static DataHandler getDataHandlerForMediaObj( MediaObj mediaObj, RuleResultBean resultBean ) {
 
         Blob blob = mediaObj.getContent();
@@ -231,7 +209,7 @@ public class EmailServiceHelper {
                 bis = new BufferedInputStream(blob.getBinaryStream());
                 bao = new ByteArrayOutputStream();
                 byte[] buffer = new byte[4096];
-                int length = 0;
+                int length;
                 while ((length = bis.read(buffer)) != -1) {
                     bao.write(buffer, 0, length);
                 }

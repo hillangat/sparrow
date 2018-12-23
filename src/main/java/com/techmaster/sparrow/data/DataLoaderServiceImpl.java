@@ -157,6 +157,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         user.setPassword("hlangat.ten.245.34");
         user.setFirstName("Hillary");
         user.setLastName("Langat");
+        user.setEmailConfirmed(false);
         user.setNickName("Kip");
         UserRepo repository = SparrowBeanContext.getBean(UserRepo.class);
         if (repository != null) {

@@ -17,30 +17,33 @@ public class Playlists {
 
         List<Song> songs = new ArrayList<>();
 
-        Song teBorte = SparrowUtil.addAuditInfo(new Song(), "admin");
-        teBorte.setGenre("Reggaeton");
-        teBorte.setName("Te Boté");
-        teBorte.setPicture(null);
-        teBorte.setRating(0);
-        teBorte.setRatingCount(0);
-        teBorte.setArtist("Nio Garcia, Darell, Casper Magico");
-        teBorte.setProducer("Drake");
-        teBorte.setReleaseDate(LocalDateTime.of(2017, 1, 1, 0, 0));
+        for( int i = 0; i < 50; i++ ) {
+            Song teBorte = SparrowUtil.addAuditInfo(new Song(), "admin");
+            teBorte.setGenre("Reggaeton");
+            teBorte.setName("Te Boté " + i);
+            teBorte.setPicture(null);
+            teBorte.setRating(0);
+            teBorte.setRatingCount(0);
+            teBorte.setArtist("Nio Garcia, Darell, Casper Magico " + i);
+            teBorte.setProducer("Drake");
+            teBorte.setReleaseDate(LocalDateTime.of(2017, 1, 1, 0, 0));
 
-        songs.add(teBorte);
+            songs.add(teBorte);
 
-        Song kiki = SparrowUtil.addAuditInfo(new Song(), "admin");
-        kiki.setName("Drake");
-        kiki.setGenre("Hip-Hop/Rap");
-        kiki.setPicture(null);
-        kiki.setRating(0);
-        kiki.setRatingCount(0);
-        kiki.setArtist("Nio Garcia, Darell, Casper Magico");
-        kiki.setProducer("Young Martino");
-        kiki.setReleaseDate(LocalDateTime.of(2018, 1, 1, 0, 0));
-        kiki.setAlbum("Scorpion");
+            Song kiki = SparrowUtil.addAuditInfo(new Song(), "admin");
+            kiki.setName("Drake " + i);
+            kiki.setGenre("Hip-Hop/Rap");
+            kiki.setPicture(null);
+            kiki.setRating(0);
+            kiki.setRatingCount(0);
+            kiki.setArtist("Nio Garcia, Darell, Casper Magico " + i);
+            kiki.setProducer("Young Martino");
+            kiki.setReleaseDate(LocalDateTime.of(2018, 1, 1, 0, 0));
+            kiki.setAlbum("Scorpion");
 
-        songs.add(kiki);
+            songs.add(kiki);
+        }
+
 
         return songs;
 

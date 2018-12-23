@@ -4,6 +4,7 @@ import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.entities.misc.ResponseData;
 import com.techmaster.sparrow.entities.misc.User;
 import com.techmaster.sparrow.enums.Status;
+import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.rules.beans.UserRuleBean;
 import com.techmaster.sparrow.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,12 @@ public class UserController extends BaseController {
     public ResponseEntity<ResponseData> changeEmail(@RequestBody Map<String, Object> args) {
         UserRuleBean ruleBean = userService.changeEmail(args);
         return getResponse(false, null, ruleBean.getRuleResultBean());
+    }
+
+    @GetMapping("user/{userId}/email/confirm")
+    public ResponseEntity<ResponseData> confirmEmail(@PathVariable("userId") Long userId) {
+        RuleResultBean resultBean = userService.confirmEmail(userId);
+        return getResponse(false, null, resultBean);
     }
 
     @PostMapping("user/userName")

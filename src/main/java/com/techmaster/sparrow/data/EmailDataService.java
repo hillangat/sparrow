@@ -36,8 +36,8 @@ public class EmailDataService {
     public static List<Map<String, Object>> getReceiverDetails(List<Long> receiverIds) {
         String query = SparrowUtil.getQueryForSqlId("getEmailReceiverDetails");
         SparrowJDBCExecutor executor = SparrowBeanContext.getBean(SparrowJDBCExecutor.class);
-        List<Object> params = receiverIds
-                .stream().map( a -> (Object)a).collect(Collectors.toList());
+        List<Object> params = receiverIds.stream().map( a -> (Object)a)
+                .collect(Collectors.toList());
         List<Map<String, Object>> rowMaps = executor.executeQueryRowMap(query, params);
         return rowMaps;
     }

@@ -2,6 +2,7 @@ package com.techmaster.sparrow.services;
 
 import com.techmaster.sparrow.entities.misc.User;
 import com.techmaster.sparrow.enums.Status;
+import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.rules.beans.UserRuleBean;
 
 import java.sql.Blob;
@@ -21,6 +22,7 @@ public interface UserService<T> extends RepositoryService<T> {
     Status unlockUserAccount(long userId);
     Map<String, Object> handleForgotPassword(String userName, String email, String phoneNumber);
     UserRuleBean changeEmail(Map<String, Object> args);
+    RuleResultBean confirmEmail(Long userId);
     UserRuleBean changeUserName(Object userId, Object userName);
     Status deleteProfilePic(long userId);
     Status reportUser(long userId, long reportedBy, String reason);

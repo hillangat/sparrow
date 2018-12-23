@@ -5,6 +5,7 @@ import com.techmaster.sparrow.entities.misc.User;
 import com.techmaster.sparrow.repositories.SparrowBeanContext;
 import com.techmaster.sparrow.repositories.SparrowJDBCExecutor;
 import com.techmaster.sparrow.repositories.UserRepo;
+import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.rules.beans.UserRuleBean;
 import com.techmaster.sparrow.util.SparrowUtil;
 import org.springframework.stereotype.Component;
@@ -45,6 +46,18 @@ public class UserValidator extends AbstractValidator {
 
             ruleBean.getRuleResultBean().setError("userName", "Username has special characters.");
         }
+    }
+
+    public RuleResultBean validateConfirmedEmail(long userId) {
+        SparrowJDBCExecutor executor = SparrowBeanContext.getBean(SparrowJDBCExecutor.class);
+        String query = executor.getQueryForSqlId("isUserEmailConfirmed");
+        Object obj = executor.executeQueryForOneReturn(query, executor.getList(userId));
+        boolean confirmed = SparrowUtil.getBooleanForYN(obj);
+        RuleResultBean resultBean = new RuleResultBean();
+        if (confirmed) {
+            resultBean.setError("emailConfirmed", "Email is already confirmed");
+        }
+        return resultBean;
     }
 
     public void validateExistingUserName (UserRuleBean ruleBean, Object userName) {

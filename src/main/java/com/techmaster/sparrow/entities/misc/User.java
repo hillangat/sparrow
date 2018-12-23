@@ -64,4 +64,8 @@ public class User  extends AuditInfoBean {
     @Column(name = "LCKD_ON")
     private LocalDateTime lockedOn;
 
+    @Column(name = "EML_CNFRMD", nullable = false)
+    @Convert(converter = BooleanToYNStringConverter.class)
+    private boolean emailConfirmed;
+
 }

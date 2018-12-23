@@ -5,6 +5,7 @@ import com.techmaster.sparrow.enums.Status;
 import com.techmaster.sparrow.repositories.SparrowBeanContext;
 import com.techmaster.sparrow.repositories.SparrowJDBCExecutor;
 import com.techmaster.sparrow.repositories.UserRepo;
+import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.rules.beans.UserRuleBean;
 import com.techmaster.sparrow.util.SparrowUtil;
 import com.techmaster.sparrow.validation.UserValidator;
@@ -125,6 +126,15 @@ public class UserServiceImpl implements UserService<UserRepo> {
         }
 
         return ruleBean;
+    }
+
+    @Override
+    public RuleResultBean confirmEmail(Long userId) {
+        RuleResultBean resultBean = userValidator.validateConfirmedEmail(userId);
+        if (resultBean.isSuccess()) {
+            userRepo.confirmEmail(userId);
+        }
+        return resultBean;
     }
 
     @Override

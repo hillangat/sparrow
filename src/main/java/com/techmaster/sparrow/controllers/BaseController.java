@@ -72,10 +72,11 @@ public abstract class BaseController {
 
     protected ResponseEntity<ResponseData> getResponse (boolean isGet, Object data, RuleResultBean ruleBean) {
 
-        String retrievalCompletionMsg = isGet ? SUCCESS_RETRIEVAL_MSG : SUCCESS_ACTION_COMPLETION;
+        String rMsg = isGet ? SUCCESS_RETRIEVAL_MSG : SUCCESS_ACTION_COMPLETION;
 
         if (ruleBean == null) {
-            return ResponseEntity.ok(new ResponseData(data, retrievalCompletionMsg, Status.SUCCESS.getStatus(), null));
+            ResponseData responseData = new ResponseData(data, rMsg, Status.SUCCESS.getStatus(), null);
+            return ResponseEntity.ok(responseData);
         }
 
         String status = ruleBean.isSuccess() ? Status.SUCCESS.getStatus() : Status.FAILED.getStatus();
@@ -83,9 +84,10 @@ public abstract class BaseController {
         String otherError = ruleBean.getErrors().containsKey(SparrowConstants.APPLICATION_ERROR_KEY)
                 ? SparrowConstants.APPLICATION_ERROR_OCCURRED : FAILED_VALIDATION_MSG;
 
-        String msg = ruleBean.isSuccess() ? ( retrievalCompletionMsg ) : otherError;
+        String msg = ruleBean.isSuccess() ? ( rMsg ) : otherError;
 
-        return ResponseEntity.ok(new ResponseData(data, msg, status, ruleBean.getErrors()));
+        ResponseData responseData = new ResponseData(data, msg, status, ruleBean.getErrors());
+        return ResponseEntity.ok(responseData);
     }
 
     protected boolean isAdmin() {

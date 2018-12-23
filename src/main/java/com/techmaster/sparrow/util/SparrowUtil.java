@@ -1128,8 +1128,8 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtil.class);
 		return boolean_ ? "Y" : "N";
 	}
 	
-	public static boolean getBooleanForYN(String yn){
-		return "Y".equalsIgnoreCase(yn);
+	public static boolean getBooleanForYN(Object yn){
+		return yn == null ? false : "Y".equalsIgnoreCase(yn.toString());
 	}
 	
 	public static void testMap(){

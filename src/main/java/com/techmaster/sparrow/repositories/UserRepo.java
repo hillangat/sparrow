@@ -1,10 +1,14 @@
 package com.techmaster.sparrow.repositories;
 
 import com.techmaster.sparrow.entities.misc.User;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
+
+@Transactional
 @Repository
 public interface UserRepo extends CrudRepository<User, Long> {
 
@@ -34,4 +38,9 @@ public interface UserRepo extends CrudRepository<User, Long> {
 
     @Query(value = "SELECT u.userId FROM User u WHERE u.userName = ?0")
     Long getUserId(String userName);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE User u SET u.emailConfirmed = true WHERE u.userId = ?1")
+    void confirmEmail(Long userId);
 }

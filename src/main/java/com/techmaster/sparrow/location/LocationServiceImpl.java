@@ -37,7 +37,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public List<Location> recursivelySave(List<Location> locations) {
 
-        // Save parents first
+        /* Save parents first */
         locations
             .stream().filter(l -> isParent(locations, l))
             .sorted(Comparator.comparingLong(Location::getLocationId))
@@ -52,7 +52,7 @@ public class LocationServiceImpl implements LocationService {
                 });
             });
 
-        // Save children after
+        /* Save children after */
         locations
             .stream().filter(l -> !isParent(locations, l))
             .sorted(Comparator.comparingLong(Location::getLocationId))
