@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -33,9 +34,7 @@ import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -52,6 +51,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
     @Autowired private EmailContentRepo emailContentRepo;
     @Autowired private EmailService emailService;
     @Autowired private UserRoleRepo userRoleRepo;
+    @Autowired private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Value("${spring.security.user.name}")
     private String adminUserName;
@@ -78,7 +78,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
             }
         });
 
-        List<UserRole> userRoles = loadUserRoles();
+        Set<UserRole> userRoles = loadUserRoles();
         createUser(userRoles);
         List<MediaObj> mediaObjs = loadMediaObjects();
         loadEmailTemplates(mediaObjs);
@@ -151,14 +151,17 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         configRepository.saveAll(dataLoaderConfigs);
     }
 
-    public void createUser(List<UserRole> roles) {
+    public void createUser(Set<UserRole> roles) {
 
         logger.debug("Creating default admin user....");
 
         User user = SparrowUtil.addAuditInfo(new User(), "admin");
         user.setEmail("hillangat@gmail.com");
         user.setUserName("admin");
-        user.setPassword("hlangat.ten.245.34");
+
+        String encodedPassword = bCryptPasswordEncoder.encode("hlangat.ten.245.34");
+
+        user.setPassword(encodedPassword);
         user.setFirstName("Hillary");
         user.setLastName("Langat");
         user.setEmailConfirmed(false);
@@ -285,9 +288,9 @@ public class DataLoaderServiceImpl implements DataLoaderService {
     }
 
     @Override
-    public List<UserRole> loadUserRoles() {
+    public Set<UserRole> loadUserRoles() {
         UserRoleType[] types = UserRoleType.values();
-        List<UserRole> roles = new ArrayList<>();
+        Set<UserRole> roles = new HashSet<>();
         Arrays.stream(types).forEach(a -> {
             UserRole userRole = SparrowUtil.addAuditInfo(new UserRole(), "admin");
             userRole.setRoleDesc(a.getDesc());

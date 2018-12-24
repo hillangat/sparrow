@@ -13,6 +13,7 @@ import com.techmaster.sparrow.entities.playlist.Song;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.List;
+import java.util.Set;
 
 public interface DataLoaderService {
 
@@ -23,7 +24,7 @@ public interface DataLoaderService {
     List<EmailTemplate> loadEmailTemplates(List<MediaObj> mediaObjs);
     List<EmailReceiver> loadEmailReceivers();
     List<MediaObj> loadMediaObjects();
-    List<UserRole> loadUserRoles();
+    Set<UserRole> loadUserRoles();
     List<Song> loadSongs();
     List<Playlist> loadPlaylists();
     List<Event> loadEvents(List<Playlist> playlists);

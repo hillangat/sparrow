@@ -10,7 +10,9 @@ import javax.persistence.*;
 import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @ToString(callSuper = true)
@@ -71,11 +73,11 @@ public class User  extends AuditInfoBean {
     @Convert(converter = BooleanToYNStringConverter.class)
     private boolean emailConfirmed;
 
-    @ManyToMany(cascade = CascadeType.DETACH)
+    @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinTable(
             name="USR_USR_ROLES",
             joinColumns=@JoinColumn(name="USR_ID", referencedColumnName="USR_ID"),
             inverseJoinColumns=@JoinColumn(name="RL_ID", referencedColumnName="RL_ID"))
-    private List<UserRole> userRoles = new ArrayList<>();
+    private Set<UserRole> userRoles = new HashSet<>();
 
 }

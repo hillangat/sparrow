@@ -17,7 +17,7 @@ public interface UserRepo extends CrudRepository<User, Long> {
     @Query(value = "SELECT * FROM USR WHERE USR_ID = ?0", nativeQuery = true)
     User findByUserId(Long userId);
 
-    @Query(value = "SELECT u FROM User u WHERE u.userName = ?0", nativeQuery = true)
+    @Query(value = "SELECT u FROM User u WHERE u.userName = ?1")
     User findByUserName(String userName);
 
     @Query(value = "UPDATE User u SET u.locked = ?0 WHERE u.userId = ?1, u.lockedBy = ?2, u.lockedReason = ?3", nativeQuery = true)
