@@ -1,6 +1,6 @@
 package com.techmaster.sparrow.repositories;
 
-import com.techmaster.sparrow.entities.UserRole;
+import com.techmaster.sparrow.entities.misc.UserRole;
 import com.techmaster.sparrow.entities.misc.User;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 
 @Transactional
 @Repository
@@ -42,7 +43,10 @@ public interface UserRepo extends CrudRepository<User, Long> {
     Long getUserId(String userName);
 
     @Query(value = "SELECT u.userRoles FROM User u WHERE u.userName = ?1")
-    List<UserRole> getUserRoles(String userName);
+    Set<UserRole> getUserRoles(String userName);
+
+    @Query(value = "SELECT u.userRoles FROM User u WHERE u.userId = ?1")
+    Set<UserRole> getUserRolesByUserId(long userId);
 
     @Transactional
     @Modifying

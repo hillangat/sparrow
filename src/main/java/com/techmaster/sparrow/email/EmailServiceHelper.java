@@ -6,18 +6,14 @@ import com.techmaster.sparrow.entities.email.EmailReceiver;
 import com.techmaster.sparrow.entities.email.EmailTemplate;
 import com.techmaster.sparrow.entities.misc.MediaObj;
 import com.techmaster.sparrow.enums.EmailReceiverType;
-import com.techmaster.sparrow.enums.StorageType;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.util.SparrowUtil;
-import org.apache.axiom.attachments.ByteArrayDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
 import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
 import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;

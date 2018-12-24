@@ -2,7 +2,7 @@ package com.techmaster.sparrow.util;
 
 import com.techmaster.sparrow.cache.SparrowCacheUtil;
 import com.techmaster.sparrow.constants.SparrowConstants;
-import com.techmaster.sparrow.entities.UserRole;
+import com.techmaster.sparrow.entities.misc.UserRole;
 import com.techmaster.sparrow.entities.misc.AuditInfoBean;
 import com.techmaster.sparrow.entities.misc.SelectOption;
 import com.techmaster.sparrow.enums.UserRoleType;
@@ -1565,6 +1565,11 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtil.class);
 	}
 
 	public static boolean isAdmin(List<UserRole> userRoles) {
+		return isCollNotEmpty(userRoles) &&
+				userRoles.stream().anyMatch(r -> notNullNotEmptyAndEquals(r.getRoleName(), UserRoleType.ADMIN.getName()));
+	}
+
+	public static boolean isAdmin(Set<UserRole> userRoles) {
 		return isCollNotEmpty(userRoles) &&
 				userRoles.stream().anyMatch(r -> notNullNotEmptyAndEquals(r.getRoleName(), UserRoleType.ADMIN.getName()));
 	}

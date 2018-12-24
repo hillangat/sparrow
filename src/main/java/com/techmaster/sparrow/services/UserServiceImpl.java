@@ -1,10 +1,13 @@
 package com.techmaster.sparrow.services;
 
 import com.techmaster.sparrow.entities.misc.User;
+import com.techmaster.sparrow.entities.misc.UserRole;
 import com.techmaster.sparrow.enums.Status;
+import com.techmaster.sparrow.enums.UserDisableReasonType;
 import com.techmaster.sparrow.repositories.SparrowBeanContext;
 import com.techmaster.sparrow.repositories.SparrowJDBCExecutor;
 import com.techmaster.sparrow.repositories.UserRepo;
+import com.techmaster.sparrow.repositories.UserRoleRepo;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.rules.beans.UserRuleBean;
 import com.techmaster.sparrow.util.SparrowUtil;
@@ -18,12 +21,15 @@ import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService<UserRepo> {
 
     @Autowired private UserRepo userRepo;
     @Autowired private UserValidator userValidator;
+    @Autowired private UserRoleRepo userRoleRepo;
 
     private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -189,5 +195,72 @@ public class UserServiceImpl implements UserService<UserRepo> {
     @Override
     public Long getMaxUserId() {
         return userRepo.getMaxUserId();
+    }
+
+    @Override
+    public Set<UserRole> getUserRolesByUserId(long userId) {
+        Set<UserRole> userRoles = userRepo.getUserRolesByUserId(userId);
+        return userRoles;
+    }
+
+    @Override
+    public Set<UserRole> getUserRolesByUserName(String userName) {
+        Set<UserRole> userRoles = userRepo.getUserRoles(userName);
+        return userRoles;
+    }
+
+    @Override
+    public RuleResultBean addRoleToUser(long roleId, long userId) {
+
+        RuleResultBean resultBean = new RuleResultBean();
+
+        try {
+
+            User user = userRepo.findByUserId(userId);
+            UserRole userRole = SparrowUtil.getIfExist(userRoleRepo.findById(roleId));
+
+            if (userRole == null) {
+                resultBean.setError("userRoles", "User role with Id: " + roleId + ", could not be found");
+            } else {
+                user.getUserRoles().add(userRole);
+                userRepo.save(user);
+            }
+
+        } catch (Exception e) {
+            String msg = "Application error occurred while trying to add role to user, roleId: " + roleId +" from userId: " + userId;
+            SparrowUtil.logException(logger, e, msg);
+            resultBean.setApplicationError(e);
+        }
+
+        return resultBean;
+    }
+
+    @Override
+    public RuleResultBean removeUserRoleFromUser(long userId, long userRoleId) {
+
+        RuleResultBean resultBean = new RuleResultBean();
+
+        try {
+            User user = userRepo.findByUserId(userId);
+
+            Set<UserRole> userRoles = user.getUserRoles().stream()
+                    .filter(u -> u.getRoleId() != userRoleId).collect(Collectors.toSet());
+
+            if (userRoles.isEmpty()) {
+                user.setActive(false);
+                user.setDisableReasonType(UserDisableReasonType.USER_ROLES);
+                logger.debug("All roles removed from the user. user disabled");
+            }
+
+            user.setUserRoles(userRoles);
+            userRepo.save(user);
+
+        } catch (Exception e) {
+            String msg = "Application error occurred while trying to remove role: " + userRoleId +" from userId: " + userId;
+            SparrowUtil.logException(logger, e, msg);
+            resultBean.setApplicationError(e);
+        }
+
+        return resultBean;
     }
 }

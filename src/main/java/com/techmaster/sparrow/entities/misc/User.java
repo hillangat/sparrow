@@ -3,15 +3,13 @@ package com.techmaster.sparrow.entities.misc;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.converters.BooleanToYNStringConverter;
-import com.techmaster.sparrow.entities.UserRole;
+import com.techmaster.sparrow.enums.UserDisableReasonType;
 import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Blob;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -54,6 +52,10 @@ public class User  extends AuditInfoBean {
     @Convert(converter = BooleanToYNStringConverter.class)
     @Column(name = "ACTV")
     private boolean active;
+
+    @Column(name = "DSBL_RSN")
+    @Enumerated(EnumType.STRING)
+    private UserDisableReasonType disableReasonType;
 
     @Convert(converter = BooleanToYNStringConverter.class)
     @Column(name = "LCKD")

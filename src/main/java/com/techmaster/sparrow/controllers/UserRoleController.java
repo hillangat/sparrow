@@ -1,6 +1,6 @@
 package com.techmaster.sparrow.controllers;
 
-import com.techmaster.sparrow.entities.UserRole;
+import com.techmaster.sparrow.entities.misc.UserRole;
 import com.techmaster.sparrow.entities.misc.ResponseData;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.services.UserRoleService;

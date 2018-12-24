@@ -1,8 +1,7 @@
 package com.techmaster.sparrow.validation;
 
-import com.techmaster.sparrow.entities.UserRole;
+import com.techmaster.sparrow.entities.misc.UserRole;
 import com.techmaster.sparrow.entities.playlist.Playlist;
-import com.techmaster.sparrow.enums.UserRoleType;
 import com.techmaster.sparrow.repositories.PlaylistRepo;
 import com.techmaster.sparrow.repositories.SparrowBeanContext;
 import com.techmaster.sparrow.repositories.UserRepo;

@@ -1,6 +1,7 @@
 package com.techmaster.sparrow.services;
 
 import com.techmaster.sparrow.entities.misc.User;
+import com.techmaster.sparrow.entities.misc.UserRole;
 import com.techmaster.sparrow.enums.Status;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.rules.beans.UserRuleBean;
@@ -8,6 +9,7 @@ import com.techmaster.sparrow.rules.beans.UserRuleBean;
 import java.sql.Blob;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface UserService<T> extends RepositoryService<T> {
 
@@ -27,6 +29,10 @@ public interface UserService<T> extends RepositoryService<T> {
     Status deleteProfilePic(long userId);
     Status reportUser(long userId, long reportedBy, String reason);
     Long getMaxUserId();
+    Set<UserRole> getUserRolesByUserId(long userId);
+    Set<UserRole> getUserRolesByUserName(String userName);
+    RuleResultBean removeUserRoleFromUser(long userId, long userRoleId);
+    RuleResultBean addRoleToUser(long roleId, long userId);
 
 
 }

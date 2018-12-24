@@ -1,15 +1,18 @@
 package com.techmaster.sparrow.services;
 
-import com.techmaster.sparrow.entities.UserRole;
+import com.techmaster.sparrow.entities.misc.UserRole;
+import com.techmaster.sparrow.repositories.SparrowBeanContext;
 import com.techmaster.sparrow.repositories.UserRepo;
 import com.techmaster.sparrow.repositories.UserRoleRepo;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.util.SparrowUtil;
-import org.hibernate.validator.internal.engine.groups.DefaultValidationOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserRoleServiceImpl implements UserRoleService {
@@ -49,7 +52,7 @@ public class UserRoleServiceImpl implements UserRoleService {
             resultBean.setError("userName", "You must be logged in to delete user role");
         }
 
-        List<UserRole> userRoles = userRepo.getUserRoles(userName);
+        Set<UserRole> userRoles = userRepo.getUserRoles(userName);
 
         if ( !SparrowUtil.isAdmin(userRoles) ) {
             resultBean.setError("userRole", "Only admin can delete a user role");
@@ -74,5 +77,16 @@ public class UserRoleServiceImpl implements UserRoleService {
     public List<UserRole> getUserRoleByIds(List<Long> userRoleIds) {
         List<UserRole> userRoles = SparrowUtil.getListOf(userRoleRepo.findAllById(userRoleIds));
         return userRoles;
+    }
+
+    @Override
+    public UserRole getUserRoleByName(String roleName) {
+        String sql = "SELECT r FROM UserRole r WHERE r.roleName = ?";
+        EntityManager entityManager = SparrowBeanContext.getEntityManager();
+        Query query = entityManager.createQuery(sql).setParameter(1, roleName);
+        query.setFirstResult(0);
+        query.setMaxResults(1);
+        UserRole userRole = (UserRole) query.getSingleResult();
+        return userRole;
     }
 }

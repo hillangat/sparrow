@@ -1,11 +1,10 @@
 package com.techmaster.sparrow.data;
 
-import com.techmaster.sparrow.entities.UserRole;
+import com.techmaster.sparrow.entities.misc.UserRole;
 import com.techmaster.sparrow.entities.email.EmailContent;
 import com.techmaster.sparrow.entities.misc.DataLoaderConfig;
 import com.techmaster.sparrow.entities.misc.Event;
 import com.techmaster.sparrow.entities.misc.MediaObj;
-import com.techmaster.sparrow.entities.misc.Rating;
 import com.techmaster.sparrow.entities.email.EmailReceiver;
 import com.techmaster.sparrow.entities.email.EmailTemplate;
 import com.techmaster.sparrow.entities.playlist.Playlist;
