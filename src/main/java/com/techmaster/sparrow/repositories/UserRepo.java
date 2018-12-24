@@ -41,7 +41,7 @@ public interface UserRepo extends CrudRepository<User, Long> {
     @Query(value = "SELECT u.userId FROM User u WHERE u.userName = ?0")
     Long getUserId(String userName);
 
-    @Query(value = "SELECT u.userRoles FROM User u WHERE u.userName = ?0")
+    @Query(value = "SELECT u.userRoles FROM User u WHERE u.userName = ?1")
     List<UserRole> getUserRoles(String userName);
 
     @Transactional
