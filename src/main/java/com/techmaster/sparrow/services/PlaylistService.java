@@ -15,9 +15,9 @@ public interface PlaylistService {
     List<Playlist> getAllPlaylists();
     Playlist getPlaylistById( long playlistId );
     RuleResultBean saveOrEditPlaylist(Playlist playlist);
-    RuleResultBean deletePlaylist(long playlistId);
+    RuleResultBean deletePlaylist(long playlistId, String userName);
     void ratePlaylist( long playlistIid, long userId, int rating );
-    Playlist contributeSongOrder(long playlistId, List<SongOrder> songOrder);
+    List<Song> contributeSongOrder(long playlistId, List<SongOrder> songOrder);
     SearchResult searchPlaylist(GridDataQueryReq queryReq);
     SearchResult searchPlaylistSongs(Long playlistId, GridDataQueryReq queryReq);
     ResponseData paginate(GridDataQueryReq queryReq);

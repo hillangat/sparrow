@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.techmaster.sparrow.cache.SparrowCacheUtil;
 import com.techmaster.sparrow.constants.SparrowURLConstants;
 import com.techmaster.sparrow.email.EmailService;
+import com.techmaster.sparrow.entities.UserRole;
 import com.techmaster.sparrow.entities.email.EmailContent;
 import com.techmaster.sparrow.entities.misc.*;
 import com.techmaster.sparrow.entities.email.EmailReceiver;
@@ -33,6 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,6 +51,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
     @Autowired private EventRepo eventRepo;
     @Autowired private EmailContentRepo emailContentRepo;
     @Autowired private EmailService emailService;
+    @Autowired private UserRoleRepo userRoleRepo;
 
     @Value("${spring.security.user.name}")
     private String adminUserName;
@@ -75,7 +78,8 @@ public class DataLoaderServiceImpl implements DataLoaderService {
             }
         });
 
-        createUser();
+        List<UserRole> userRoles = loadUserRoles();
+        createUser(userRoles);
         List<MediaObj> mediaObjs = loadMediaObjects();
         loadEmailTemplates(mediaObjs);
         loadEmailReceivers();
@@ -147,7 +151,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         configRepository.saveAll(dataLoaderConfigs);
     }
 
-    public void createUser() {
+    public void createUser(List<UserRole> roles) {
 
         logger.debug("Creating default admin user....");
 
@@ -159,6 +163,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         user.setLastName("Langat");
         user.setEmailConfirmed(false);
         user.setNickName("Kip");
+        user.setUserRoles(roles);
         UserRepo repository = SparrowBeanContext.getBean(UserRepo.class);
         if (repository != null) {
             repository.deleteAll();
@@ -277,5 +282,19 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         logger.debug("Finished email content loading!!");
 
         return emailContentRepo.save(emailContent);
+    }
+
+    @Override
+    public List<UserRole> loadUserRoles() {
+        UserRoleType[] types = UserRoleType.values();
+        List<UserRole> roles = new ArrayList<>();
+        Arrays.stream(types).forEach(a -> {
+            UserRole userRole = SparrowUtil.addAuditInfo(new UserRole(), "admin");
+            userRole.setRoleDesc(a.getDesc());
+            userRole.setRoleName(a.getName());
+            roles.add(userRole);
+        });
+        userRoleRepo.saveAll(roles);
+        return roles;
     }
 }

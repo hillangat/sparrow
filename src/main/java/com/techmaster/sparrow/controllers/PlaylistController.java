@@ -55,4 +55,10 @@ public class PlaylistController extends BaseController {
         return getResponse(true, playlist, null);
     }
 
+    @DeleteMapping(value = "playlist/{playlistId}")
+    public ResponseEntity<ResponseData> deletePlaylist(@PathVariable(value = "playlistId") Long playlistId) {
+        RuleResultBean resultBean = playlistService.deletePlaylist(playlistId, getUserName());
+        return getResponse(true, null, resultBean);
+    }
+
 }

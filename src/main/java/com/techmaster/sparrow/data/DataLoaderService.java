@@ -1,5 +1,6 @@
 package com.techmaster.sparrow.data;
 
+import com.techmaster.sparrow.entities.UserRole;
 import com.techmaster.sparrow.entities.email.EmailContent;
 import com.techmaster.sparrow.entities.misc.DataLoaderConfig;
 import com.techmaster.sparrow.entities.misc.Event;
@@ -22,6 +23,7 @@ public interface DataLoaderService {
     List<EmailTemplate> loadEmailTemplates(List<MediaObj> mediaObjs);
     List<EmailReceiver> loadEmailReceivers();
     List<MediaObj> loadMediaObjects();
+    List<UserRole> loadUserRoles();
     List<Song> loadSongs();
     List<Playlist> loadPlaylists();
     List<Event> loadEvents(List<Playlist> playlists);

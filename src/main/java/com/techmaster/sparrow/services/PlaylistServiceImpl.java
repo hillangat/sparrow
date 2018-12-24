@@ -8,7 +8,6 @@ import com.techmaster.sparrow.entities.playlist.Song;
 import com.techmaster.sparrow.entities.playlist.SongOrder;
 import com.techmaster.sparrow.entities.playlist.SongOrderAverage;
 import com.techmaster.sparrow.enums.RatingType;
-import com.techmaster.sparrow.enums.Status;
 import com.techmaster.sparrow.repositories.*;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.search.beans.GridDataQueryReq;
@@ -25,7 +24,9 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,8 +57,11 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public RuleResultBean deletePlaylist(long playlistId) {
-        playlistRepo.deleteById(playlistId);
+    public RuleResultBean deletePlaylist(long playlistId, String userName) {
+        RuleResultBean ruleResultBean = playlistValidator.validateDelete(playlistId, userName);
+        if (ruleResultBean.isSuccess()) {
+            playlistRepo.deleteById(playlistId);
+        }
         return new RuleResultBean();
     }
 
@@ -72,7 +76,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public Playlist contributeSongOrder(long playlistId, List<SongOrder> songOrder) {
+    public List<Song> contributeSongOrder(long playlistId, List<SongOrder> songOrder) {
         songOrderRepo.saveAll(songOrder);
         SparrowJDBCExecutor executor = SparrowBeanContext.getBean(SparrowJDBCExecutor.class);
         if (executor != null) {
@@ -81,7 +85,7 @@ public class PlaylistServiceImpl implements PlaylistService {
                 executor.executeUpdate(query, executor.getList(playlistId, s.getSongOrderId()) );
             });
         }
-        return null;
+        return getOrderedPlaylistSongs(playlistId);
     }
 
     @Override

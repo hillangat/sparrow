@@ -3,11 +3,14 @@ package com.techmaster.sparrow.entities.misc;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.converters.BooleanToYNStringConverter;
+import com.techmaster.sparrow.entities.UserRole;
 import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Blob;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @ToString(callSuper = true)
@@ -67,5 +70,12 @@ public class User  extends AuditInfoBean {
     @Column(name = "EML_CNFRMD", nullable = false)
     @Convert(converter = BooleanToYNStringConverter.class)
     private boolean emailConfirmed;
+
+    @ManyToMany(cascade = CascadeType.DETACH)
+    @JoinTable(
+            name="USR_USR_ROLES",
+            joinColumns=@JoinColumn(name="USR_ID", referencedColumnName="USR_ID"),
+            inverseJoinColumns=@JoinColumn(name="RL_ID", referencedColumnName="RL_ID"))
+    private List<UserRole> userRoles = new ArrayList<>();
 
 }
