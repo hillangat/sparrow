@@ -215,8 +215,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
         logger.debug("Loading playlists...");
         long userId = userService.getMaxUserId();
         List<Song> songs = loadSongs();
-        List<Rating> ratings = createRatings(100, RatingType.PLAYLIST, userId);
-        List<Playlist>  playlists = Playlists.createPlaylist(userId, songs, ratings);
+        List<Playlist>  playlists = Playlists.createPlaylist(userId, songs);
         logger.debug("Successfully loaded playlists!!!");
         return playlists;
     }

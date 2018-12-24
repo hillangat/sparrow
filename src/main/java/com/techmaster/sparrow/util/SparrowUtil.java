@@ -1557,6 +1557,10 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtil.class);
 		logger.error(message + ": " + e.getLocalizedMessage());
 		logger.debug(SparrowConstants.APPLICATION_ERROR_OCCURRED, e);
 	}
+
+	public static SparrowJDBCExecutor executor() {
+		return SparrowBeanContext.getBean(SparrowJDBCExecutor.class);
+	}
 	
 	
 }

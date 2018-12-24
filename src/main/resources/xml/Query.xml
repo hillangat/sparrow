@@ -97,4 +97,24 @@
             SELECT u.EML_CNFRMD FROM SPARROW_DB.USR u WHERE u.USR_ID = ?
         </statement>
     </query>
+    <query id="getSongOrdersForPlaylist" >
+        <description>Retrieve song orders for playlist</description>
+        <statement>
+            SELECT
+                pso.PLYLST_ID,
+                so.SNG_ID,
+                pso.SNG_ORDR_ID,
+                so.SNG_INDX,
+                so.USR_ID
+            FROM
+                PLYLST_SNG_ORDRS pso,
+                PLYLST_SNGS ps,
+                SNG_ORDR so
+            WHERE pso.PLYLST_ID = ?
+            AND pso.PLYLST_ID = ps.PLYLST_ID
+            AND so.SNG_ID = ps.SNG_ID
+            AND so.SNG_ORDR_ID = pso.SNG_ORDR_ID
+            ORDER BY 1,2 asc
+        </statement>
+    </query>
 </queries>

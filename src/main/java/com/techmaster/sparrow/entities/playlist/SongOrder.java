@@ -21,8 +21,9 @@ public class SongOrder extends AuditInfoBean {
     @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private long songOrderId;
 
-    @Column(name = "SNG_ID", nullable = false)
-    private long songId;
+    @JoinColumn(name = "SNG_ID")
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    private Song song;
 
     @Column(name = "SNG_INDX", nullable = false)
     private int songIndex;

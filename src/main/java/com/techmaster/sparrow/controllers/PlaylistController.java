@@ -3,6 +3,7 @@ package com.techmaster.sparrow.controllers;
 import com.techmaster.sparrow.entities.misc.ResponseData;
 import com.techmaster.sparrow.entities.misc.SearchResult;
 import com.techmaster.sparrow.entities.playlist.Playlist;
+import com.techmaster.sparrow.entities.playlist.Song;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.search.beans.GridDataQueryReq;
 import com.techmaster.sparrow.services.PlaylistService;
@@ -35,12 +36,10 @@ public class PlaylistController extends BaseController {
         return getResponse(true, searchResult, null);
     }
 
-    @PostMapping(value = "playlist/{playlistId}/songs")
-    public ResponseEntity<ResponseData> searchPlaylistSongs(
-            @PathVariable("playlistId") Long playlistId, @RequestBody GridDataQueryReq queryReq) {
-
-        SearchResult searchResult = playlistService.searchPlaylistSongs(playlistId, queryReq);
-        return getResponse(true, searchResult, null);
+    @GetMapping(value = "playlist/{playlistId}/songs")
+    public ResponseEntity<ResponseData> searchPlaylistSongs(@PathVariable("playlistId") Long playlistId) {
+        List<Song> songs = playlistService.getOrderedPlaylistSongs(playlistId);
+        return getResponse(true, songs, null);
     }
 
 

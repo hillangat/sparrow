@@ -65,10 +65,10 @@ public class Playlists {
 
     public static List<SongOrder> createSongOrders( long userId, List<Song> songs ) {
         List<SongOrder> songOrders = new ArrayList<>();
-        int index = 1;
         for (Song s : songs) {
             SongOrder songOrder = SparrowUtil.addAuditInfo(new SongOrder(), "admin");
-            songOrder.setSongId(s.getSongId());
+            songOrder.setSong(s);
+            Integer index = Double.valueOf(Math.random() * songs.size()).intValue();
             songOrder.setSongIndex(index);
             songOrder.setUserId(userId);
             index++;
@@ -77,7 +77,7 @@ public class Playlists {
         return songOrders;
     }
 
-    public static List<Playlist> createPlaylist(long userId, List<Song> songs, List<Rating> ratings) {
+    public static List<Playlist> createPlaylist(long userId, List<Song> songs) {
 
         List<Playlist> playlists = new ArrayList<>();
 
@@ -85,7 +85,7 @@ public class Playlists {
             Playlist playlist = SparrowUtil.addAuditInfo(new Playlist(), "admin");
             playlist.setActive(true);
             playlist.setStartTime(LocalDateTime.now());
-            playlist.setEndTime(LocalDateTime.now().plusHours(3));
+            playlist.setEndTime(LocalDateTime.now().plusHours(i));
             playlist.setPlaylistName("Tally Ho Saturday Night");
             playlist.setRatings(createRatings(userId));
             playlist.setSongs(songs);
@@ -94,9 +94,9 @@ public class Playlists {
             Playlist playlist2 = SparrowUtil.addAuditInfo(new Playlist(), "admin");
             playlist2.setActive(true);
             playlist2.setStartTime(LocalDateTime.now());
-            playlist2.setEndTime(LocalDateTime.now().plusHours(3));
+            playlist2.setEndTime(LocalDateTime.now().plusHours(i+1));
             playlist2.setPlaylistName("Birch Saturday Night");
-            playlist2.setRatings(ratings);
+            playlist2.setRatings(createRatings(userId));
             playlist2.setSongs(songs);
             playlist2.setSongOrders(createSongOrders(userId, songs));
 

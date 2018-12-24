@@ -53,4 +53,7 @@ public class Song extends AuditInfoBean {
     @Column(name = "ALBM")
     private String album;
 
+    @Transient
+    private int index;
+
 }

@@ -3,6 +3,7 @@ package com.techmaster.sparrow.services;
 import com.techmaster.sparrow.entities.misc.ResponseData;
 import com.techmaster.sparrow.entities.misc.SearchResult;
 import com.techmaster.sparrow.entities.playlist.Playlist;
+import com.techmaster.sparrow.entities.playlist.Song;
 import com.techmaster.sparrow.entities.playlist.SongOrder;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.search.beans.GridDataQueryReq;
@@ -20,4 +21,6 @@ public interface PlaylistService {
     SearchResult searchPlaylist(GridDataQueryReq queryReq);
     SearchResult searchPlaylistSongs(Long playlistId, GridDataQueryReq queryReq);
     ResponseData paginate(GridDataQueryReq queryReq);
+    List<Song>  getPlaylistSongs(long playlistId );
+    List<Song> getOrderedPlaylistSongs( long playlistId );
 }
