@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class PlaylistValidator extends AbstractValidator {
@@ -36,7 +37,7 @@ public class PlaylistValidator extends AbstractValidator {
         UserRepo userRepo = SparrowBeanContext.getBean(UserRepo.class);
         RuleResultBean resultBean = new RuleResultBean();
 
-        List<UserRole> roles = userRepo.getUserRoles(userName);
+        Set<UserRole> roles = userRepo.getUserRoles(userName);
 
         if ( SparrowUtil.isAdmin(roles) ) {
             logger.debug("User has admin rights, delete allowed with no conditions...");

@@ -15,7 +15,7 @@ import java.util.Set;
 @Repository
 public interface UserRepo extends CrudRepository<User, Long> {
 
-    @Query(value = "SELECT * FROM USR WHERE USR_ID = ?0", nativeQuery = true)
+    @Query(value = "SELECT u FROM User u WHERE userId = ?1")
     User findByUserId(Long userId);
 
     @Query(value = "SELECT u FROM User u WHERE u.userName = ?1")

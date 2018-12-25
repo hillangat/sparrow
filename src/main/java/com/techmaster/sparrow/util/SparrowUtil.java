@@ -5,6 +5,7 @@ import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.entities.misc.UserRole;
 import com.techmaster.sparrow.entities.misc.AuditInfoBean;
 import com.techmaster.sparrow.entities.misc.SelectOption;
+import com.techmaster.sparrow.enums.Status;
 import com.techmaster.sparrow.enums.UserRoleType;
 import com.techmaster.sparrow.exception.SparrowRemoteException;
 import com.techmaster.sparrow.exception.SparrowRunTimeException;
@@ -1574,9 +1575,26 @@ public static Logger logger = LoggerFactory.getLogger(SparrowUtil.class);
 				userRoles.stream().anyMatch(r -> notNullNotEmptyAndEquals(r.getRoleName(), UserRoleType.ADMIN.getName()));
 	}
 
+	public static boolean isSongManager(Set<UserRole> userRoles) {
+		boolean isSongManager = SparrowUtil.isCollNotEmpty(userRoles) &&
+				userRoles.stream().anyMatch(a -> a.getRoleName().equalsIgnoreCase(UserRoleType.SONG_MANAGER.getName()));
+		return isSongManager;
+	}
+
 	public static boolean isAdmin(UserRole userRole) {
 		return userRole != null &&
 				notNullNotEmptyAndEquals(userRole.getRoleName(), UserRoleType.ADMIN.getName());
+	}
+
+	public static boolean isStatus ( String status ) {
+		return status != null &&
+				Arrays.stream(Status.values()).anyMatch(a -> a.getStatus().equals(status));
+	}
+
+	public static Status getStatusForStr ( String status ) {
+		return Arrays.stream(Status.values())
+				.filter(a -> a.getStatus().equals(status))
+				.findFirst().orElse(null);
 	}
 	
 }

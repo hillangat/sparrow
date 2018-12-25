@@ -3,7 +3,6 @@ package com.techmaster.sparrow.services;
 import com.techmaster.sparrow.entities.misc.Event;
 import com.techmaster.sparrow.entities.misc.Rating;
 import com.techmaster.sparrow.entities.misc.ResponseData;
-import com.techmaster.sparrow.enums.RatingType;
 import com.techmaster.sparrow.repositories.EventRepo;
 import com.techmaster.sparrow.repositories.RatingRepo;
 import com.techmaster.sparrow.repositories.SparrowJDBCExecutor;
@@ -16,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.sql.PreparedStatement;

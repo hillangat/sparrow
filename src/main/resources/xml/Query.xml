@@ -91,6 +91,15 @@
             VALUES (?, ?)
         </statement>
     </query>
+    <query id="songPlaylistCount" >
+        <description>Gets the number of playlists the song is part of</description>
+        <statement>
+            SELECT
+                COUNT(*)
+            FROM SPARROW_DB.PLYLST_SNGS ps
+            WHERE ps.SNG_ID = ?
+        </statement>
+    </query>
     <query id="isUserEmailConfirmed" >
         <description>Check is email is confirmed.</description>
         <statement>

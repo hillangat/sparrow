@@ -216,7 +216,7 @@ public class UserServiceImpl implements UserService<UserRepo> {
 
         try {
 
-            User user = userRepo.findByUserId(userId);
+            User user = getUserById(userId);
             UserRole userRole = SparrowUtil.getIfExist(userRoleRepo.findById(roleId));
 
             if (userRole == null) {
@@ -241,7 +241,7 @@ public class UserServiceImpl implements UserService<UserRepo> {
         RuleResultBean resultBean = new RuleResultBean();
 
         try {
-            User user = userRepo.findByUserId(userId);
+            User user = getUserById(userId);
 
             Set<UserRole> userRoles = user.getUserRoles().stream()
                     .filter(u -> u.getRoleId() != userRoleId).collect(Collectors.toSet());

@@ -3,6 +3,7 @@ package com.techmaster.sparrow.entities.playlist;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.entities.misc.AuditInfoBean;
+import com.techmaster.sparrow.enums.Status;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -52,6 +53,10 @@ public class Song extends AuditInfoBean {
 
     @Column(name = "ALBM")
     private String album;
+
+    @Column(name = "LF_STS", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Status lifeStatus = Status.DRAFT;
 
     @Transient
     private int index;
