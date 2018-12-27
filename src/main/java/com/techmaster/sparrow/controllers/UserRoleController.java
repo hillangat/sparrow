@@ -15,7 +15,7 @@ public class UserRoleController extends BaseController {
     @Autowired private UserRoleService userRoleService;
 
     @PostMapping("userRole")
-    private ResponseEntity<ResponseData> createOrUpdateController(@RequestBody UserRole userRole) {
+    private ResponseEntity<ResponseData> createOrUpdateUserRole(@RequestBody UserRole userRole) {
         SparrowUtil.addAuditInfo(userRole, getUserName());
         RuleResultBean resultBean = userRoleService.createOrUpdateRole(userRole);
         return getResponse(false, userRole, resultBean);

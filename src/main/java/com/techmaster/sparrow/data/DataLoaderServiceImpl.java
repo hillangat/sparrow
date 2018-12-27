@@ -72,7 +72,9 @@ public class DataLoaderServiceImpl implements DataLoaderService {
             Workbook workbook = getWorkBook(c);
             if (workbook != null) {
                 String originalFileName = SparrowUtil.getOrifinalFileNameForPath(c.getFileLocation());
-                ExcelExtractor excelExtractor = ExcelExtractorFactory.getExtractor(c.getExtractor(),workbook, adminUserName, originalFileName);
+                ExcelExtractor excelExtractor = ExcelExtractorFactory.getIntance()
+                        .getExtractor(c.getExtractor(),workbook, adminUserName, originalFileName);
+
                 excelExtractor.execute();
             }
         });

@@ -65,11 +65,6 @@ public abstract class BaseController {
         return new ArrayList<>();
     }
 
-    protected <T extends AuditInfoBean> T addAuditInfo(T auditInfoBean) {
-        SparrowUtil.addAuditInfo(auditInfoBean, getUserName());
-        return auditInfoBean;
-    }
-
     protected ResponseEntity<ResponseData> getResponse (boolean isGet, Object data, RuleResultBean ruleBean) {
 
         String rMsg = isGet ? SUCCESS_RETRIEVAL_MSG : SUCCESS_ACTION_COMPLETION;

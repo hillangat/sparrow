@@ -9,10 +9,9 @@ public class ExcelExtractorFactory {
 	private static ExcelExtractorFactory  excelExtractorFactory = null;
 	
 	static{
-		if(excelExtractorFactory == null){
-			synchronized (ExcelExtractorFactory.class) {
-				excelExtractorFactory = new ExcelExtractorFactory();
-			}
+		synchronized (ExcelExtractorFactory.class) {
+			excelExtractorFactory = excelExtractorFactory == null
+					? new ExcelExtractorFactory() : excelExtractorFactory;
 		}
 	}
 	
@@ -25,7 +24,7 @@ public class ExcelExtractorFactory {
 		super();
 	}
 	
-	public static ExcelExtractor getExtractor(String jndi, Workbook workbook, String userName, String originalFileName){
+	public ExcelExtractor getExtractor(String jndi, Workbook workbook, String userName, String originalFileName){
 		ExcelExtractor extractor = null;
 		if(jndi != null && jndi.equalsIgnoreCase(ExcelExtractor.LOCATION_EXTRACTOR)){
 			extractor =  new LocationExtractor(workbook, originalFileName, userName);

@@ -68,7 +68,9 @@ public class SongController extends BaseController {
         String fileName = (String)wbkExtracts[1];
         String userName = getUserName();
 
-        ExcelExtractor locationExtractor = ExcelExtractorFactory.getExtractor(ExcelExtractor.LOCATION_EXTRACTOR, workbook, userName, fileName);
+        ExcelExtractor locationExtractor = ExcelExtractorFactory.getIntance()
+                .getExtractor(ExcelExtractor.LOCATION_EXTRACTOR, workbook, userName, fileName);
+
         locationExtractor.execute();
 
         Status status = locationExtractor.success() ? Status.SUCCESS : Status.FAILED;

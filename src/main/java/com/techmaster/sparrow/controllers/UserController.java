@@ -1,5 +1,6 @@
 package com.techmaster.sparrow.controllers;
 
+import com.techmaster.sparrow.config.SecurityService;
 import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.entities.misc.ResponseData;
 import com.techmaster.sparrow.entities.misc.User;
@@ -8,10 +9,13 @@ import com.techmaster.sparrow.enums.Status;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.rules.beans.UserRuleBean;
 import com.techmaster.sparrow.services.UserService;
+import com.techmaster.sparrow.util.SparrowUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +25,18 @@ import java.util.Set;
 public class UserController extends BaseController {
 
     @Autowired private UserService userService;
+    @Autowired private SecurityService securityService;
+
+    @PostMapping("user/login")
+    public ResponseEntity<ResponseData> login(@RequestBody Map<String, Object> reqParams) {
+
+        String userName = SparrowUtil.getStringOrNullOfObj(reqParams.get("username"));
+        String password = SparrowUtil.getStringOrNullOfObj(reqParams.get("password"));
+
+       // securityService.autologin(userName, password);
+
+        return getResponse(true, reqParams, null);
+    }
 
     @GetMapping("user/{userId}")
     public ResponseEntity<ResponseData> getUser(@PathVariable(value = "userId", required = false) Long userId) {
