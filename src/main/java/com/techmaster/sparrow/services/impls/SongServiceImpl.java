@@ -1,4 +1,4 @@
-package com.techmaster.sparrow.services;
+package com.techmaster.sparrow.services.impls;
 
 import com.techmaster.sparrow.entities.playlist.Song;
 import com.techmaster.sparrow.enums.Status;
@@ -6,6 +6,7 @@ import com.techmaster.sparrow.repositories.SongRepo;
 import com.techmaster.sparrow.repositories.SparrowJDBCExecutor;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.search.beans.GridDataQueryReq;
+import com.techmaster.sparrow.services.apis.SongService;
 import com.techmaster.sparrow.util.SparrowUtil;
 import com.techmaster.sparrow.validation.SongValidator;
 import org.springframework.beans.factory.annotation.Autowired;

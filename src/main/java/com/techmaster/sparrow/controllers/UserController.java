@@ -1,21 +1,17 @@
 package com.techmaster.sparrow.controllers;
 
 import com.techmaster.sparrow.config.SecurityService;
-import com.techmaster.sparrow.constants.SparrowConstants;
 import com.techmaster.sparrow.entities.misc.ResponseData;
 import com.techmaster.sparrow.entities.misc.User;
 import com.techmaster.sparrow.entities.misc.UserRole;
-import com.techmaster.sparrow.enums.Status;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.rules.beans.UserRuleBean;
-import com.techmaster.sparrow.services.UserService;
+import com.techmaster.sparrow.services.apis.UserService;
 import com.techmaster.sparrow.util.SparrowUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +32,12 @@ public class UserController extends BaseController {
        // securityService.autologin(userName, password);
 
         return getResponse(true, reqParams, null);
+    }
+
+    @GetMapping("user/logout")
+    public ResponseEntity<ResponseData> logout() {
+        securityService.logout();
+        return getResponse(true, null, null);
     }
 
     @GetMapping("user/{userId}")

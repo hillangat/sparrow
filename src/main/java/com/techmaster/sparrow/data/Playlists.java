@@ -81,7 +81,7 @@ public class Playlists {
 
         List<Playlist> playlists = new ArrayList<>();
 
-        for( int i = 0; i < 50; i++ ) {
+        for( int i = 0; i < 10; i++ ) {
             Playlist playlist = SparrowUtil.addAuditInfo(new Playlist(), "admin");
             playlist.setActive(true);
             playlist.setStartTime(LocalDateTime.now());

@@ -1,4 +1,4 @@
-package com.techmaster.sparrow.services;
+package com.techmaster.sparrow.services.impls;
 
 import com.techmaster.sparrow.entities.misc.User;
 import com.techmaster.sparrow.entities.misc.UserRole;
@@ -10,6 +10,7 @@ import com.techmaster.sparrow.repositories.UserRepo;
 import com.techmaster.sparrow.repositories.UserRoleRepo;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.rules.beans.UserRuleBean;
+import com.techmaster.sparrow.services.apis.UserService;
 import com.techmaster.sparrow.util.SparrowUtil;
 import com.techmaster.sparrow.validation.UserValidator;
 import org.slf4j.Logger;
@@ -25,7 +26,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements UserService<UserRepo> {
+public class UserServiceImpl implements UserService {
 
     @Autowired private UserRepo userRepo;
     @Autowired private UserValidator userValidator;
@@ -185,11 +186,6 @@ public class UserServiceImpl implements UserService<UserRepo> {
     @Override
     public Status reportUser(long userId, long reportedBy, String reason) {
         return null;
-    }
-
-    @Override
-    public UserRepo getRepository() {
-        return userRepo;
     }
 
     @Override

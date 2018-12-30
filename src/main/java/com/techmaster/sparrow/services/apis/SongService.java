@@ -1,4 +1,4 @@
-package com.techmaster.sparrow.services;
+package com.techmaster.sparrow.services.apis;
 
 import com.techmaster.sparrow.entities.playlist.Song;
 import com.techmaster.sparrow.enums.Status;

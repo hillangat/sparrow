@@ -1,4 +1,4 @@
-package com.techmaster.sparrow.services;
+package com.techmaster.sparrow.services.impls;
 
 import com.techmaster.sparrow.entities.misc.Rating;
 import com.techmaster.sparrow.entities.misc.ResponseData;
@@ -12,6 +12,7 @@ import com.techmaster.sparrow.repositories.*;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.search.beans.GridDataQueryReq;
 import com.techmaster.sparrow.search.data.AngularDataHelper;
+import com.techmaster.sparrow.services.apis.PlaylistService;
 import com.techmaster.sparrow.util.SparrowUtil;
 import com.techmaster.sparrow.validation.PlaylistValidator;
 import org.slf4j.Logger;
@@ -76,12 +77,12 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public List<Song> contributeSongOrder(long playlistId, List<SongOrder> songOrder) {
-        songOrderRepo.saveAll(songOrder);
+    public List<Song> contributeSongOrder(long playlistId, List<SongOrder> songOrders) {
+        songOrderRepo.saveAll(songOrders);
         SparrowJDBCExecutor executor = SparrowBeanContext.getBean(SparrowJDBCExecutor.class);
         if (executor != null) {
             String query = executor.getQueryForSqlId("saveSongOrderToPlaylist");
-            songOrder.forEach(s -> {
+            songOrders.forEach(s -> {
                 executor.executeUpdate(query, executor.getList(playlistId, s.getSongOrderId()) );
             });
         }

@@ -1,4 +1,4 @@
-package com.techmaster.sparrow.services;
+package com.techmaster.sparrow.services.apis;
 
 import com.techmaster.sparrow.entities.misc.UserRole;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;

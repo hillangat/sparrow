@@ -1,10 +1,11 @@
-package com.techmaster.sparrow.services;
+package com.techmaster.sparrow.services.impls;
 
 import com.techmaster.sparrow.entities.misc.UserRole;
 import com.techmaster.sparrow.repositories.SparrowBeanContext;
 import com.techmaster.sparrow.repositories.UserRepo;
 import com.techmaster.sparrow.repositories.UserRoleRepo;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
+import com.techmaster.sparrow.services.apis.UserRoleService;
 import com.techmaster.sparrow.util.SparrowUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

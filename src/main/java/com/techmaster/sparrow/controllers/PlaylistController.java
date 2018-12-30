@@ -6,7 +6,7 @@ import com.techmaster.sparrow.entities.playlist.Playlist;
 import com.techmaster.sparrow.entities.playlist.Song;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.search.beans.GridDataQueryReq;
-import com.techmaster.sparrow.services.PlaylistService;
+import com.techmaster.sparrow.services.apis.PlaylistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

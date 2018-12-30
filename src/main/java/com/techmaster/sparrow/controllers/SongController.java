@@ -8,7 +8,7 @@ import com.techmaster.sparrow.imports.extraction.ExcelExtractor;
 import com.techmaster.sparrow.imports.extraction.ExcelExtractorFactory;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.search.beans.GridDataQueryReq;
-import com.techmaster.sparrow.services.SongService;
+import com.techmaster.sparrow.services.apis.SongService;
 import com.techmaster.sparrow.util.SparrowUtil;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;

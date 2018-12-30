@@ -3,15 +3,11 @@ package com.techmaster.sparrow.validation;
 import com.techmaster.sparrow.entities.misc.UserRole;
 import com.techmaster.sparrow.entities.playlist.Song;
 import com.techmaster.sparrow.enums.Status;
-import com.techmaster.sparrow.enums.UserRoleType;
-import com.techmaster.sparrow.repositories.SongRepo;
 import com.techmaster.sparrow.repositories.SparrowBeanContext;
 import com.techmaster.sparrow.repositories.UserRepo;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
-import com.techmaster.sparrow.services.SongService;
+import com.techmaster.sparrow.services.apis.SongService;
 import com.techmaster.sparrow.util.SparrowUtil;
-import org.h2.bnf.Rule;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;

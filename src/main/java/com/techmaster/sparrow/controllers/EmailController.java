@@ -3,7 +3,7 @@ package com.techmaster.sparrow.controllers;
 import com.techmaster.sparrow.entities.email.EmailContent;
 import com.techmaster.sparrow.entities.misc.ResponseData;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
-import com.techmaster.sparrow.services.EmailContentService;
+import com.techmaster.sparrow.services.apis.EmailContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

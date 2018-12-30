@@ -1,4 +1,4 @@
-package com.techmaster.sparrow.services;
+package com.techmaster.sparrow.services.impls;
 
 import com.techmaster.sparrow.entities.misc.Event;
 import com.techmaster.sparrow.entities.misc.Rating;
@@ -9,6 +9,7 @@ import com.techmaster.sparrow.repositories.SparrowJDBCExecutor;
 import com.techmaster.sparrow.repositories.UserRepo;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
 import com.techmaster.sparrow.search.beans.GridDataQueryReq;
+import com.techmaster.sparrow.services.apis.EventService;
 import com.techmaster.sparrow.util.SparrowUtil;
 import com.techmaster.sparrow.validation.EventValidator;
 import org.slf4j.Logger;
