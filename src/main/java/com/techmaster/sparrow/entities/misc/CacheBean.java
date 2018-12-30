@@ -18,8 +18,9 @@ import javax.persistence.*;
 public class CacheBean extends AuditInfoBean {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     @Column(name = "NAM", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cch_bn_gen")
+    @SequenceGenerator(name="cch_bn_gen", sequenceName = "cch_bn_seq", allocationSize=100)
     private String name;
 
     @Column(name = "KY", nullable = false)

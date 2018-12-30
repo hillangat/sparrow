@@ -12,7 +12,8 @@ import javax.persistence.*;
 public class Club extends AuditInfoBean {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "clb_gen")
+    @SequenceGenerator(name="clb_gen", sequenceName = "clb_seq", allocationSize=100)
     @Column(name = "ID", nullable = false)
     private long id;
 

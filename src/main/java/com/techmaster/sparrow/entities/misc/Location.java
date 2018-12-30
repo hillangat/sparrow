@@ -21,7 +21,8 @@ import java.util.List;
 public class Location extends AuditInfoBean {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "lctn_gen")
+    @SequenceGenerator(name="lctn_gen", sequenceName = "lctn_seq", allocationSize=100)
     @Column(name = "LCTN_ID", nullable = false)
     private long locationId;
 

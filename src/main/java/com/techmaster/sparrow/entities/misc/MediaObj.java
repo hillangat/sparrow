@@ -18,7 +18,8 @@ public class MediaObj extends AuditInfoBean {
 
     @Id()
     @Column(name = "MDA_ID", updatable = false, nullable = false)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mda_obj_gen")
+    @SequenceGenerator(name="mda_obj_gen", sequenceName = "mda_obj_seq", allocationSize=100)
     private long mediaId;
 
     @Column(name = "ORGNL_NAM")

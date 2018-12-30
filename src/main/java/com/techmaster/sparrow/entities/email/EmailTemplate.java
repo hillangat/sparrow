@@ -25,7 +25,8 @@ public class EmailTemplate extends AuditInfoBean {
 
     @Id()
     @Column(name = "TMPLT_ID", updatable = false, nullable = false)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "eml_tmplt_gen")
+    @SequenceGenerator(name="eml_tmplt_gen", sequenceName = "eml_tmplt_seq", allocationSize=100)
     private long templateId;
 
     @Column(name = "TMPLT_NAM", nullable = false)

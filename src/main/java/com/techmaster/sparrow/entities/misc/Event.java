@@ -25,7 +25,8 @@ public class Event extends AuditInfoBean {
 
     @Id
     @Column(name = "EVNT_ID", nullable = false)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "evnt_gen")
+    @SequenceGenerator(name="evnt_gen", sequenceName = "evnt_seq", allocationSize=100)
     private long eventId;
 
     @Column(name = "EVNT_NAM", nullable = false)

@@ -18,7 +18,8 @@ public class Comment extends AuditInfoBean {
 
     @Id
     @Column(name = "CMMNT_ID", nullable = false)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cmmnt_gen")
+    @SequenceGenerator(name="cmmnt_gen", sequenceName = "cmmnt_seq", allocationSize=100)
     private String commentId;
 
     @Column(name = "TXT", nullable = false)

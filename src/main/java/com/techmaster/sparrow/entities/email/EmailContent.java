@@ -29,7 +29,8 @@ public class EmailContent extends AuditInfoBean {
 
     @Id()
     @Column(name = "CNTNT_ID", updatable = false, nullable = false)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "eml_cntnt_gen")
+    @SequenceGenerator(name="eml_cntnt_gen", sequenceName = "eml_cntnt_seq", allocationSize=100)
     private long contentId;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)

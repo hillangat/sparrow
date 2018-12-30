@@ -156,21 +156,20 @@ public class DataLoaderServiceImpl implements DataLoaderService {
 
         logger.debug("Creating default admin user....");
 
-        User user = SparrowUtil.addAuditInfo(new User(), "admin");
-        user.setEmail("hillangat@gmail.com");
-        user.setUserName("admin");
+        for( int i = 0; i < 100; i++ ) {
+            User user = SparrowUtil.addAuditInfo(new User(), "admin");
+            user.setEmail("hillangat" + i + "@gmail.com");
+            user.setUserName("admin" + ( i == 0 ? "" : i) );
 
-        String encodedPassword = bCryptPasswordEncoder.encode("hlangat.ten.245.34");
+            String encodedPassword = bCryptPasswordEncoder.encode("hlangat.ten.245.34");
 
-        user.setPassword(encodedPassword);
-        user.setFirstName("Hillary");
-        user.setLastName("Langat");
-        user.setEmailConfirmed(false);
-        user.setNickName("Kip");
-        user.setUserRoles(roles);
-        UserRepo repository = SparrowBeanContext.getBean(UserRepo.class);
-        if (repository != null) {
-            repository.deleteAll();
+            user.setPassword(encodedPassword);
+            user.setFirstName("Hillary");
+            user.setLastName("Langat");
+            user.setEmailConfirmed(false);
+            user.setNickName("Kip");
+            user.setUserRoles(roles);
+            UserRepo repository = SparrowBeanContext.getBean(UserRepo.class);
             repository.save(user);
         }
 

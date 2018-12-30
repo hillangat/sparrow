@@ -17,7 +17,8 @@ import javax.persistence.*;
 public class UserRole extends AuditInfoBean {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usr_roles_gen")
+    @SequenceGenerator(name="usr_roles_gen", sequenceName = "usr_roles_seq", allocationSize=100)
     @Column(name = "RL_ID")
     private long roleId;
 

@@ -17,7 +17,8 @@ import javax.persistence.*;
 public class Rating extends AuditInfoBean {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rtng_gen")
+    @SequenceGenerator(name="rtng_gen", sequenceName = "rtng_seq", allocationSize=100)
     @Column(name = "RTNG_ID", nullable = false)
     private long ratingId;
 

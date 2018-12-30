@@ -22,7 +22,8 @@ public class User  extends AuditInfoBean {
 
     @Id()
     @Column(name = "USR_ID", updatable = false, nullable = false)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usr_gen")
+    @SequenceGenerator(name="usr_gen", sequenceName = "usr_seq", allocationSize=100)
     private long userId;
 
     @Column(name = "USR_NAM", nullable = false, unique = true)

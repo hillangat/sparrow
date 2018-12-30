@@ -23,7 +23,8 @@ import java.util.List;
 public class Playlist extends AuditInfoBean {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "plylst_gen")
+    @SequenceGenerator(name="plylst_gen", sequenceName = "plylst_seq", allocationSize=100)
     @Column(name = "PLYLST_ID", nullable = false)
     private long playListId;
 

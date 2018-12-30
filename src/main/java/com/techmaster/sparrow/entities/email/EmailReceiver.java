@@ -22,7 +22,8 @@ public class EmailReceiver extends AuditInfoBean {
 
     @Id()
     @Column(name = "RCVR_ID", updatable = false, nullable = false)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "eml_rcvr_gen")
+    @SequenceGenerator(name="eml_rcvr_gen", sequenceName = "eml_rcvr_seq", allocationSize=100)
     private long receiverId;
 
     @Column(name = "EML", nullable = false)
