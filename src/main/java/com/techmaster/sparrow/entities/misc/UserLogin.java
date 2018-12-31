@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Data
 @ToString(callSuper = true)
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Table(name = "USR_LGN")
 @Entity

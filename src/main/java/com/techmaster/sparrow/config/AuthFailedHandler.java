@@ -28,7 +28,7 @@ public class AuthFailedHandler implements AuthenticationFailureHandler {
 
     private ObjectMapper objectMapper = new ObjectMapper();
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-    private String failedURL = "/login?error";
+    private String failedURL = "/login?error=error";
 
 
     @Autowired

@@ -63,12 +63,14 @@ public class UserLoginServiceImpl implements UserLoginService {
     public UserLogin createFromRequest(HttpServletRequest request, Status status, String userName) {
 
         userName = userName == null ? request.getParameter("j_username") : userName;
-        userName = userName == null ? request.getParameter("username") : null;
+        userName = userName == null ? request.getParameter("username") : userName;
 
         String password = request.getParameter("j_password");
-        userName = userName == null ? request.getParameter("password") : null;
+        password = password == null ? request.getParameter("password") : password;
 
         String IpAddress = request.getRemoteAddr();
+
+        password = password != null ? bCryptPasswordEncoder.encode(password) : null;
 
         if (userName != null) {
             String admin = applicationProperties.getAdminUserName();
