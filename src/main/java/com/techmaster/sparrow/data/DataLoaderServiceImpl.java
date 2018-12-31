@@ -2,6 +2,7 @@ package com.techmaster.sparrow.data;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.techmaster.sparrow.cache.SparrowCacheUtil;
+import com.techmaster.sparrow.config.ApplicationProperties;
 import com.techmaster.sparrow.constants.SparrowURLConstants;
 import com.techmaster.sparrow.email.EmailService;
 import com.techmaster.sparrow.entities.misc.UserRole;
@@ -51,14 +52,8 @@ public class DataLoaderServiceImpl implements DataLoaderService {
     @Autowired private EmailService emailService;
     @Autowired private UserRoleRepo userRoleRepo;
     @Autowired private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired private ApplicationProperties applicationProperties;
 
-    @Value("${spring.security.user.name}")
-    private String adminUserName;
-
-    @PostConstruct
-    public void validate() {
-        Assert.notNull(adminUserName, "Admin user name is required by data loader");
-    }
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -73,7 +68,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
             if (workbook != null) {
                 String originalFileName = SparrowUtil.getOrifinalFileNameForPath(c.getFileLocation());
                 ExcelExtractor excelExtractor = ExcelExtractorFactory.getIntance()
-                        .getExtractor(c.getExtractor(),workbook, adminUserName, originalFileName);
+                        .getExtractor(c.getExtractor(),workbook, applicationProperties.getAdminUserName(), originalFileName);
 
                 excelExtractor.execute();
             }
@@ -107,7 +102,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
                     ObjectMapper mapper = new ObjectMapper();
                     try {
                         DataLoaderConfig config = mapper.readValue(jsonArray.getJSONObject(i).toString(), DataLoaderConfig.class);
-                        SparrowUtil.addAuditInfo(config, adminUserName);
+                        SparrowUtil.addAuditInfo(config, applicationProperties.getAdminUserName());
                         configs.add(config);
                     } catch (IOException e) {
                         e.printStackTrace();

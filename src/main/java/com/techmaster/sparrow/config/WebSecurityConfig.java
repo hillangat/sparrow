@@ -16,6 +16,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired AuthFailedHandler authFailedHandler;
+    @Autowired AuthSuccessHandler authSuccessHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -25,6 +27,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .anyRequest().authenticated()
             .and()
             .formLogin()
+            .successHandler(authSuccessHandler)
+            .failureHandler(authFailedHandler)
             .loginPage("/login")
             .permitAll()
             .and()
