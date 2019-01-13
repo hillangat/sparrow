@@ -15,6 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class EmailContentServiceImpl implements EmailContentService {
 
@@ -78,6 +81,7 @@ public class EmailContentServiceImpl implements EmailContentService {
 
         RuleResultBean resultBean = new RuleResultBean();
         EmailContent emailContent = SparrowUtil.getIfExist(emailContentRepo.findById(emailContentId));
+        emailContent.getParams().put("TEMPLATE_EMAIL_CONTENTS", "<h1>Hello world!!!!<h1>");
 
         if (emailContent != null) {
             RuleResultBean sendErrors = emailService.send(emailContent);

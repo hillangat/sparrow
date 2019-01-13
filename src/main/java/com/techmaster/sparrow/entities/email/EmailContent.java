@@ -6,6 +6,7 @@ import com.techmaster.sparrow.entities.misc.AuditInfoBean;
 import com.techmaster.sparrow.entities.misc.User;
 import com.techmaster.sparrow.enums.EmailReasonType;
 import com.techmaster.sparrow.enums.Status;
+import com.techmaster.sparrow.util.SparrowUtil;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -13,7 +14,9 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Contents sent on an email instance
@@ -66,4 +69,7 @@ public class EmailContent extends AuditInfoBean {
             joinColumns=@JoinColumn(name="CNTNT_ID", referencedColumnName="CNTNT_ID"),
             inverseJoinColumns=@JoinColumn(name="RCVR_ID", referencedColumnName="RCVR_ID"))
     private List<EmailReceiver> receivers = new ArrayList<>();
+
+    @Transient
+    private Map<String, String> params = new HashMap<>();
 }

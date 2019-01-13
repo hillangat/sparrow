@@ -21,6 +21,12 @@ public class EmailController extends BaseController {
         return getResponse(false, emailContent, resultBean);
     }
 
+    @GetMapping("email/{emailId}")
+    public ResponseEntity<ResponseData> getEmail(@PathVariable("emailId") Long emaiId) {
+        EmailContent emailContent = emailContentService.getById(emaiId);
+        return getResponse(false, emailContent, null);
+    }
+
     @DeleteMapping("email/{emailId}")
     public ResponseEntity<ResponseData> deleteEmail(@PathVariable("emailId") Long emailId) {
         RuleResultBean resultBean = emailContentService.deleteEmailContent(emailId);

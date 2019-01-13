@@ -109,11 +109,11 @@ public class LocationExtractor extends AbstractExcelExtractor<Location> {
 				// locationType
 				}else if( i == 6 ){
 
-					boolean valid = !Arrays
+					boolean invalid = !Arrays
 							.stream(LocationType.values())
 							.anyMatch(l -> l.toString().equalsIgnoreCase(objStr));
 
-					if (valid) {
+					if (invalid) {
 						rowErrors.add("Location Type must be one of : " + Arrays.toString(LocationType.values()));
 					}
 					

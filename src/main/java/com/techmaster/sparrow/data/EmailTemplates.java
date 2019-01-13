@@ -112,7 +112,6 @@ public class EmailTemplates {
                 for( int j = 0; j < fields.getLength(); j++ ) {
                     Node field = fields.item(j);
                     if (SparrowUtil.isElement(field)) {
-                        short type = field.getNodeType();
                         setValues(field, attachment);
                         attachment.setMediaObj(mediaObjs.get(i % 2 == 0 ? 0 : 1));
                     }

@@ -9,7 +9,7 @@ public enum GridQueryOperation {
 	gt( "gt", "Greater Than", " > " ),
 	lt( "lt", "Less Than", " < " ),
 	equals( "equals", "Equals", " = " ),
-	notEquals( "notEquals", "Equals", " != " ),
+	notEquals( "notEquals", "Not Equals", " != " ),
 	before( "before", "Before", " < " ),
 	after( "after", "After", " > " ),
 	contains( "contains", "Contains", " IN " ),

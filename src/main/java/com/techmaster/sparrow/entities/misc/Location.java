@@ -32,10 +32,10 @@ public class Location extends AuditInfoBean {
     @Column(name = "CDE")
     private String code;
 
-    @Column(name = "LGTDE")
+    @Column(name = "LGTD")
     private double longitude;
 
-    @Column(name = "LTTDE")
+    @Column(name = "LTTD")
     private double latitude;
 
     @Column(name = "PRNT_ID")

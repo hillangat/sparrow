@@ -23,6 +23,12 @@ public class ApplicationProperties {
     @Value("${sparrow.user_max_failed_count}")
     private int userMaxFailedCount;
 
+    @Value("${dev.configs.load_data_from}")
+    private String loadDataFrom;
+
+    @Value("${dev.configs.wipe_on_restart}")
+    private boolean wipeOnRestart;
+
 
     @PostConstruct
     public void validate() {

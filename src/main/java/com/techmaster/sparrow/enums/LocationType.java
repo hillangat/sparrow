@@ -7,5 +7,7 @@ public enum LocationType {
     CONSTITUENCY,
     WARD,
     MUNICIPAL,
-    VILLAGE
+    VILLAGE,
+    TOWN,
+    TOWNSHIP
 }

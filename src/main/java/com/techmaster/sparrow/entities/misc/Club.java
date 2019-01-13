@@ -20,14 +20,9 @@ public class Club extends AuditInfoBean {
     @Column(name = "NAM", nullable = false)
     private String name;
 
-    @Column(name = "CNTRY", nullable = false)
-    private String country;
-
-    @Column(name = "STTE", nullable = true)
-    private String state;
-
-    @Column(name = "CTY", nullable = false)
-    private String city;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @JoinColumn(name = "LCTN_ID")
+    private Location location;
 
 
 }

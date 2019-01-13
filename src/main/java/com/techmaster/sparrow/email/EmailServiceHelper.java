@@ -25,6 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -151,6 +152,10 @@ public class EmailServiceHelper {
         }
     }
 
+    private void setAddress () {
+
+    }
+
     public static MimeMultipart prepareMultiPart(EmailContent emailContent, RuleResultBean resultBean) {
 
         logger.debug("Preparing email body part...");
@@ -163,6 +168,27 @@ public class EmailServiceHelper {
             logger.debug("Adding main email body content...");
             BodyPart messageBodyPart = new MimeBodyPart();
             String htmlText = SparrowUtil.getBlobStr(template.getContentBody());
+            List<String> keys = getAllKeys(emailContent);
+
+            logger.debug("Replacing all the keys found in the template...");
+
+            if (keys != null && !keys.isEmpty()) {
+                boolean hasParams = emailContent.getParams() != null &&
+                        !emailContent.getParams().isEmpty();
+                if (hasParams) {
+                    for (String k : keys) {
+                        htmlText = replaceKey(htmlText, k, emailContent.getParams().get(k));
+                    }
+                } else {
+                    logger.debug("Keys found in the template but no matching parameters. Removing the keys and leaving empty space...");
+                    for (String k : keys) {
+                        htmlText = replaceKey(htmlText, k, "");
+                    }
+                }
+            }
+
+            logger.debug("Replacement has been completed!!");
+
             messageBodyPart.setContent(htmlText, "text/html");
             mimeMultipart.addBodyPart(messageBodyPart);
 
@@ -230,6 +256,46 @@ public class EmailServiceHelper {
 
         return dataHandler;
 
+    }
+
+
+    public static List<String> getAllKeys(EmailContent emailContent) {
+        logger.debug("Retrieving all keys from email content >> {}", emailContent.getTemplate().getTemplateDescription());
+        List<String> keys = new ArrayList<>();
+        EmailTemplate template = emailContent.getTemplate();
+        String body = template != null && template.getContentBody() != null
+                ? SparrowUtil.getBlobStr(template.getContentBody()) : null;
+        if ( body != null ) {
+            while (body.contains("##")) {
+                int index = body.indexOf("##") + 1;
+                String key = getKeyForIndex(body, index);
+                if (key != null) {
+                    keys.add(key);
+                    body = body.replaceAll("##" + key + "##", "::" + key + "::");
+                }
+            }
+        }
+        logger.debug("Keys retrieved size = {}, keys = {}", keys.size(), SparrowUtil.stringifyList(keys));
+        return keys;
+    }
+
+    private static String getKeyForIndex(String str, int index) {
+        if (str != null && index + 1 < str.length()) {
+            int endIndex = index + 1;
+            while( endIndex < str.length()) {
+                Character c = str.charAt(endIndex);
+                if (c == '#' && (endIndex + 1) < str.length() && str.charAt(endIndex+1) == '#' )
+                    return str.substring(index + 1, endIndex);
+                endIndex++;
+            }
+        }
+        return null;
+    }
+
+    public static String replaceKey( String body, String key, String value ) {
+        String k = "##" + key  + "##";
+        body = body.replaceAll(k, value);
+        return body;
     }
 
 

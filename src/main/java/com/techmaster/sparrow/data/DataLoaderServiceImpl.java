@@ -60,6 +60,10 @@ public class DataLoaderServiceImpl implements DataLoaderService {
     @Override
     public void execute() {
 
+        if (!applicationProperties.isWipeOnRestart()) {
+            return;
+        }
+
         List<DataLoaderConfig> dataLoaderConfigs = getDataLoaderConfigs();
         saveDataLoaderConfigs(dataLoaderConfigs);
 

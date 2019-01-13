@@ -12,7 +12,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 @RestController
-public class RestfulApiExceptionHandler extends ResponseEntityExceptionHandler {
+public class RestfulExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(SparrowRestfulApiException.class)
     public final ResponseEntity<ErrorResponse> handleUserNotFoundException(SparrowRestfulApiException ex, WebRequest request) {
         ErrorResponse errorDetails = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
