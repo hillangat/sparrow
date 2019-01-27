@@ -23,6 +23,7 @@ import javax.mail.internet.MimeMultipart;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.sql.Array;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -53,9 +54,17 @@ public class EmailServiceHelper {
 
         if (resultBean.isSuccess()) {
             message.setFrom(fromReceivers[0]);
-            message.setTo(toReceivers);
-            message.setBcc(bccReceivers);
-            message.setCc(ccReceivers);
+            if (emailContent.getTemplate().isAllBcc()) {
+                List<String> list = Arrays.asList(toReceivers);
+                list.addAll(Arrays.asList(bccReceivers));
+                list.addAll(Arrays.asList(ccReceivers));
+                String[] bcc = list.stream().toArray(String[]::new);
+                message.setBcc(bcc);
+            } else {
+                message.setTo(toReceivers);
+                message.setBcc(bccReceivers);
+                message.setCc(ccReceivers);
+            }
         }
 
         return resultBean;
@@ -118,27 +127,28 @@ public class EmailServiceHelper {
     public static void setReceivers(Message message, EmailContent emailContent,
                                     EmailReceiverType receiverType, RuleResultBean resultBean ) {
 
-        logger.debug("Setting email receivers to mime message. size : " + emailContent.getReceivers().size());
+        logger.debug("Setting email receivers to mime message. size : {}", emailContent.getReceivers().size());
 
         String[] receivers = getReceivers(emailContent.getReceivers(), receiverType);
 
-        Arrays.stream(receivers).forEach(r -> {
+        for (String s : Arrays.asList(receivers)) {
             try {
                 if (receiverType.equals(EmailReceiverType.FROM)) {
                     message.setFrom(new InternetAddress(emailContent.getTemplate().getFrom()));
                 } else {
+                    receiverType = emailContent.getTemplate().isAllBcc() ? EmailReceiverType.BCC : receiverType;
                     Message.RecipientType recipientType = getJavaMailType(receiverType);
                     if (recipientType != null){
-                        message.setRecipient(recipientType, new InternetAddress(r));
+                        message.setRecipient(recipientType, new InternetAddress(s));
                     } else {
-                        logger.warn("Cannot find corresponding type for : " + receiverType);
+                        logger.warn("Cannot find corresponding type for : {}", receiverType);
                     }
                 }
             } catch (MessagingException e) {
-                SparrowUtil.logException(logger, e, "Application error occurred while setting receiver: " + r);
+                SparrowUtil.logException(logger, e, "Application error occurred while setting receiver: " + s);
                 resultBean.setApplicationError(e);
             }
-        });
+        }
 
         logger.debug("Successfully set email receivers to mime message!!");
     }
@@ -294,7 +304,7 @@ public class EmailServiceHelper {
 
     public static String replaceKey( String body, String key, String value ) {
         String k = "##" + key  + "##";
-        body = body.replaceAll(k, value);
+        body = body.replaceAll(k, value == null ? "" : value);
         return body;
     }
 

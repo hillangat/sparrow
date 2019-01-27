@@ -54,6 +54,7 @@ public class EmailTemplates {
             templateBean.setTemplateDescription(desc);
             templateBean.setTemplateName(name);
             templateBean.setFrom(from);
+            templateBean.setAllBcc(true);
             templateBean.setSubject(subject);
             templateBean.setToList(SparrowUtil.getStringBlob(toList));
             templateBean.setCcList(SparrowUtil.getStringBlob(ccList));

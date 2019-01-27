@@ -33,12 +33,12 @@ public class CacheController extends BaseController {
 
         RuleResultBean resultBean = new RuleResultBean();
         SparrowUtil.threadSleepFor(500);
-        try{
-            if( cacheBeans != null && !cacheBeans.isEmpty() ){
+        try {
+            if (cacheBeans != null && !cacheBeans.isEmpty()) {
                 List<String> keys = new ArrayList<>();
                 cacheBeans.forEach(bean -> {
-                    if ( SparrowUtil.notNullNotEmpty(bean.getKey()) ) {
-                        if ( bean.getKey().equals("allXMLService") ) {
+                    if (SparrowUtil.notNullNotEmpty(bean.getKey())) {
+                        if (bean.getKey().equals("allXMLService")) {
                             keys.clear();
                             keys.add(bean.getKey());
                         } else if (!keys.contains("allXMLService")) {
@@ -46,11 +46,11 @@ public class CacheController extends BaseController {
                         }
                     }
                 });
-                keys.forEach( k -> SparrowCacheUtil.getInstance().refreshCacheService(k) );
-            }else{
+                keys.forEach(k -> SparrowCacheUtil.getInstance().refreshCacheService(k));
+            } else {
                 resultBean.setError("cacheService", "No cache service specified in request.");
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             logger.error("Error occurred while trying to refresh cache!!");
             resultBean.setError(SparrowConstants.APPLICATION_ERROR_KEY, "Error occurred while trying to refresh cache!!");
         }

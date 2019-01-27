@@ -40,22 +40,39 @@ import java.util.stream.Collectors;
 @Component
 public class DataLoaderServiceImpl implements DataLoaderService {
 
-    @Autowired private DataLoaderConfigRepository configRepository;
-    @Autowired private EmailTemplateRepo emailTemplateRepo;
-    @Autowired private UserService userService;
-    @Autowired private EmailReceiverRepo emailReceiverRepo;
-    @Autowired private EmailAttachmentRepo emailAttachmentRepo;
-    @Autowired private MediaObjRepo mediaObjRepo;
-    @Autowired private SongRepo songRepo;
-    @Autowired private EventRepo eventRepo;
-    @Autowired private EmailContentRepo emailContentRepo;
-    @Autowired private EmailService emailService;
-    @Autowired private UserRoleRepo userRoleRepo;
-    @Autowired private BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Autowired private ApplicationProperties applicationProperties;
+    private final DataLoaderConfigRepository configRepository;
+    private final EmailTemplateRepo emailTemplateRepo;
+    private final UserService userService;
+    private final EmailReceiverRepo emailReceiverRepo;
+    private final EmailAttachmentRepo emailAttachmentRepo;
+    private final MediaObjRepo mediaObjRepo;
+    private final SongRepo songRepo;
+    private final EventRepo eventRepo;
+    private final EmailContentRepo emailContentRepo;
+    private final EmailService emailService;
+    private final UserRoleRepo userRoleRepo;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final ApplicationProperties applicationProperties;
 
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+
+    public DataLoaderServiceImpl(EmailAttachmentRepo emailAttachmentRepo, DataLoaderConfigRepository configRepository, EmailTemplateRepo emailTemplateRepo, UserService userService, EmailReceiverRepo emailReceiverRepo, ApplicationProperties applicationProperties, MediaObjRepo mediaObjRepo, SongRepo songRepo, EventRepo eventRepo, EmailContentRepo emailContentRepo, EmailService emailService, BCryptPasswordEncoder bCryptPasswordEncoder, UserRoleRepo userRoleRepo) {
+        this.emailAttachmentRepo = emailAttachmentRepo;
+        this.configRepository = configRepository;
+        this.emailTemplateRepo = emailTemplateRepo;
+        this.userService = userService;
+        this.emailReceiverRepo = emailReceiverRepo;
+        this.applicationProperties = applicationProperties;
+        this.mediaObjRepo = mediaObjRepo;
+        this.songRepo = songRepo;
+        this.eventRepo = eventRepo;
+        this.emailContentRepo = emailContentRepo;
+        this.emailService = emailService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.userRoleRepo = userRoleRepo;
+    }
 
     @Override
     public void execute() {
@@ -98,7 +115,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
 
         List<DataLoaderConfig> configs = new ArrayList<>();
         File file = new File(SparrowURLConstants.DATA_LOAD_CONFIG_JSON);
-        if (file != null && file.exists()) {
+        if (file.exists()) {
             String fileStr = SparrowUtil.getStringOfFile(file);
             JSONArray jsonArray = new JSONArray(fileStr);
             if (jsonArray.length() > 0) {
@@ -130,9 +147,7 @@ public class DataLoaderServiceImpl implements DataLoaderService {
                 if (file.exists()) {
                     try {
                         return WorkbookFactory.create(file);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (InvalidFormatException e) {
+                    } catch (IOException | InvalidFormatException e) {
                         e.printStackTrace();
                     }
                 } else {

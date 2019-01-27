@@ -1,13 +1,11 @@
 package com.techmaster.sparrow.controllers;
 
 import com.techmaster.sparrow.constants.SparrowConstants;
-import com.techmaster.sparrow.entities.misc.AuditInfoBean;
 import com.techmaster.sparrow.entities.misc.ErrorResponse;
 import com.techmaster.sparrow.entities.misc.ResponseData;
 import com.techmaster.sparrow.enums.Status;
 import com.techmaster.sparrow.exception.SparrowRestfulApiException;
 import com.techmaster.sparrow.rules.abstracts.RuleResultBean;
-import com.techmaster.sparrow.util.SparrowUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -79,7 +77,7 @@ public abstract class BaseController {
         String otherError = ruleBean.getErrors().containsKey(SparrowConstants.APPLICATION_ERROR_KEY)
                 ? SparrowConstants.APPLICATION_ERROR_OCCURRED : FAILED_VALIDATION_MSG;
 
-        String msg = ruleBean.isSuccess() ? ( rMsg ) : otherError;
+        String msg = ruleBean.isSuccess() ? (rMsg) : otherError;
 
         ResponseData responseData = new ResponseData(data, msg, status, ruleBean.getErrors());
         return ResponseEntity.ok(responseData);

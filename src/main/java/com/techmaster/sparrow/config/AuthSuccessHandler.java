@@ -1,6 +1,5 @@
 package com.techmaster.sparrow.config;
 
-import com.techmaster.sparrow.entities.misc.UserLogin;
 import com.techmaster.sparrow.enums.Status;
 import com.techmaster.sparrow.services.apis.UserLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,8 @@ import java.io.IOException;
 @Component
 public class AuthSuccessHandler implements AuthenticationSuccessHandler {
 
-    @Autowired private UserLoginService userLoginService;
+    @Autowired
+    private UserLoginService userLoginService;
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Override

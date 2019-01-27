@@ -33,6 +33,8 @@ public class ApplicationProperties {
     @PostConstruct
     public void validate() {
         Assert.notNull(adminUserName, "Admin user name is required by data loader");
+        Assert.notNull(crossOriginsUrl, "Cross origin configurations are required for this service application");
+        Assert.notNull(applicationBuild, "Application build version is required.");
     }
 
 }
